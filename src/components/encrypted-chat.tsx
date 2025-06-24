@@ -18,26 +18,29 @@ export function EncryptedChat() {
 
       {/* WEBHOOKS */}
       <Events />
-      {/* CHATS */}
-      <div className="flex-1 overflow-y-auto space-y-4 text-xs">
-        {chatLogs.map((log, index) => (
-          <div key={index} className="space-y-1">
-            <div className="text-zinc-500 text-xs"># {log.time}</div>
-            {log.messages.map((message, msgIndex) => (
-              <div
-                key={msgIndex}
-                className="text-zinc-400 flex items-start gap-2 font-mono text-xs leading-relaxed"
-              >
-                <Icon name="triangle-right" size={8} className="opacity-60" />
-                <span>{message}</span>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
+export const ChatLogs = () => {
+  return (
+    <div className="flex-1 overflow-y-auto space-y-4 text-xs">
+      {chatLogs.map((log, index) => (
+        <div key={index} className="space-y-1">
+          <div className="text-zinc-500 text-xs"># {log.time}</div>
+          {log.messages.map((message, msgIndex) => (
+            <div
+              key={msgIndex}
+              className="text-zinc-400 flex items-start gap-2 font-mono text-xs leading-relaxed"
+            >
+              <Icon name="triangle-right" size={8} className="opacity-60" />
+              <span>{message}</span>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
 const chatLogs = [
   {
     time: "2025-06-17 14:23 UTC",

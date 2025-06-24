@@ -7,7 +7,6 @@ import Link from "next/link";
 import { useEffect, useState, type JSX } from "react";
 import { HyperList } from "../hyper/list";
 import { RepoSelect } from "./repo-select";
-import { Stats } from "./stats";
 
 export const Events = (): JSX.Element => {
   const [events, setEvents] = useState<WebhookEvent[]>([]);
@@ -81,8 +80,7 @@ export const Events = (): JSX.Element => {
           />
         )}
       </div>
-      {/* tRPC-powered stats */}
-      <Stats />
+
       {/* Repository-specific events via tRPC */}
       <RepoSelect />
     </div>
@@ -96,9 +94,9 @@ const EventItem = (event: WebhookEvent) => (
       "border-[0.33px] rounded-md p-4 border-red-400 bg-red-50",
       "dark:bg-card/40 dark:border-xy",
       {
-        "border-xy bg-card dark:border-transparent dark:bg-card": event.isValid,
-        "border-xy bg-card dark:border-zed":
-          event.isValid && event.eventType === "pull_request",
+        "border-xy bg-card dark:border-zed": event.isValid,
+        "border-xy bg-card dark:border-transparent dark:bg-card":
+          event.isValid && event.eventType === "push",
       },
     )}
   >
@@ -117,7 +115,7 @@ const EventItem = (event: WebhookEvent) => (
           className={cn(
             "p-[2px] rounded-md shrink-0 bg-mac-red/10 text-red-400",
             {
-              "dark:text-teal-200 text-teal-600 bg-mac-teal/10 dark:bg-teal-200/5":
+              "dark:text-teal-500 text-teal-600 bg-mac-teal/10 dark:bg-teal-200/5":
                 event.isValid,
               "dark:text-blue-500 text-blue-500 bg-blue-50":
                 event.eventType === "push" && event.isValid,
