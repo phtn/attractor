@@ -1,0 +1,1 @@
+export { greetHello } from "./hello";

@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scripts
+src/xdev/xai.sh
+sh.sh
+push.sh
+pr.sh
+xdev
