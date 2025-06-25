@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import GestureSwitch from "./gesture/switch";
 import { IconName } from "@/lib/icons/types";
 import { Badge } from "./ui/badge";
+import { IconButton } from "./icon-button";
 
 export function DashboardHeader() {
   return (
@@ -22,8 +23,8 @@ export function DashboardHeader() {
         <div>
           <Icon
             solid
-            name="triangle-right"
             size={8}
+            name="triangle-right"
             className="mx-1.5 text-muted-foreground"
           />
         </div>
@@ -48,8 +49,7 @@ export function DashboardHeader() {
 
       <div className="h-16 flex items-center justify-end">
         <div className="flex gap-x-2 h-full items-center justify-end">
-          <ToolbarItem icon="git-commit" />
-          <ToolbarItem icon="circle" />
+          <IconButton icon="root-folder" solid fn={() => console.log()} />
           <div className="4order h-16 w-24 flex items-center justify-start">
             <GestureSwitch />
           </div>
@@ -64,7 +64,11 @@ interface ToolbarItemProps {
   label?: string;
   type?: "icon" | "text";
 }
-const ToolbarItem = ({ icon, label, type = "icon" }: ToolbarItemProps) => (
+export const ToolbarItem = ({
+  icon,
+  label,
+  type = "icon",
+}: ToolbarItemProps) => (
   <div className="flex justify-center items-center relative w-fit overflow-hidden">
     {/* Primary Interface */}
     <div className="relative">

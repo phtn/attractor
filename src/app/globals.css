@@ -82,6 +82,9 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-card-zinc: var(--card-zinc);
+  --color-card-dark: var(--card-dark);
+  --color-card-origin: var(--card-origin);
   /* CUSTOM COLORS */
   --color-chalk: var(--chalk);
   --color-cream: var(--cream);
@@ -100,7 +103,8 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(0.985 0 0);
+  --background: oklch(0.956 0.002 286.35);
+  /* --background: oklch(0.985 0 0); */
   --foreground: oklch(0.341 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
@@ -169,12 +173,16 @@
 }
 
 .dark {
-  --background: oklch(0.152 0.009 285.34);
+  --background: oklch(0.183 0.006 285.79);
+  /* --background: oklch(0.152 0.009 285.34); */
   /* --background: oklch(0.166 0.008 285.46); */
   /* --background: oklch(0.141 0.005 285.823); */
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.22 0.015 264);
   --card-foreground: oklch(0.985 0 0);
+  --card-zinc: oklch(0.22 0.018 269.83);
+  --card-dark: oklch(0.37 0.013 285.81);
+  --card-origin: oklch(0.37 0.013 285.81);
   --popover: oklch(0.21 0.006 285.885);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.92 0.004 286.32);

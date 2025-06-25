@@ -10,6 +10,17 @@ const GetEventsSchema = z.object({
 });
 export type GetEventsParams = z.infer<typeof GetEventsSchema>;
 
+export const GetEventStats = z.object({
+  total: z.number(),
+  valid: z.number(),
+  invalid: z.number(),
+  recentHour: z.number(),
+  dailyTotal: z.number(),
+  successRate: z.number(),
+  eventTypes: z.record(z.string(), z.number()).or(z.undefined()),
+});
+export type EventStatistics = z.infer<typeof GetEventStats>;
+
 export const webhooksRouter = r({
   // Get all webhook events
   getEvents: p.input(GetEventsSchema).query(({ input }) => {
@@ -56,15 +67,15 @@ export const webhooksRouter = r({
     const invalidEvents = events.filter((event) => !event.isValid);
 
     return {
-      total: events.length,
-      valid: validEvents.length,
-      invalid: invalidEvents.length,
-      recentHour: recentEvents.length,
-      dailyTotal: dailyEvents.length,
+      total: events.length ?? 0,
+      valid: validEvents.length ?? 0,
+      invalid: invalidEvents.length ?? 0,
+      recentHour: recentEvents.length ?? 0,
+      dailyTotal: dailyEvents.length ?? 0,
       eventTypes,
       successRate:
         events.length > 0 ? (validEvents.length / events.length) * 100 : 0,
-    };
+    } as EventStatistics;
   }),
 
   // Get events by repository

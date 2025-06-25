@@ -1,42 +1,60 @@
 "use client";
 
-import { AgentList } from "@/components/agent-list";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { EncryptedChat } from "@/components/encrypted-chat";
-import { MissionChart } from "@/components/mission-chart";
-import { Repositories } from "@/components/repositories";
-import { Stats } from "@/components/webhooks/stats";
-import { Sandbox } from "@/xdev/sandbox";
+import { LeftSidebar } from "@/components/main/left-sidebar";
+import { ResizeControls } from "@/components/resize-controls";
+import { ReviewerHeader } from "@/components/reviewer/main";
+import { EventsCtxProvider } from "@/ctx/events-ctx";
+import { useResizeCtx } from "@/ctx/resize-ctx";
+import { cn } from "@/lib/utils";
 
 export const Content = () => {
+  const { centerExpanded, rightExpanded } = useResizeCtx();
   return (
-    <main>
-      <div className="bg-background font-mono text-sm">
+    <EventsCtxProvider>
+      <main className="bg-gradient-to-t dark:from-zinc-950 dark:via-zinc-950/10 to-background font-mono text-sm w-screen">
         <div className="border border-double border-xy rounded-b-xl h-screen overflow-hidden">
           <DashboardHeader />
 
-          <div className="grid grid-cols-12 gap-0 h-[calc(100vh-50px)]">
+          <div className="flex flex-[12] justify-center gap-0 h-[calc(100vh-50px)]">
             {/* Left Column */}
-            <div className="col-span-2 border-r border-xy">
+            {/* <div
+              className={cn("flex-[2] border-r border-zed", {
+                "flex-1": centerExpanded,
+              })}
+            >
               <Repositories />
               <AgentList />
-            </div>
+            </div> */}
+            <LeftSidebar />
 
             {/* Center Column */}
-            <div className="col-span-7 border-r border-xy">
-              {/* tRPC-powered stats */}
-              <Stats />
-              <Sandbox />
-              <MissionChart />
+            <div
+              className={cn(
+                "flex-[7] will-change-transform transition-all duration-500 relative border-r border-zed",
+                {
+                  "flex-[12]": centerExpanded,
+                },
+              )}
+            >
+              <ResizeControls />
+              <ReviewerHeader />
             </div>
 
             {/* Right Column */}
-            <div className="col-span-3">
+            <div
+              className={cn(
+                "flex-1 will-change-transform transition-all duration-500",
+                { "flex-1": centerExpanded },
+                { "flex-[3]": rightExpanded },
+              )}
+            >
               <EncryptedChat />
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </EventsCtxProvider>
   );
 };

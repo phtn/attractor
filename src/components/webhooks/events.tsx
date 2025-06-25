@@ -1,42 +1,15 @@
 "use client";
 
-import type { ConnectionStatus, WebhookEvent } from "@/app/types";
+import type { WebhookEvent } from "@/app/types";
+import { useEventsCtx } from "@/ctx/events-ctx";
 import { Icon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useEffect, useState, type JSX } from "react";
+import { type JSX } from "react";
 import { HyperList } from "../hyper/list";
-import { RepoSelect } from "./repo-select";
 
 export const Events = (): JSX.Element => {
-  const [events, setEvents] = useState<WebhookEvent[]>([]);
-  const [connectionStatus, setConnectionStatus] =
-    useState<ConnectionStatus>("connecting");
-
-  useEffect(() => {
-    const eventSource = new EventSource("/api/webhooks/events");
-
-    eventSource.onopen = () => {
-      setConnectionStatus("connected");
-    };
-
-    eventSource.onmessage = (event) => {
-      try {
-        const newEvents: WebhookEvent[] = JSON.parse(event.data);
-        setEvents(newEvents);
-      } catch (error) {
-        console.error("Error parsing SSE data:", error);
-      }
-    };
-
-    eventSource.onerror = () => {
-      setConnectionStatus("disconnected");
-    };
-
-    return () => {
-      eventSource.close();
-    };
-  }, []);
+  const { events, connectionStatus } = useEventsCtx();
 
   return (
     <div className="w-full space-y-4">
@@ -44,7 +17,7 @@ export const Events = (): JSX.Element => {
         <div className="flex items-center justify-start mb-20">
           <Icon name="github" size={12} className="text-muted-foreground" />
           <h2
-            className={`text-xs font-bold uppercase font-mono ml-3 tracking-[0.20em] dark:text-zinc-400/90 text-foreground`}
+            className={`text-xs font-semibold ml-2 uppercase font-sans tracking-[0.20em] dark:text-cream text-foreground`}
           >
             Webhook Events
           </h2>
@@ -59,7 +32,7 @@ export const Events = (): JSX.Element => {
             }
             size={13}
             className={cn("text-macd-red", {
-              "text-mac-green": connectionStatus === "connected",
+              "text-green-500/90": connectionStatus === "connected",
               "text-macd-orange animate-pulse":
                 connectionStatus === "connecting",
             })}
@@ -80,9 +53,6 @@ export const Events = (): JSX.Element => {
           />
         )}
       </div>
-
-      {/* Repository-specific events via tRPC */}
-      <RepoSelect />
     </div>
   );
 };
@@ -91,13 +61,14 @@ const EventItem = (event: WebhookEvent) => (
   <div
     key={event.id}
     className={cn(
-      "border-[0.33px] rounded-md p-4 border-red-400 bg-red-50",
+      "border-[0.33px] p-4 border-red-400 bg-red-50",
       "dark:bg-card/40 dark:border-xy",
       {
         "border-xy bg-card dark:border-zed": event.isValid,
         "border-xy bg-card dark:border-transparent dark:bg-card":
           event.isValid && event.eventType === "push",
       },
+      "bg-card dark:bg-card-origin/44 text-card-foreground flex flex-col rounded-xl py-5 shadow-md dark:inset-shadow-[0_0.5px_rgb(255_255_255/0.20)] gap-4",
     )}
   >
     <div className="flex items-start space-y-2 justify-between mb-3">

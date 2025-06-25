@@ -4,6 +4,8 @@ import { TRPC } from "@/trpc/client";
 import { createContext, useMemo, useContext, type ReactNode } from "react";
 import { Convex } from "./convex-ctx";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ResizeCtxProvider } from "./resize-ctx";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 interface ProvidersProviderProps {
   children: ReactNode;
@@ -29,11 +31,15 @@ const ProvidersCtxProvider = ({ children }: ProvidersProviderProps) => {
       defaultTheme="system"
       disableTransitionOnChange
     >
-      <ProvidersCtx value={value}>
-        <Convex>
-          <TRPC>{children}</TRPC>
-        </Convex>
-      </ProvidersCtx>
+      <SidebarProvider>
+        <ResizeCtxProvider>
+          <ProvidersCtx value={value}>
+            <Convex>
+              <TRPC>{children}</TRPC>
+            </Convex>
+          </ProvidersCtx>
+        </ResizeCtxProvider>
+      </SidebarProvider>
     </ThemeProvider>
   );
 };
