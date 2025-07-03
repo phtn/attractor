@@ -1,5 +1,14 @@
 import useSound from "use-sound";
 
+export type HookOptions<T = unknown> = T & {
+  id?: string;
+  volume?: number;
+  playbackRate?: number;
+  interrupt?: boolean;
+  soundEnabled?: boolean;
+  sprite?: number[];
+  onload?: VoidFunction;
+};
 /**
  * @name useSFX
  * @returns PlayFunction
@@ -17,19 +26,33 @@ import useSound from "use-sound";
  * @dependency use-sound by Josh Comeau
  * @link https://github.com/joshwcomeau/use-sound
  */
-export const useSFX = () => {
+
+export const useSFX = ({ playbackRate, volume, interrupt }: HookOptions) => {
   const opts = {
-    volume: 0.35,
-    interrupt: true,
+    volume: volume ?? 0.35,
+    interrupt: interrupt ?? true,
+    playbackRate: playbackRate ?? 0.5,
   };
 
-  const [sfxSwitchOn] = useSound("/sfx/switch-on.mp3", opts);
-  const [sfxSwitchOff] = useSound("/sfx/switch-on.mp3", opts);
+  const [sfxPopOn] = useSound("/sfx/pop-up-on.mp3", opts);
+  const [sfxPopOff] = useSound("/sfx/pop-up-off.mp3", opts);
+  const [sfxPopDown] = useSound("/sfx/pop-down.mp3", opts);
   const [sfxToggle] = useSound("/sfx/toggle.mp3", opts);
+  const [sfxTick] = useSound("/sfx/tick.mp3", opts);
+  const [sfxStep] = useSound("/sfx/step.mp3", opts);
+  const [sfxTech] = useSound("/sfx/tech.wav", opts);
+  const [sfxDisable] = useSound("/sfx/disable.mp3", opts);
+  const [sfxEnable] = useSound("/sfx/enable.mp3", opts);
 
   return {
+    sfxStep,
+    sfxTick,
+    sfxTech,
+    sfxPopOn,
     sfxToggle,
-    sfxSwitchOn,
-    sfxSwitchOff,
+    sfxPopOff,
+    sfxEnable,
+    sfxDisable,
+    sfxPopDown,
   };
 };

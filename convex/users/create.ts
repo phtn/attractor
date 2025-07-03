@@ -1,10 +1,9 @@
-import { mutation } from "@@/convex/_generated/server";
+import { mutation } from "@@/server";
 import { CreateUserSchema } from "./d";
 import { type GenericDatabaseWriter } from "convex/server";
-import { type DataModel } from "@@/convex/_generated/dataModel";
+import { type DataModel } from "@@/dataModel";
 import { Infer } from "convex/values";
 import { generateId } from "ai";
-import { generateUID } from "@/utils/helpers";
 
 const create = mutation({
   args: CreateUserSchema,
@@ -29,7 +28,7 @@ const create = mutation({
       fullname,
       metadata,
       emailVerified,
-      uid: generateUID(),
+      uid: generateId(),
       accountId: generateId(),
       updated_at: Date.now(),
       created_at: Date.now(),

@@ -1,8 +1,8 @@
 "use client";
 
+import { HyperList } from "@/components/hyper";
 import { useEventsCtx } from "@/ctx/events-ctx";
 import { useMemo, type JSX } from "react";
-import { HyperList } from "../hyper/list";
 
 export const Stats = (): JSX.Element | null => {
   const { eventStats } = useEventsCtx();

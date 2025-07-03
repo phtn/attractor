@@ -1,6 +1,6 @@
 import { ProvidersCtxProvider } from "@/ctx";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { Fira_Mono, Geist, Geist_Mono, Space_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,11 +12,17 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-const jet = JetBrains_Mono({
+
+const jet = Fira_Mono({
   variable: "--font-jet",
+  weight: ["400"],
   subsets: ["latin"],
 });
-
+const space = Space_Mono({
+  variable: "--font-space",
+  weight: ["400"],
+  subsets: ["latin"],
+});
 export const metadata: Metadata = {
   title: "Hydra",
   description: "Code Reviewer",
@@ -31,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${jet.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${jet.variable} ${space.variable} antialiased`}
       >
         <ProvidersCtxProvider>{children}</ProvidersCtxProvider>
       </body>

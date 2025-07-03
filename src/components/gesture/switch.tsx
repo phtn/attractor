@@ -12,11 +12,12 @@ export default function GestureSwitch() {
   const [isPressed, setIsPressed] = useState(false);
   const [pressureLevel, setPressureLevel] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [playbackRate, setPlaybackRate] = useState(1);
+  const { sfxToggle } = useSFX({ playbackRate });
 
   // Physics-based values
   const pressure = useMotionValue(0);
   const springPressure = useSpring(pressure, { stiffness: 400, damping: 30 });
-  const { sfxToggle } = useSFX();
 
   // Transform pressure into visual effects
   const scale = useTransform(springPressure, [0, 1], [1, 0.96]);
@@ -36,6 +37,7 @@ export default function GestureSwitch() {
 
     // Trigger toggle with sophisticated timing
     setTimeout(() => {
+      setPlaybackRate((value) => value + (isDark ? 0.1 : -0.1));
       sfxToggle();
       toggleTheme();
     }, 50);
@@ -43,28 +45,17 @@ export default function GestureSwitch() {
 
   // Golden ratio proportions (1.618)
   const goldenRatio = 1.618;
-  const baseSize = 80;
+  const baseSize = 56;
   const height = baseSize / goldenRatio;
 
   return (
-    <div className="flex flex-col justify-center items-center scale-[40%] rotate-180 w-fit _py-8 _space-y-12">
+    <div className="flex flex-col justify-center items-start scale-[56%] rotate-180 _py-8 _space-y-12">
       {/* Primary Interface */}
       <div className="relative" ref={containerRef}>
-        {/* Ambient Field */}
-        <motion.div
-          className="absolute inset-0 -m-16 hidden"
-          animate={{
-            background: isDark
-              ? "radial-gradient(circle, rgba(99, 102, 241, 0.03) 0%, transparent 70%)"
-              : "radial-gradient(circle, rgba(251, 191, 36, 0.03) 0%, transparent 70%)",
-          }}
-          transition={{ duration: 2 }}
-        />
-
         {/* Main Control Surface */}
         <motion.div
           className={cn(
-            "group relative flex-1 cursor-pointer border-xy/60 shadow-inner/15 dark:bg-zinc-950 size-fit select-none flex border-[0.33px] items-center p-2",
+            "group relative flex-1 cursor-pointer border-xy/60 shadow-inner/15 dark:bg-zinc-950/10 select-none flex border-[0.33px] items-center p-2",
           )}
           style={{
             scale,
@@ -90,24 +81,11 @@ export default function GestureSwitch() {
               width: `${baseSize}px`,
               height: `${height}px`,
               borderRadius: `${height * 0.12}px`,
-              // boxShadow: isDark
-              //   ? `
-              //     inset 0 1px 0 rgba(255,255,255,0.1),
-              //     inset 0 -1px 0 rgba(0,0,0,0.2),
-              //     0 4px 16px rgba(0,0,0,0.3),
-              //     0 1px 4px rgba(0,0,0,0.2)
-              //   `
-              //   : `
-              //     inset 0 1px 0 rgba(255,255,255,0.8),
-              //     inset 0 -1px 0 rgba(0,0,0,0.05),
-              //     0 4px 16px rgba(0,0,0,0.1),
-              //     0 1px 4px rgba(0,0,0,0.05)
-              //   `,
             }}
           >
             {/* Optical Element */}
             <motion.div
-              className="absolute inset-1 rounded-sm bg-linear-to-r from-zinc-100 to-zinc-300 dark:from-zinc-800 dark:to-zinc-900"
+              className="absolute hidden inset-1 rounded-sm bg-linear-to-r from-zinc-100 to-zinc-300 dark:from-zinc-800 dark:to-zinc-900"
               animate={{
                 opacity: isDark ? [0.3, 0.6, 0.3] : [0.4, 0.7, 0.4],
               }}
@@ -122,7 +100,7 @@ export default function GestureSwitch() {
             <motion.div
               className={cn(
                 "absolute bg-gradient-to-b rounded-full",
-                " top-1/2 left-2 w-1 h-7 -translate-y-1/2",
+                " top-1/2 left-2 w-1 h-6 -translate-y-1/2",
                 "dark:group-hover:bg-gradient-to-t",
                 "from-orange-200 to-orange-400",
                 "dark:from-teal-200 dark:to-zinc-300/60",
@@ -144,7 +122,7 @@ export default function GestureSwitch() {
                 {[0, 1].map((i) => (
                   <motion.div
                     key={i}
-                    className={`w-0.5 h-3 rounded-full dark:bg-slate-500 bg-zinc-400/80`}
+                    className={`w-0.5 h-3 rounded-full dark:bg-card-origin bg-zinc-400/80`}
                     animate={{
                       opacity: (isDark ? 1 - i : i) === 1 ? 0.8 : 0.3,
                       scaleY: (isDark ? 1 - i : i) === 1 ? 1.2 : 0.8,
@@ -157,7 +135,7 @@ export default function GestureSwitch() {
 
             {/* Pressure Response Overlay */}
             <motion.div
-              className="absolute inset-0 rounded-full bg-radial-[at_0%_60%] from-orange-100/20 to-orange-300/10 dark:from-zinc-600/10 dark:to-teal-600/5"
+              className="absolute inset-0 border rounded-full bg-radial-[at_0%_60%] from-orange-100/20 to-orange-300/10 dark:from-zinc-600/10 dark:to-teal-600/5"
               animate={{
                 opacity: pressureLevel,
                 scale: 1 + pressureLevel * 0.05,
@@ -168,7 +146,7 @@ export default function GestureSwitch() {
 
           {/* Haptic Feedback Ring */}
           <motion.div
-            className="absolute border-none inset-0 -m-3 rounded-full"
+            className="absolute border inset-0 -m-2 rounded-full"
             animate={{
               scale: isPressed ? 1.1 : 1,
               opacity: isPressed ? 0.6 : 0,
@@ -178,16 +156,16 @@ export default function GestureSwitch() {
         </motion.div>
       </div>
 
-      <div className="hidden items-center space-x-8">
-        {/* System Status */}
-        {/* <State isDark={isDark} /> */}
-        {/* Efficiency */}
-        {/* <Efficiency isDark={isDark} /> */}
-        {/* Power */}
-        {/* <Power isDark={isDark} /> */}
-        {/* Status Indicator */}
-        {/* <Sys isDark={isDark} /> */}
-      </div>
+      {/* <div className="hidden items-center space-x-8"> */}
+      {/* System Status */}
+      {/* <State isDark={isDark} /> */}
+      {/* Efficiency */}
+      {/* <Efficiency isDark={isDark} /> */}
+      {/* Power */}
+      {/* <Power isDark={isDark} /> */}
+      {/* Status Indicator */}
+      {/* <Sys isDark={isDark} /> */}
+      {/* </div> */}
 
       {/* Engineering Signature */}
       {/* <EngrSig /> */}

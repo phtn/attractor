@@ -1,6 +1,7 @@
 "use client";
 
 import { useSidebar } from "@/components/ui/sidebar";
+import { useSFX } from "@/hooks/use-sfx";
 import { useToggle } from "@/hooks/use-toggle";
 import {
   createContext,
@@ -20,6 +21,7 @@ interface ResizeCtxValues {
   toggleRight: VoidFunction;
   centerExpanded: boolean;
   rightExpanded: boolean;
+  handleToggle: (side: "left" | "right") => () => void;
 }
 
 const ResizeCtx = createContext<ResizeCtxValues | null>(null);
@@ -36,6 +38,24 @@ const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
     toggleSidebar: toggleLeft,
     setOpen: setLeft,
   } = useSidebar();
+  const { sfxDisable: sfxCollapse } = useSFX({
+    playbackRate: 0.2,
+    volume: 0.05,
+    interrupt: false,
+  });
+  const handleToggle = useCallback(
+    (side: "left" | "right") => () => {
+      switch (side) {
+        case "left":
+          toggleLeft();
+          break;
+        default:
+          toggleRight();
+      }
+      sfxCollapse();
+    },
+    [sfxCollapse, toggleLeft, toggleRight],
+  );
 
   const toggleCenter = useCallback(() => {
     if (rightExpanded || leftExpanded) {
@@ -44,6 +64,7 @@ const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
     } else if (!rightExpanded && !leftExpanded) {
       setLeft(true);
       setRight(true);
+      sfxCollapse();
     } else {
       centerToggle();
       toggleLeft();
@@ -52,6 +73,7 @@ const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
     centerToggle,
     rightExpanded,
     leftExpanded,
+    sfxCollapse,
     toggleLeft,
     setLeft,
     setRight,
@@ -62,10 +84,18 @@ const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
       toggleLeft,
       toggleRight,
       toggleCenter,
+      handleToggle,
       rightExpanded,
       centerExpanded,
     }),
-    [toggleLeft, toggleRight, toggleCenter, rightExpanded, centerExpanded],
+    [
+      toggleLeft,
+      toggleRight,
+      toggleCenter,
+      handleToggle,
+      rightExpanded,
+      centerExpanded,
+    ],
   );
   return <ResizeCtx value={value}>{children}</ResizeCtx>;
 };

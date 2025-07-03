@@ -4,15 +4,6 @@
 @custom-variant dark (&:is(.dark *));
 
 @layer utilities {
-  .shadow-custom-light {
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.8),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.05),
-      0 2px 4px rgba(0, 0, 0, 0.05),
-      0 1px 2px rgba(0, 0, 0, 0.03);
-    transition: box-shadow 0.2s ease;
-  }
-
   .shadow-custom-light-hover:hover {
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.8),
@@ -39,12 +30,38 @@
   }
 }
 
+@layer components {
+  .hyper-link {
+    @apply bg-pink-500 transition-colors duration-200 ease-in-out relative;
+  }
+
+  .hyper-link:hover {
+    @apply bg-card-origin; /* Replace with actual Tailwind text color class, like text-blue-500 */
+  }
+
+  .hyper-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.2s ease-in-out;
+  }
+
+  .hyper-link:hover::after {
+    width: 100%;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-jet: var(--font-jet);
+  --font-space: var(--font-space);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -89,16 +106,23 @@
   --color-chalk: var(--chalk);
   --color-cream: var(--cream);
   --color-void: var(--void);
+  --color-geist-teal: oklch(0.829 0.133 174.96);
   /* MAC COLORS */
   --color-mac-red: var(--mac-red);
   --color-mac-orange: var(--mac-orange);
+  --color-mac-yellow: var(--mac-yellow);
   --color-mac-green: var(--mac-green);
-  --color-mac-blue: var(--mac-blue);
+  --color-mac-mint: var(--mac-mint);
   --color-mac-teal: var(--mac-teal);
+  --color-mac-cyan: var(--mac-cyan);
+  --color-mac-blue: var(--mac-blue);
+  --color-mac-indigo: var(--mac-indigo);
+  --color-mac-purple: var(--mac-purple);
+  --color-mac-pink: var(--mac-pink);
+  --color-mac-brown: var(--mac-brown);
+  --color-mac-gray: var(--mac-gray);
   /* BOX SHADOWS */
-  --shadow-low: var(--shadow-low);
-  --shadow-mid: var(--shadow-mid);
-  --shadow-high: var(--shadow-high);
+  --shadow-med-t: var(--shadow-med-t);
 }
 
 :root {
@@ -156,20 +180,12 @@
 
   --void: oklch(0.1946 0.014 285.02);
   /* BOX SHADOW */
-  --box-shadow-low-light:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0 rgba(0, 0, 0, 0.05),
-    0 1px 2px rgba(0, 0, 0, 0.05), 0 0.5px 1px rgba(0, 0, 0, 0.02);
-
-  --box-shadow-mid-light:
-    inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(0, 0, 0, 0.1),
-    0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
-
-  --box-shadow-high-light:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.15),
-    0 6px 20px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.1);
-  --shadow-low: var(--box-shadow-low-light);
-  --shadow-mid: var(--box-shadow-mid-light);
-  --shadow-high: var(--box-shadow-high-light);
+  --shadow-color: oklch(0.21 0.006 285.89);
+  --shadow-med-t:
+    0px -0.2px 0.2px oklch(var(--card-foreground) / 0.36),
+    -0.1px -0.8px 0.9px -0.8px oklch(var(--card-foreground) / 0.46),
+    -0.2px -2px 2.3px -1.7px oklch(var(--card-foreground) / 0.66),
+    -0.6px -5px 5.7px -2.5px oklch(var(--card-foreground) / 0.86);
 }
 
 .dark {

@@ -1,12 +1,12 @@
 "use client";
 
 import type { WebhookEvent } from "@/app/types";
+import { HyperList } from "@/components/hyper";
 import { useEventsCtx } from "@/ctx/events-ctx";
 import { Icon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { type JSX } from "react";
-import { HyperList } from "../hyper/list";
 
 export const Events = (): JSX.Element => {
   const { events, connectionStatus } = useEventsCtx();
