@@ -2,10 +2,10 @@ import { v } from "convex/values";
 import { Infer } from "next/dist/compiled/superstruct";
 
 export const CategorySchema = v.object({
-  cid: v.optional(v.string()),
+  cid: v.string(),
   href: v.optional(v.string()),
   image: v.optional(v.string()),
-  title: v.optional(v.string()),
+  name: v.string(),
   creator: v.optional(v.string()),
   tags: v.optional(v.array(v.string())),
   description: v.optional(v.string()),

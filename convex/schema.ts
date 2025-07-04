@@ -14,7 +14,7 @@ export default defineSchema({
   /// == CATEGORIES ==
   categories: defineTable(CategorySchema)
     .index("by_cid", ["cid"])
-    .index("by_title", ["title"])
+    .index("by_name", ["name"])
     .index("by_creator", ["creator"]),
   /// == CATS ==
   cats: defineTable(CatSchema)

@@ -9,8 +9,18 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+// == boilerplate ==
+// const configs = [
+//   ...compat.extends("next/core-web-vitals", "next/typescript"),
+// ];
+
+/** @type {import('eslint').Linter.Config[]} */
+const configs = [
+  ...compat.extends("next/core-web-vitals"),
+  ...compat.extends("next/typescript"),
+  ...compat.extends("plugin:@tanstack/eslint-plugin-query/recommended"),
+  ...compat.extends("prettier"),
+  ...compat.plugins("@tanstack/query"),
 ];
 
-export default eslintConfig;
+export default configs;

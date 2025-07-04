@@ -11,7 +11,7 @@ export const Breadcrumb = () => {
   return (
     <nav className="flex items-center font-mono lowercase text-sm text-foreground">
       <Link href="/" className="hover:text-mac-blue dark:hover:text-geist-teal">
-        root
+        app
       </Link>
       {pathSegments.map((segment, index) => {
         const href = "/" + pathSegments.slice(0, index + 1).join("/");

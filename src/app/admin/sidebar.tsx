@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 
 import { Brand } from "@/components/brand";
 import { HyperList } from "@/components/hyper";
@@ -16,7 +16,7 @@ export const AdminSidebar = () => {
   const [expandedSections, setExpandedSections] = useState({
     pages: false,
     components: false,
-    libs: false,
+    lists: false,
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => () => {
@@ -40,8 +40,32 @@ export const AdminSidebar = () => {
         value: 32,
         icon: "image",
       },
-    ] as ISectionItem[];
+    ] as IListSectionItem[];
   }, []);
+
+  const pages = useMemo(
+    () =>
+      [
+        {
+          label: "designs",
+          section: "general",
+          path: "designs",
+        },
+      ] as ISubSectionItem[],
+    [],
+  );
+
+  const lists = useMemo(
+    () =>
+      [
+        {
+          label: "categories",
+          section: "data",
+          path: "categories",
+        },
+      ] as ISubSectionItem[],
+    [],
+  );
 
   return (
     <aside className="w-64 bg-sidebar dark:bg-card-origin/40 border-r dark:border-zinc-800/60 h-full p-4">
@@ -49,60 +73,23 @@ export const AdminSidebar = () => {
         <Brand label="admin" />
       </div>
       <nav className="space-y-2 py-4">
-        {/* Explore Section */}
-        <div
-          className={cn("rounded-md", {
-            "dark:bg-card-origin/60 bg-border": expandedSections.pages,
-          })}
-        >
-          <Button
-            variant="ghost"
-            className={cn(
-              "w-full justify-between p-2 h-auto font-medium dark:hover:bg-card-origin/50",
-              { "hover:bg-border": expandedSections.pages },
-            )}
-            onClick={toggleSection("pages")}
-          >
-            <div className="flex items-center gap-2">
-              <Icon name="tsx-solid" size={16} solid />
-              Pages
-            </div>
-            <Icon
-              solid
-              size={16}
-              name="chevron-right"
-              className={cn("rotate-0", {
-                "-rotate-270 transition-transform duration-300":
-                  expandedSections.pages,
-              })}
+        {/* general Section */}
+        <SectionHeader label="general" />
+        <SectionContainer expanded={expandedSections.pages}>
+          <SectionTrigger
+            label="pages"
+            fn={toggleSection("pages")}
+            name="pages"
+            expanded={expandedSections.pages}
+            icon="tsx-solid"
+          />
+
+          <SectionBody expanded={expandedSections.pages}>
+            <HyperList
+              data={pages}
+              component={SubSectionItem}
+              disableAnimation
             />
-          </Button>
-
-          <div
-            className={cn(
-              "space-y-1 dark:bg-background/80 bg-background rounded-md overflow-hidden transition-all duration-300",
-              {
-                "max-h-0": !expandedSections.pages,
-                "max-h-40 shadow-med-t": expandedSections.pages, // Adjust max-height as needed
-              },
-            )}
-          >
-            <Button
-              variant="ghost"
-              className="flex w-full justify-start group items-end rounded-none dark:hover:bg-background/80 hover:bg-chalk py-2.5 px-1 space-x-0.5 h-auto text-sm"
-            >
-              <Icon
-                solid
-                name="circle-filled"
-                className={cn(
-                  "rotate-135 size-5 group-hover:text-mac-blue text-muted-foreground/40",
-                  "dark:group-hover:text-geist-teal/80 dark:text-muted-foreground/30",
-                  "group-hover:translate-x-1.5 group-hover:-rotate-360 group-hover:scale-[60%] transition-all duration-500 ease-in-out",
-                )}
-              />
-
-              <span>Designs</span>
-            </Button>
             <Button
               variant="ghost"
               className="flex w-full justify-start group items-end rounded-none dark:hover:bg-background/80 hover:bg-muted-foreground/20 py-2.5 px-1 space-x-0.5 h-auto text-sm"
@@ -119,8 +106,8 @@ export const AdminSidebar = () => {
 
               <span>Animations</span>
             </Button>
-          </div>
-        </div>
+          </SectionBody>
+        </SectionContainer>
 
         {/* Components Section */}
         <div className="rounded-md">
@@ -160,11 +147,37 @@ export const AdminSidebar = () => {
           </div>
         </div>
 
-        {/* My Scenes Section */}
+        {/* == == == == == */}
+        {/*  Data Section  */}
+        {/* == == == == == */}
+        <SectionBlock>
+          <SectionHeader label="Data" />
+          <SectionContainer expanded={expandedSections.lists}>
+            {/* Components Section */}
+            <div className="rounded-md">
+              <SectionTrigger
+                label="lists"
+                fn={toggleSection("lists")}
+                name="lists"
+                expanded={expandedSections.lists}
+                icon="tsx-solid"
+              />
+
+              <SectionBody expanded={expandedSections.lists}>
+                <HyperList
+                  data={lists}
+                  component={SubSectionItem}
+                  disableAnimation
+                />
+              </SectionBody>
+            </div>
+          </SectionContainer>
+        </SectionBlock>
+
+        {/* Assets Section */}
         <div className="pt-4">
           <SectionHeader label="assets" />
-
-          <HyperList data={assets} component={SectionItem} />
+          <HyperList data={assets} component={ListSectionItem} />
         </div>
       </nav>
     </aside>
@@ -174,18 +187,129 @@ interface SectionHeaderProps {
   label?: string;
 }
 const SectionHeader = ({ label }: SectionHeaderProps) => (
-  <h2 className="text-xs text-gray-500 uppercase font-mono tracking-widest mb-2 px-2">
+  <h2 className="text-xs text-slate-400 uppercase font-jet tracking-widest mb-2 px-2">
     {label}
   </h2>
+);
+
+const SectionBlock = ({ children }: { children: ReactNode }) => (
+  <div className="pt-4 group/block">{children}</div>
+);
+interface ISectionBody {
+  expanded: boolean;
+  children?: ReactNode;
+}
+const SectionContainer = ({ expanded, children }: ISectionBody) => (
+  <div
+    className={cn(
+      "rounded-md border border-transparent group-hover/block:border-border",
+      {
+        "dark:bg-card-origin/60 bg-border": expanded,
+      },
+    )}
+  >
+    {children}
+  </div>
 );
 
 interface ISectionItem {
   name: string;
   label: string;
+  expanded: boolean;
+  icon: IconName;
+  fn: VoidFunction;
+}
+const SectionTrigger = ({ expanded, label, fn, icon }: ISectionItem) => (
+  <Button
+    variant="ghost"
+    className={cn(
+      "w-full justify-between p-2 h-auto font-medium dark:hover:bg-card-origin/50",
+      { "hover:bg-border": expanded },
+    )}
+    onClick={fn}
+  >
+    <div className="flex items-center capitalize gap-2">
+      <Icon name={icon} size={16} solid />
+      {label}
+    </div>
+    <Icon
+      solid
+      size={16}
+      name="chevron-right"
+      className={cn("rotate-0", {
+        "-rotate-270 transition-transform duration-300": expanded,
+      })}
+    />
+  </Button>
+);
+
+const SectionBody = ({ expanded, children }: ISectionBody) => (
+  <div
+    className={cn(
+      "space-y-1 dark:bg-background/80 bg-background rounded-md overflow-hidden transition-all duration-300",
+      {
+        "max-h-0": !expanded,
+        "max-h-40 shadow-med-t": expanded, // Adjust max-height as needed
+      },
+    )}
+  >
+    {children}
+  </div>
+);
+
+interface ISubSectionItem {
+  section: string;
+  label: string;
+  path: string;
+}
+const SubSectionItem = ({ label, section, path }: ISubSectionItem) => {
+  const route = useMemo(() => `/admin/${section}/${path}`, [section, path]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const isActive = pathname === route;
+
+  const onClick = useCallback(() => {
+    console.log(route);
+    router.push(route);
+  }, [route, router]);
+  return (
+    <Button
+      onClick={onClick}
+      variant="ghost"
+      className={cn(
+        "flex w-full capitalize justify-start group items-end rounded-none dark:hover:bg-background/80 hover:bg-chalk py-2.5 px-1 space-x-0.5 h-auto text-sm",
+        {
+          "text-mac-blue dark:text-geist-teal": isActive,
+        },
+      )}
+    >
+      <Icon
+        solid
+        name="circle-filled"
+        className={cn(
+          "rotate-135 size-5 group-hover:text-mac-blue text-muted-foreground/40",
+          "dark:group-hover:text-geist-teal/80 dark:text-muted-foreground/30",
+          "group-hover:translate-x-1.5 group-hover:-rotate-360 group-hover:scale-[60%] transition-all duration-500 ease-in-out",
+        )}
+      />
+
+      <span>{label}</span>
+    </Button>
+  );
+};
+
+interface IListSectionItem {
+  name: string;
+  label: string;
   value?: number;
   icon: IconName;
 }
-const SectionItem = ({ icon, label, name, value = 0 }: ISectionItem) => {
+const ListSectionItem = ({
+  icon,
+  label,
+  name,
+  value = 0,
+}: IListSectionItem) => {
   const router = useRouter();
   const pathname = usePathname();
   const isActive = pathname === `/admin/assets/${name}`;
