@@ -7,11 +7,11 @@ import { useAppForm } from "@/components/tanstack/form/utils";
 import { useCallback, useMemo } from "react";
 import { Cat, CatSchema } from "vx/cats/d";
 
-interface NewCategoryFormProps {
+interface NewCatFormProps {
   onSuccess?: () => void;
 }
 
-export function NewCategoryForm({ onSuccess }: NewCategoryFormProps) {
+export function NewCatForm({ onSuccess }: NewCatFormProps) {
   const initialState = {} as Cat;
   // const createCategory = useMutation(api.categories.create.default);
   const form = useAppForm({
@@ -125,6 +125,7 @@ export function NewCategoryForm({ onSuccess }: NewCategoryFormProps) {
     >
       <HyperList
         data={cats}
+        delay={0.5}
         container="lg:space-y-5 space-y-2 grid grid-rows-2 gap-x-4 lg:grid-cols-3"
         component={FormField}
       />

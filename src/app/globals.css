@@ -28,6 +28,26 @@
       0 6px 20px rgba(0, 0, 0, 0.3),
       0 4px 10px rgba(0, 0, 0, 0.2);
   }
+  .enter {
+    animation: enter 0.3s ease-out normal both;
+  }
+}
+
+@keyframes enter {
+  0% {
+    opacity: 0;
+    transform: translateZ(0) scale(0.9);
+  }
+  60% {
+    opacity: 0.75;
+    transform: translateZ(0) scale(1.02);
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  100% {
+    opacity: 1;
+    transform: translateZ(0) scale(1);
+  }
 }
 
 @layer components {
@@ -123,6 +143,8 @@
   --color-mac-gray: var(--mac-gray);
   /* BOX SHADOWS */
   --shadow-med-t: var(--shadow-med-t);
+  /* ANIMATE */
+  --animate-enter: var(--enter);
 }
 
 :root {

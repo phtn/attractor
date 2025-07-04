@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { ReactElement } from "react";
 export function generateUID(): string {
   const uuid: string = crypto.randomUUID(); // e.g., "9e107d9d-372b-4f99-a567-16e0c3b8a8d3"
   const hex: string = uuid.replace(/-/g, ""); // dash delete
@@ -26,3 +27,10 @@ export function verifyWebhookSignature(
   const digest = `sha256=${hmac.digest("hex")}`;
   return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest));
 }
+
+export const opts = (...args: (ReactElement | null)[]) => {
+  return new Map([
+    [true, args[0]],
+    [false, args[1]],
+  ]);
+};

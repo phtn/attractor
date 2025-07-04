@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Column,
   ColumnDef,
   ColumnFiltersState,
   FilterFn,
@@ -22,27 +23,11 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   CircleAlertIcon,
-  CircleXIcon,
   EllipsisIcon,
   TrashIcon,
 } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { NewCategoryForm } from "./new-category-form";
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+
+import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
 import { HyperButton } from "@/components/hyper";
 import { HyperCard } from "@/components/hyper/card";
@@ -59,14 +44,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
@@ -75,18 +57,12 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
 } from "@/components/ui/pagination";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -105,6 +81,9 @@ import {
 import { Icon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { Cat } from "vx/cats/d";
+import { ColumnVisibility } from "./col-visibility";
+import { FilterSearch } from "./filter-search";
+import { FilterStatus } from "./filter-status";
 
 // type Item = {
 //   id: string;
@@ -221,7 +200,17 @@ const columns: ColumnDef<Cat>[] = [
   },
 ];
 
-export default function CatsTable<T extends Cat>({ data }: { data: T[] }) {
+interface CatsTableProps<T extends Cat> {
+  data: T[];
+  create: boolean;
+  toogleForm: VoidFunction;
+}
+
+export default function CatsTable<T extends Cat>({
+  data,
+  create,
+  toogleForm,
+}: CatsTableProps<T>) {
   const id = useId();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -229,7 +218,6 @@ export default function CatsTable<T extends Cat>({ data }: { data: T[] }) {
     pageIndex: 0,
     pageSize: 10,
   });
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const [sorting, setSorting] = useState<SortingState>([
     {
@@ -239,7 +227,6 @@ export default function CatsTable<T extends Cat>({ data }: { data: T[] }) {
   ]);
 
   const [d, setData] = useState<Cat[]>(data);
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -307,7 +294,7 @@ export default function CatsTable<T extends Cat>({ data }: { data: T[] }) {
     return filterValue ?? [];
   }, [filterValue]);
 
-  const handleStatusChange = (checked: boolean, value: string) => {
+  const onStatusChange = (checked: boolean) => (value: string) => {
     const filterValue = table.getColumn("active")?.getFilterValue() as string[];
     const newFilterValue = filterValue ? [...filterValue] : [];
 
@@ -325,433 +312,347 @@ export default function CatsTable<T extends Cat>({ data }: { data: T[] }) {
       ?.setFilterValue(newFilterValue.length ? newFilterValue : undefined);
   };
 
-  return (
-    <HyperCard className="space-y-4 px-4 py-6">
-      {/* Filters */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-bold font-sans tracking-tight">
-            Categories
-          </h2>
-          {/* Filter by name or email */}
-          <div className="relative">
-            <Input
-              id={`${id}-input`}
-              ref={inputRef}
-              className={cn(
-                "peer min-w-60 ps-10",
-                Boolean(table.getColumn("name")?.getFilterValue()) && "pe-10",
-              )}
-              value={
-                (table.getColumn("name")?.getFilterValue() ?? "") as string
-              }
-              onChange={(e) =>
-                table.getColumn("name")?.setFilterValue(e.target.value)
-              }
-              placeholder="Filter"
-              type="text"
-              inputMode="email"
-              aria-label="Filter"
-            />
-            <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
-              <Icon
-                name="filter"
-                aria-hidden="true"
-                className="size-4 text-mac-blue dark:text-geist-teal"
-                solid
-              />
-            </div>
-            {Boolean(table.getColumn("name")?.getFilterValue()) && (
-              <button
-                className="text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-                aria-label="Clear filter"
-                onClick={() => {
-                  table.getColumn("name")?.setFilterValue("");
-                  if (inputRef.current) {
-                    inputRef.current.focus();
-                  }
-                }}
-              >
-                <CircleXIcon size={16} aria-hidden="true" />
-              </button>
-            )}
-          </div>
-          {/* Filter by status */}
-          <Popover>
-            <PopoverTrigger>
-              <HyperButton solid asChild label="status" icon="circle-filled">
-                {selectedStatuses.length > 0 && (
-                  <span className="bg-background text-muted-foreground/70 -me-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
-                    {selectedStatuses.length}
-                  </span>
-                )}
-              </HyperButton>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto min-w-36 p-3" align="start">
-              <div className="space-y-3">
-                <div className="text-muted-foreground text-xs font-medium">
-                  Filters
-                </div>
-                <div className="space-y-3">
-                  {uniqueStatusValues.map((value, i) => (
-                    <div key={value} className="flex items-center gap-2">
-                      <Checkbox
-                        id={`${id}-${i}`}
-                        checked={selectedStatuses.includes(value)}
-                        onCheckedChange={(checked: boolean) =>
-                          handleStatusChange(checked, value)
-                        }
-                      />
-                      <Label
-                        htmlFor={`${id}-${i}`}
-                        className="flex grow justify-between gap-2 font-normal"
-                      >
-                        {value}{" "}
-                        <span className="text-muted-foreground ms-2 text-xs">
-                          {statusCounts.get(value)}
-                        </span>
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
-          {/* Toggle columns visibility */}
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <HyperButton solid asChild label="view" icon="circle-filled">
-                <span></span>
-              </HyperButton>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                      onSelect={(event) => event.preventDefault()}
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <div className="flex items-center gap-3">
-          {/* Delete button */}
-          {table.getSelectedRowModel().rows.length > 0 && (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button className="ml-auto" variant="outline">
-                  <TrashIcon
-                    className="-ms-1 opacity-60"
-                    size={16}
-                    aria-hidden="true"
-                  />
-                  Delete
-                  <span className="bg-background text-muted-foreground/70 -me-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
-                    {table.getSelectedRowModel().rows.length}
-                  </span>
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <div className="flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4">
-                  <div
-                    className="flex size-9 shrink-0 items-center justify-center rounded-full border"
-                    aria-hidden="true"
-                  >
-                    <CircleAlertIcon className="opacity-80" size={16} />
-                  </div>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete{" "}
-                      {table.getSelectedRowModel().rows.length} selected{" "}
-                      {table.getSelectedRowModel().rows.length === 1
-                        ? "row"
-                        : "rows"}
-                      .
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                </div>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDeleteRows}>
-                    Delete
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          )}
-          {/* Add item button */}
-          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-            <SheetTrigger asChild>
-              <HyperButton
-                className="ml-auto"
-                label="Add Category"
-                icon="pull-request"
-                iconStyle="size-4"
-                solid
-              >
-                {/* Add Category */}
-              </HyperButton>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Create New Category</SheetTitle>
-                <SheetDescription>
-                  Fill in the details to create a new category.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="py-4">
-                <NewCategoryForm onSuccess={() => setIsSheetOpen(false)} />
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-      </div>
+  const allCols = useMemo(
+    () =>
+      table.getAllColumns().filter((c) => c.getCanHide()) as Column<
+        string,
+        keyof Cat
+      >[],
+    [table],
+  );
 
-      {/* Table */}
-      <div className="bg-transparent overflow-auto">
-        <Table className="">
-          <TableHeader className="">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className="hover:bg-sidebar-border/60 bg-muted dark:bg-card-origin border-0"
-              >
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      style={{ width: `${header.getSize()}px` }}
-                      className="h-10 font-normal text-xs first:rounded-l-xl last:rounded-r-xl border-b"
+  const filterCol = useMemo(
+    () => table.getColumn("name") as Column<string, keyof Cat>,
+    [table],
+  );
+
+  return (
+    <div
+      className={cn(
+        "flex w-full transition-[max-width] duration-500 ease-in max-w-[calc(82lvw)]",
+        {
+          "max-w-[calc(100lvw-42vw)] gap-4": create,
+        },
+      )}
+    >
+      <HyperCard className="space-y-4 px-4 h-fit py-6 flex-1">
+        {/* Filters */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-4">
+            <h2 className="text-2xl font-bold font-sans tracking-tight">
+              Categories
+            </h2>
+            {/* Filter by name or email */}
+            <FilterSearch col={filterCol} />
+            <FilterStatus
+              statusCount={statusCounts}
+              selected={selectedStatuses}
+              onStatusChange={onStatusChange}
+              uniqueValues={uniqueStatusValues}
+            />
+            {/* Toggle columns visibility */}
+            <ColumnVisibility cols={allCols} />
+          </div>
+          <div className="flex items-center gap-3">
+            {/* Delete button */}
+            {table.getSelectedRowModel().rows.length > 0 && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button className="ml-auto" variant="outline">
+                    <TrashIcon
+                      className="-ms-1 opacity-60"
+                      size={16}
+                      aria-hidden="true"
+                    />
+                    Delete
+                    <span className="bg-background text-muted-foreground/70 -me-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
+                      {table.getSelectedRowModel().rows.length}
+                    </span>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <div className="flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4">
+                    <div
+                      className="flex size-9 shrink-0 items-center justify-center rounded-full border"
+                      aria-hidden="true"
                     >
-                      {header.isPlaceholder ? null : header.column.getCanSort() ? (
-                        <div
-                          className={cn(
-                            header.column.getCanSort() &&
-                              "flex h-full cursor-pointer items-center justify-between gap-4 select-none",
-                          )}
-                          onClick={header.column.getToggleSortingHandler()}
-                          onKeyDown={(e) => {
-                            // Enhanced keyboard handling for sorting
-                            if (
+                      <CircleAlertIcon className="opacity-80" size={16} />
+                    </div>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete {table.getSelectedRowModel().rows.length}{" "}
+                        selected{" "}
+                        {table.getSelectedRowModel().rows.length === 1
+                          ? "row"
+                          : "rows"}
+                        .
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                  </div>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDeleteRows}>
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
+            {/* Add item button */}
+            <HyperButton
+              className={cn(
+                "ml-auto translate-x-0 delay-200 ease-[cubic-bezier(0.87,0,0.13,1)] duration-500",
+                {
+                  "translate-x-40": create,
+                },
+              )}
+              label="Add Category"
+              icon="pull-request"
+              iconStyle="size-4"
+              solid
+              fn={toogleForm}
+            >
+              {/* Add Category */}
+            </HyperButton>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="bg-transparent overflow-auto">
+          <Table className="">
+            <TableHeader className="">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow
+                  key={headerGroup.id}
+                  className="hover:bg-sidebar-border/60 bg-muted dark:bg-card-origin border-0"
+                >
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead
+                        key={header.id}
+                        style={{ width: `${header.getSize()}px` }}
+                        className="h-10 font-normal text-xs first:rounded-l-xl last:rounded-r-xl border-b"
+                      >
+                        {header.isPlaceholder ? null : header.column.getCanSort() ? (
+                          <div
+                            className={cn(
                               header.column.getCanSort() &&
-                              (e.key === "Enter" || e.key === " ")
-                            ) {
-                              e.preventDefault();
-                              header.column.getToggleSortingHandler()?.(e);
+                                "flex h-full cursor-pointer items-center justify-between gap-4 select-none",
+                            )}
+                            onClick={header.column.getToggleSortingHandler()}
+                            onKeyDown={(e) => {
+                              // Enhanced keyboard handling for sorting
+                              if (
+                                header.column.getCanSort() &&
+                                (e.key === "Enter" || e.key === " ")
+                              ) {
+                                e.preventDefault();
+                                header.column.getToggleSortingHandler()?.(e);
+                              }
+                            }}
+                            tabIndex={
+                              header.column.getCanSort() ? 0 : undefined
                             }
-                          }}
-                          tabIndex={header.column.getCanSort() ? 0 : undefined}
-                        >
-                          {flexRender(
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                            {{
+                              asc: (
+                                <Icon
+                                  solid
+                                  aria-hidden="true"
+                                  name="triangle-right"
+                                  className="size-3.5 shrink-0 text-mac-teal dark:text-mac-cyan -rotate-90"
+                                />
+                              ),
+                              desc: (
+                                <Icon
+                                  solid
+                                  aria-hidden="true"
+                                  name="triangle-right"
+                                  className="size-3.5 shrink-0 text-mac-orange dark:text-mac-pink rotate-90"
+                                />
+                              ),
+                            }[header.column.getIsSorted() as string] ?? null}
+                          </div>
+                        ) : (
+                          flexRender(
                             header.column.columnDef.header,
                             header.getContext(),
-                          )}
-                          {{
-                            asc: (
-                              <Icon
-                                solid
-                                aria-hidden="true"
-                                name="triangle-right"
-                                className="size-3.5 shrink-0 text-mac-teal dark:text-mac-cyan -rotate-90"
-                              />
-                            ),
-                            desc: (
-                              <Icon
-                                solid
-                                aria-hidden="true"
-                                name="triangle-right"
-                                className="size-3.5 shrink-0 text-mac-orange dark:text-mac-pink rotate-90"
-                              />
-                            ),
-                          }[header.column.getIsSorted() as string] ?? null}
-                        </div>
-                      ) : (
-                        flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )
-                      )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody className="">
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className={cn(
-                    "h-14 overflow-hidden dark:border-card-origin bg-transparent last:rounded-br-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background",
-                    "transition-colors duration-300",
-                  )}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className={cn(
-                        "last:py-0 first:rounded-tl-2xl last:rounded-tr-2xl overflow-hidden dark:group-hover/row:bg-geist-teal/5",
-                        "transition-colors duration-300",
-                      )}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
+                          )
+                        )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
-      {/* Pagination */}
-      <div className="flex items-center justify-between gap-8">
-        {/* Results per page */}
-        <div className="flex items-center gap-3">
-          <Label htmlFor={id} className="max-sm:sr-only">
-            Rows per page
-          </Label>
-          <Select
-            value={table.getState().pagination.pageSize.toString()}
-            onValueChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-          >
-            <SelectTrigger id={id} className="w-fit whitespace-nowrap">
-              <SelectValue placeholder="Select number of results" />
-            </SelectTrigger>
-            <SelectContent className="[&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2">
-              {[5, 10, 25, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={pageSize.toString()}>
-                  {pageSize}
-                </SelectItem>
               ))}
-            </SelectContent>
-          </Select>
-        </div>
-        {/* Page number information */}
-        <div className="text-muted-foreground flex grow justify-end text-sm whitespace-nowrap">
-          <p
-            className="text-muted-foreground text-sm whitespace-nowrap"
-            aria-live="polite"
-          >
-            <span className="text-foreground">
-              {table.getState().pagination.pageIndex *
-                table.getState().pagination.pageSize +
-                1}
-              -
-              {Math.min(
-                Math.max(
-                  table.getState().pagination.pageIndex *
-                    table.getState().pagination.pageSize +
-                    table.getState().pagination.pageSize,
-                  0,
-                ),
-                table.getRowCount(),
+            </TableHeader>
+
+            <TableBody className="">
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={cn(
+                      "h-14 overflow-hidden dark:border-card-origin bg-transparent last:rounded-br-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background",
+                      "transition-colors duration-300",
+                    )}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        className={cn(
+                          "last:py-0 first:rounded-tl-2xl last:rounded-tr-2xl overflow-hidden dark:group-hover/row:bg-geist-teal/5",
+                          "transition-colors duration-300",
+                        )}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
               )}
-            </span>{" "}
-            of{" "}
-            <span className="text-foreground">
-              {table.getRowCount().toString()}
-            </span>
-          </p>
+            </TableBody>
+          </Table>
         </div>
 
-        {/* Pagination buttons */}
-        <div>
-          <Pagination>
-            <PaginationContent>
-              {/* First page button */}
-              <PaginationItem>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="disabled:pointer-events-none disabled:opacity-50"
-                  onClick={() => table.firstPage()}
-                  disabled={!table.getCanPreviousPage()}
-                  aria-label="Go to first page"
-                >
-                  <ChevronFirstIcon size={16} aria-hidden="true" />
-                </Button>
-              </PaginationItem>
-              {/* Previous page button */}
-              <PaginationItem>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="disabled:pointer-events-none disabled:opacity-50"
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                  aria-label="Go to previous page"
-                >
-                  <ChevronLeftIcon size={16} aria-hidden="true" />
-                </Button>
-              </PaginationItem>
-              {/* Next page button */}
-              <PaginationItem>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="disabled:pointer-events-none disabled:opacity-50"
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}
-                  aria-label="Go to next page"
-                >
-                  <ChevronRightIcon size={16} aria-hidden="true" />
-                </Button>
-              </PaginationItem>
-              {/* Last page button */}
-              <PaginationItem>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="disabled:pointer-events-none disabled:opacity-50"
-                  onClick={() => table.lastPage()}
-                  disabled={!table.getCanNextPage()}
-                  aria-label="Go to last page"
-                >
-                  <ChevronLastIcon size={16} aria-hidden="true" />
-                </Button>
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+        {/* Pagination */}
+        <div className="flex items-center justify-between gap-8">
+          {/* Results per page */}
+          <div className="flex items-center gap-3">
+            <Label htmlFor={id} className="max-sm:sr-only">
+              Rows per page
+            </Label>
+            <Select
+              value={table.getState().pagination.pageSize.toString()}
+              onValueChange={(value) => {
+                table.setPageSize(Number(value));
+              }}
+            >
+              <SelectTrigger id={id} className="w-fit whitespace-nowrap">
+                <SelectValue placeholder="Select number of results" />
+              </SelectTrigger>
+              <SelectContent className="[&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2">
+                {[5, 10, 25, 50].map((pageSize) => (
+                  <SelectItem key={pageSize} value={pageSize.toString()}>
+                    {pageSize}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {/* Page number information */}
+          <div className="text-muted-foreground flex grow justify-end text-sm whitespace-nowrap">
+            <p
+              className="text-muted-foreground text-sm whitespace-nowrap"
+              aria-live="polite"
+            >
+              <span className="text-foreground">
+                {table.getState().pagination.pageIndex *
+                  table.getState().pagination.pageSize +
+                  1}
+                -
+                {Math.min(
+                  Math.max(
+                    table.getState().pagination.pageIndex *
+                      table.getState().pagination.pageSize +
+                      table.getState().pagination.pageSize,
+                    0,
+                  ),
+                  table.getRowCount(),
+                )}
+              </span>{" "}
+              of{" "}
+              <span className="text-foreground">
+                {table.getRowCount().toString()}
+              </span>
+            </p>
+          </div>
+
+          {/* Pagination buttons */}
+          <div>
+            <Pagination>
+              <PaginationContent>
+                {/* First page button */}
+                <PaginationItem>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="disabled:pointer-events-none disabled:opacity-50"
+                    onClick={() => table.firstPage()}
+                    disabled={!table.getCanPreviousPage()}
+                    aria-label="Go to first page"
+                  >
+                    <ChevronFirstIcon size={16} aria-hidden="true" />
+                  </Button>
+                </PaginationItem>
+                {/* Previous page button */}
+                <PaginationItem>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="disabled:pointer-events-none disabled:opacity-50"
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}
+                    aria-label="Go to previous page"
+                  >
+                    <ChevronLeftIcon size={16} aria-hidden="true" />
+                  </Button>
+                </PaginationItem>
+                {/* Next page button */}
+                <PaginationItem>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="disabled:pointer-events-none disabled:opacity-50"
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}
+                    aria-label="Go to next page"
+                  >
+                    <ChevronRightIcon size={16} aria-hidden="true" />
+                  </Button>
+                </PaginationItem>
+                {/* Last page button */}
+                <PaginationItem>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="disabled:pointer-events-none disabled:opacity-50"
+                    onClick={() => table.lastPage()}
+                    disabled={!table.getCanNextPage()}
+                    aria-label="Go to last page"
+                  >
+                    <ChevronLastIcon size={16} aria-hidden="true" />
+                  </Button>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         </div>
-      </div>
-      <span>
-        <Icon name="koi" className="size-8" solid />
-      </span>
-    </HyperCard>
+        <span>
+          <Icon name="koi" className="size-8" solid />
+        </span>
+      </HyperCard>
+    </div>
   );
 }
 
