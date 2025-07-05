@@ -173,6 +173,7 @@
   --color-card-zinc: var(--card-zinc);
   --color-card-dark: var(--card-dark);
   --color-card-origin: var(--card-origin);
+  --color-origin: var(--origin);
   /* CUSTOM COLORS */
   --color-chalk: var(--chalk);
   --color-cream: var(--cream);
@@ -274,6 +275,7 @@
   --card-zinc: oklch(0.22 0.018 269.83);
   --card-dark: oklch(0.37 0.013 285.81);
   --card-origin: oklch(0.37 0.013 285.81);
+  --origin: oklch(0.37 0.013 285.81);
   --popover: oklch(0.21 0.006 285.885);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.92 0.004 286.32);

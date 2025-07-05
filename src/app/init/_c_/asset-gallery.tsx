@@ -1,5 +1,6 @@
 "use client";
 
+import { Shuding } from "@/components/cobe/shuding";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Copy, Heart, Type } from "lucide-react";
@@ -91,6 +92,8 @@ export default function AssetGallery({ category }: { category: string }) {
               {asset.creator}
             </div>
           )}
+
+          <Shuding />
         </Card>
       ))}
     </div>

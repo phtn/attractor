@@ -16,12 +16,14 @@ type CookieType =
   | "language"
   | "age"
   | "darkMode"
-  | "favorites";
+  | "favorites"
+  | "soundEnabled";
 
 type ValuesMap = {
   theme: string;
   session: { token: string };
   language: string;
+  soundEnabled: boolean;
   age: number;
   darkMode: boolean;
   favorites: string[];
@@ -38,6 +40,7 @@ const cookieNameMap: Record<CookieType, string> = {
   age: "user-age",
   darkMode: "dark-mode-enabled",
   favorites: "user-favorites",
+  soundEnabled: "sound-enabled",
 };
 
 const defaults: CookieOptions = {

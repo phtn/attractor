@@ -1,13 +1,17 @@
 "use client";
 
+import { getCookie } from "@/app/actions";
 import { useSidebar } from "@/components/ui/sidebar";
 import { useSFX } from "@/hooks/use-sfx";
 import { useToggle } from "@/hooks/use-toggle";
+import { handleAsync } from "@/utils/async-handler";
 import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
+  useState,
   type ReactNode,
 } from "react";
 
@@ -19,14 +23,30 @@ interface ResizeCtxValues {
   toggleCenter: VoidFunction;
   toggleLeft: VoidFunction;
   toggleRight: VoidFunction;
-  centerExpanded: boolean;
+  sideHoverSfx: VoidFunction;
+  centerHoverSfx: VoidFunction;
   rightExpanded: boolean;
+  centerExpanded: boolean;
   handleToggle: (side: "left" | "right") => () => void;
 }
 
 const ResizeCtx = createContext<ResizeCtxValues | null>(null);
 
 const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
+  const [soundEnabled, setSoundEnabled] = useState(false);
+  const soundState = handleAsync(getCookie)("soundEnabled");
+  const sfxEnabled = useCallback(
+    async () =>
+      soundState
+        .then(({ data }) => setSoundEnabled(data ?? true))
+        .catch(console.error),
+    [soundState],
+  );
+
+  useEffect(() => {
+    sfxEnabled().catch(console.error);
+  }, [sfxEnabled]);
+
   const { on: centerExpanded, toggle: centerToggle } = useToggle();
   const {
     on: rightExpanded,
@@ -38,23 +58,46 @@ const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
     toggleSidebar: toggleLeft,
     setOpen: setLeft,
   } = useSidebar();
-  const { sfxDisable: sfxCollapse } = useSFX({
-    playbackRate: 0.2,
+  const { sfxStep: sfxCollapse } = useSFX({
+    playbackRate: 1.95,
     volume: 0.05,
     interrupt: false,
+    soundEnabled,
+  });
+  const { sfxStep: sfxExpand } = useSFX({
+    playbackRate: 1.5,
+    volume: 0.05,
+    interrupt: false,
+    soundEnabled,
   });
   const handleToggle = useCallback(
     (side: "left" | "right") => () => {
       switch (side) {
         case "left":
           toggleLeft();
+          if (leftExpanded) {
+            sfxCollapse();
+          } else {
+            sfxExpand();
+          }
           break;
         default:
           toggleRight();
+          if (rightExpanded) {
+            sfxCollapse();
+          } else {
+            sfxExpand();
+          }
       }
-      sfxCollapse();
     },
-    [sfxCollapse, toggleLeft, toggleRight],
+    [
+      sfxCollapse,
+      sfxExpand,
+      leftExpanded,
+      rightExpanded,
+      toggleLeft,
+      toggleRight,
+    ],
   );
 
   const toggleCenter = useCallback(() => {
@@ -68,6 +111,7 @@ const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
     } else {
       centerToggle();
       toggleLeft();
+      sfxExpand();
     }
   }, [
     centerToggle,
@@ -75,26 +119,42 @@ const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
     leftExpanded,
     sfxCollapse,
     toggleLeft,
-    setLeft,
+    sfxExpand,
     setRight,
+    setLeft,
   ]);
 
+  const { sfxDiamond: centerHoverSfx } = useSFX({
+    playbackRate: 1.8,
+    volume: 0.1,
+    interrupt: false,
+  });
+  const { sfxDiamond: sideHoverSfx } = useSFX({
+    playbackRate: 2.0,
+    volume: 0.1,
+    interrupt: false,
+    soundEnabled: false,
+  });
   const value = useMemo(
     () => ({
       toggleLeft,
       toggleRight,
+      sideHoverSfx,
       toggleCenter,
       handleToggle,
       rightExpanded,
       centerExpanded,
+      centerHoverSfx,
     }),
     [
       toggleLeft,
       toggleRight,
+      sideHoverSfx,
       toggleCenter,
       handleToggle,
       rightExpanded,
       centerExpanded,
+      centerHoverSfx,
     ],
   );
   return <ResizeCtx value={value}>{children}</ResizeCtx>;

@@ -13,26 +13,16 @@ export const Content = () => {
   const { centerExpanded, rightExpanded } = useResizeCtx();
   return (
     <EventsCtxProvider>
-      <main className="bg-gradient-to-t dark:from-zinc-950 dark:via-zinc-950/10 to-background font-mono text-sm w-screen">
-        <div className="border border-double border-xy rounded-b-xl h-screen overflow-hidden">
+      <main className="h-screen bg-radial-[at_30%_10%] from-background to-muted-foreground/50 dark:from-foreground/60 dark:to-card-origin dark:bg-background flex flex-col w-screen">
+        <div className="border border-origin/30 rounded-b-xl h-screen overflow-hidden">
           <DashboardHeader />
 
           <div className="flex flex-[12] justify-center gap-0 h-[calc(100vh-50px)]">
-            {/* Left Column */}
-            {/* <div
-              className={cn("flex-[2] border-r border-zed", {
-                "flex-1": centerExpanded,
-              })}
-            >
-              <Repositories />
-              <AgentList />
-            </div> */}
             <LeftSidebar />
 
-            {/* Center Column */}
             <div
               className={cn(
-                "flex-[7] will-change-transform transition-all duration-500 relative border-r border-zed",
+                "flex-[7] will-change-transform bg-background/25 transition-all duration-500 relative border-r dark:border-origin/40",
                 {
                   "flex-[12]": centerExpanded,
                 },
@@ -42,7 +32,6 @@ export const Content = () => {
               <ReviewerHeader />
             </div>
 
-            {/* Right Column */}
             <div
               className={cn(
                 "flex-1 will-change-transform transition-all duration-500",

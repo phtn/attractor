@@ -27,11 +27,17 @@ export type HookOptions<T = unknown> = T & {
  * @link https://github.com/joshwcomeau/use-sound
  */
 
-export const useSFX = ({ playbackRate, volume, interrupt }: HookOptions) => {
+export const useSFX = ({
+  playbackRate,
+  volume,
+  interrupt,
+  soundEnabled,
+}: HookOptions) => {
   const opts = {
     volume: volume ?? 0.35,
     interrupt: interrupt ?? true,
     playbackRate: playbackRate ?? 0.5,
+    soundEnabled: soundEnabled ?? true,
   };
 
   const [sfxPopOn] = useSound("/sfx/pop-up-on.mp3", opts);
@@ -43,6 +49,8 @@ export const useSFX = ({ playbackRate, volume, interrupt }: HookOptions) => {
   const [sfxTech] = useSound("/sfx/tech.wav", opts);
   const [sfxDisable] = useSound("/sfx/disable.mp3", opts);
   const [sfxEnable] = useSound("/sfx/enable.mp3", opts);
+  const [sfxDiamond] = useSound("/sfx/diamond.mp3", opts);
+  const [sfxNumbers] = useSound("/sfx/numbers.mp3", opts);
 
   return {
     sfxStep,
@@ -52,6 +60,8 @@ export const useSFX = ({ playbackRate, volume, interrupt }: HookOptions) => {
     sfxToggle,
     sfxPopOff,
     sfxEnable,
+    sfxDiamond,
+    sfxNumbers,
     sfxDisable,
     sfxPopDown,
   };

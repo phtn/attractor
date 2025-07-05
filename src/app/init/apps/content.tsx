@@ -12,7 +12,7 @@ interface Props {
 }
 export const Content = ({ data }: Props) => {
   return (
-    <div className="h-screen bg-background flex flex-col w-screen">
+    <div className="h-screen bg-radial-[at_30%_10%] from-background to-muted-foreground/50 dark:from-foreground/60 dark:to-card-origin dark:bg-background flex flex-col w-screen">
       <Header />
 
       <div className="flex relative z-10 overflow-hidden w-full max-w-7xl mx-auto">
@@ -26,7 +26,7 @@ export const Content = ({ data }: Props) => {
         </main>
       </div>
       <div className="absolute bottom-0 flex h-[40vh] flex-1 w-full z-0 flex-col items-start justify-start overflow-clip">
-        <div className="relative h-[calc(18vh)] bg-background z-2 w-full border-[0.33_px] px-4 xl:px-10"></div>
+        <div className="relative h-[calc(18vh)] bg-background z-2 w-full opacity-0 border-[0.33_px] px-4 xl:px-10"></div>
         <div className="flex justify-start">
           <Scene />
         </div>

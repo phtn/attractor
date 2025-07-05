@@ -32,13 +32,13 @@ const ProvidersCtxProvider = ({ children }: ProvidersProviderProps) => {
       disableTransitionOnChange
     >
       <SidebarProvider>
-        <ResizeCtxProvider>
-          <ProvidersCtx value={value}>
+        <ProvidersCtx value={value}>
+          <ResizeCtxProvider>
             <Convex>
               <TRPC>{children}</TRPC>
             </Convex>
-          </ProvidersCtx>
-        </ResizeCtxProvider>
+          </ResizeCtxProvider>
+        </ProvidersCtx>
       </SidebarProvider>
     </ThemeProvider>
   );

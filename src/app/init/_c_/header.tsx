@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 
 export function Header() {
   return (
-    <header className="flex items-center justify-between py-4 bg-background w-full max-w-7xl mx-auto">
+    <header className="flex items-center justify-between py-4 w-full max-w-7xl mx-auto">
       <div className="flex items-center">
         <Brand />
         <div className="flex items-center"></div>
