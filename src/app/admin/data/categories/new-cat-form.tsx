@@ -76,7 +76,6 @@ export function NewCatForm({ onSuccess }: NewCatFormProps) {
   );
 
   const cats = useMemo(() => {
-    // const keys = Object.entries(typeof CatSchema).keys();
     const fieldConfigurations: TextFieldConfig[] = Object.keys(
       CatSchema.fields,
     ).map((key: keyof Cat) => {
@@ -107,7 +106,10 @@ export function NewCatForm({ onSuccess }: NewCatFormProps) {
         autoComplete: "off", // Default autocomplete
       };
     });
-    return fieldConfigurations;
+    const excludedKeys = ["cid", "created_at", "updated_at", "created_by"];
+    const keyFilterPredicate = (config: TextFieldConfig) =>
+      !excludedKeys.includes(config.name as string);
+    return fieldConfigurations.filter(keyFilterPredicate);
     // Note: The 'fieldConfigurations' array is created here.
     // However, the subsequent 'return' statement in the useMemo block still references the original 'keys' variable
     // and its mapping logic. For 'HyperList' to use these TextFieldConfig objects, the 'return' statement
@@ -126,7 +128,7 @@ export function NewCatForm({ onSuccess }: NewCatFormProps) {
       <HyperList
         data={cats}
         delay={0.5}
-        container="lg:space-y-5 space-y-2 grid grid-rows-2 gap-x-4 lg:grid-cols-3"
+        container="lg:space-y-5 space-y-2 grid grid-rows-2 gap-x-4"
         component={FormField}
       />
       <Submit />

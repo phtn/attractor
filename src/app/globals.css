@@ -31,6 +31,20 @@
   .enter {
     animation: enter 0.3s ease-out normal both;
   }
+  .em-particle {
+    transition: all 0.1s ease-out;
+  }
+
+  .em-particle.electric {
+    animation: electric-glow 2s ease-in-out infinite;
+  }
+
+  .em-particle.magnetic {
+    animation: magnetic-glow 2.5s ease-in-out infinite;
+  }
+  .synth {
+    animation: synth 35s ease-in infinite;
+  }
 }
 
 @keyframes enter {
@@ -47,6 +61,43 @@
   100% {
     opacity: 1;
     transform: translateZ(0) scale(1);
+  }
+}
+
+@keyframes electric-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 8px currentColor,
+      0 0 16px currentColor;
+  }
+  50% {
+    box-shadow:
+      0 0 12px currentColor,
+      0 0 24px currentColor;
+  }
+}
+
+@keyframes magnetic-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 6px currentColor,
+      0 0 12px currentColor;
+  }
+  50% {
+    box-shadow:
+      0 0 10px currentColor,
+      0 0 20px currentColor;
+  }
+}
+
+@keyframes synth {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
 
@@ -127,6 +178,7 @@
   --color-cream: var(--cream);
   --color-void: var(--void);
   --color-geist-teal: oklch(0.829 0.133 174.96);
+  --color-mask: oklch(0.909 0.175 113.96);
   /* MAC COLORS */
   --color-mac-red: var(--mac-red);
   --color-mac-orange: var(--mac-orange);
@@ -145,6 +197,7 @@
   --shadow-med-t: var(--shadow-med-t);
   /* ANIMATE */
   --animate-enter: var(--enter);
+  --animate-synth: var(--synth);
 }
 
 :root {

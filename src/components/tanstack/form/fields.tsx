@@ -2,7 +2,7 @@ import { Icon } from "@/lib/icons";
 import { TextFieldConfig } from "./schema";
 
 export const InputField = (item: TextFieldConfig) => (
-  <div className="relative font-dm">
+  <div className="relative">
     <div className="flex items-center absolute gap-x-0 justify-start">
       <div className={labelClassName}>
         <label htmlFor={item.name.toString()}>{item.label}</label>
@@ -10,12 +10,12 @@ export const InputField = (item: TextFieldConfig) => (
 
       {item.required && (
         <div className={requiredClassName}>
-          <div className="flex items-center leading-none space-x-1 justify-center py-[1.5px]">
+          <div className="flex items-center leading-none space-x-2 justify-center">
             <Icon
               name="asterisk"
-              className="text-red-600 dark:text-red-300 size-3"
+              className="text-red-600 dark:text-red-400 size-3"
             />
-            <span className="text-[10.5px] font-medium leading-none">
+            <span className="text-[9px] hidden leading-none font-mono text-muted-foreground">
               Required
             </span>
           </div>
@@ -33,8 +33,7 @@ export const InputField = (item: TextFieldConfig) => (
 );
 
 const inputClassName =
-  "ps-3 font-sans tracking-tight text-lg block pt-5 h-16 w-full rounded-lg outline-none bg-gradient-to-br from-ultra-fade via-super-fade/60 to-ultra-fade dark:via-gray-600 dark:from-gray-600 dark:to-gray-700 border border-transparent dark:border-gray-500/50 focus:border-orange-300 focus:ring-orange-500 text-panel dark:text-white";
+  "ps-3 font-sans tracking-tight text-lg block pt-5 h-16 w-full rounded-lg outline-none bg-muted dark:bg-background/30";
 const labelClassName =
-  "block dark:bg-neutral-100/10 bg-white ps-3 pe-2.5 py-0.5 font-sans rounded text-[10px] top-0 left-0 rounded-e rounded-bl m-[3px] font-medium text-raised/80 dark:text-white/60 uppercase";
-const requiredClassName =
-  "dark:bg-neutral-100/10 bg-white px-2 h-[19px] flex items-center font-medium tracking-wide font-quick rounded mr-[3px]";
+  "block ps-3 py-1 font-sans text-[10px] top-0 left-0 font-medium capitalized";
+const requiredClassName = "px-2 flex items-center mr-[3px]";

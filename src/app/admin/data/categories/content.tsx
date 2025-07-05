@@ -23,7 +23,7 @@ export const Content = ({ data }: ContentProps) => {
     return <>{options.get(showForm)}</>;
   }, [showForm, toogleForm]);
   return (
-    <main className="mt-4 w-full space-x-6 flex">
+    <main className="mt-4 w-full space-x-3 flex">
       <CatsTable data={data} create={showForm} toogleForm={toogleForm} />
       <CatForm />
     </main>

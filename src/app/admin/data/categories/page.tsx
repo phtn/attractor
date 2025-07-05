@@ -1,10 +1,6 @@
 import { api } from "@@/api";
-import { ConvexHttpClient } from "convex/browser";
 import { Content } from "./content";
-
-const convex = new ConvexHttpClient(
-  process.env.NEXT_PUBLIC_CONVEX_URL as string,
-);
+import { convex } from "@/lib/convex/client";
 
 export default async function CategoriesPage() {
   const cats = await convex.query(api.cats.get.active);
