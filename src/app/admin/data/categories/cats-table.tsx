@@ -17,31 +17,12 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import {
-  ChevronFirstIcon,
-  ChevronLastIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  CircleAlertIcon,
-  EllipsisIcon,
-  TrashIcon,
-} from "lucide-react";
+import { EllipsisIcon } from "lucide-react";
 
-import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { HyperButton } from "@/components/hyper";
 import { HyperCard } from "@/components/hyper/card";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -57,19 +38,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Label } from "@/components/ui/label";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -84,6 +52,8 @@ import { Cat } from "vx/cats/d";
 import { ColumnVisibility } from "./col-visibility";
 import { FilterSearch } from "./filter-search";
 import { FilterStatus } from "./filter-status";
+import { MoreOptions } from "./more-options";
+import { Paginator } from "./pagination";
 
 // type Item = {
 //   id: string;
@@ -163,10 +133,10 @@ const columns: ColumnDef<Cat>[] = [
     accessorKey: "active",
     cell: ({ row }) => (
       <Badge
-        className={cn(
-          (!row.getValue("active") as boolean) &&
-            "bg-muted-foreground/60 text-primary-foreground",
-        )}
+        className={cn("uppercase", {
+          "bg-muted-foreground/60 dark:bg-cyan-200 text-primary-foreground":
+            row.getValue("active") as boolean,
+        })}
       >
         {row.getValue("active") ? "active" : "inactive"}
       </Badge>
@@ -206,12 +176,20 @@ interface CatsTableProps<T extends Cat> {
   toogleForm: VoidFunction;
 }
 
+export interface PaginationCtrl {
+  disabledNext: boolean;
+  disabledPrev: boolean;
+  gotoNext: VoidFunction;
+  gotoPrev: VoidFunction;
+  gotoFirst: VoidFunction;
+  gotoLast: VoidFunction;
+}
+
 export default function CatsTable<T extends Cat>({
   data,
   create,
   toogleForm,
 }: CatsTableProps<T>) {
-  const id = useId();
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [pagination, setPagination] = useState<PaginationState>({
@@ -326,12 +304,36 @@ export default function CatsTable<T extends Cat>({
     [table],
   );
 
+  const rowsSelected = useMemo(
+    () => table.getSelectedRowModel().rows.length,
+    [table],
+  );
+
+  const paginationState = useMemo(() => table.getState().pagination, [table]);
+  const rowCount = useMemo(() => table.getRowCount(), [table]);
+  const setPageSize = useCallback(
+    (value: string) => table.setPageSize(+value),
+    [table],
+  );
+  const pageControls = useMemo(
+    () =>
+      ({
+        gotoFirst: () => table.firstPage(),
+        disabledPrev: !table.getCanPreviousPage(),
+        gotoPrev: () => table.previousPage(),
+        disabledNext: !table.getCanNextPage(),
+        gotoNext: () => table.nextPage(),
+        gotoLast: () => table.lastPage(),
+      }) as PaginationCtrl,
+    [table],
+  );
+
   return (
     <div
       className={cn(
-        "flex w-full transition-[max-width] duration-500 ease-in max-w-[calc(82lvw)]",
+        "flex w-full transition-[max-width] duration-500 ease-in xl:max-w-[calc(82lvw)] md:max-w-[100lvw]",
         {
-          "max-w-[calc(100lvw-42vw)] gap-4": create,
+          "xl:max-w-[calc(100lvw-42vw)] gap-4": create,
         },
       )}
     >
@@ -342,6 +344,9 @@ export default function CatsTable<T extends Cat>({
             <h2 className="text-2xl font-bold font-sans tracking-tight">
               Categories
             </h2>
+            <span>
+              <Icon name="koi" className="size-8" solid />
+            </span>
             {/* Filter by name or email */}
             <FilterSearch col={filterCol} />
             <FilterStatus
@@ -355,53 +360,7 @@ export default function CatsTable<T extends Cat>({
           </div>
           <div className="flex items-center gap-3">
             {/* Delete button */}
-            {table.getSelectedRowModel().rows.length > 0 && (
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button className="ml-auto" variant="outline">
-                    <TrashIcon
-                      className="-ms-1 opacity-60"
-                      size={16}
-                      aria-hidden="true"
-                    />
-                    Delete
-                    <span className="bg-background text-muted-foreground/70 -me-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
-                      {table.getSelectedRowModel().rows.length}
-                    </span>
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <div className="flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4">
-                    <div
-                      className="flex size-9 shrink-0 items-center justify-center rounded-full border"
-                      aria-hidden="true"
-                    >
-                      <CircleAlertIcon className="opacity-80" size={16} />
-                    </div>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete {table.getSelectedRowModel().rows.length}{" "}
-                        selected{" "}
-                        {table.getSelectedRowModel().rows.length === 1
-                          ? "row"
-                          : "rows"}
-                        .
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                  </div>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDeleteRows}>
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            )}
+            <MoreOptions rows={rowsSelected} deleteRows={handleDeleteRows} />
             {/* Add item button */}
             <HyperButton
               className={cn(
@@ -411,8 +370,8 @@ export default function CatsTable<T extends Cat>({
                 },
               )}
               label="Add Category"
-              icon="pull-request"
-              iconStyle="size-4"
+              icon="plus"
+              iconStyle="size-4 dark:text-cyan-200"
               solid
               fn={toogleForm}
             >
@@ -468,7 +427,7 @@ export default function CatsTable<T extends Cat>({
                                   solid
                                   aria-hidden="true"
                                   name="triangle-right"
-                                  className="size-3.5 shrink-0 text-mac-teal dark:text-mac-cyan -rotate-90"
+                                  className="size-3.5 shrink-0 text-cyan-200 dark:text-cyan-300 -rotate-90"
                                 />
                               ),
                               desc: (
@@ -476,7 +435,7 @@ export default function CatsTable<T extends Cat>({
                                   solid
                                   aria-hidden="true"
                                   name="triangle-right"
-                                  className="size-3.5 shrink-0 text-mac-orange dark:text-mac-pink rotate-90"
+                                  className="size-3.5 shrink-0 text-mac-orange dark:text-orange-300 rotate-90"
                                 />
                               ),
                             }[header.column.getIsSorted() as string] ?? null}
@@ -501,7 +460,7 @@ export default function CatsTable<T extends Cat>({
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     className={cn(
-                      "h-14 overflow-hidden dark:border-card-origin bg-transparent last:rounded-br-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background",
+                      "h-14 overflow-hidden dark:border-card-origin peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background",
                       "transition-colors duration-300",
                     )}
                   >
@@ -509,7 +468,7 @@ export default function CatsTable<T extends Cat>({
                       <TableCell
                         key={cell.id}
                         className={cn(
-                          "last:py-0 first:rounded-tl-2xl last:rounded-tr-2xl overflow-hidden dark:group-hover/row:bg-geist-teal/5",
+                          "last:py-0 group-hover/row:first:rounded-l-lg group-hover/row:last:rounded-r-lg overflow-hidden dark:group-hover/row:bg-chalk-100/5",
                           "transition-colors duration-300",
                         )}
                       >
@@ -536,121 +495,12 @@ export default function CatsTable<T extends Cat>({
         </div>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between gap-8">
-          {/* Results per page */}
-          <div className="flex items-center gap-3">
-            <Label htmlFor={id} className="max-sm:sr-only">
-              Rows per page
-            </Label>
-            <Select
-              value={table.getState().pagination.pageSize.toString()}
-              onValueChange={(value) => {
-                table.setPageSize(Number(value));
-              }}
-            >
-              <SelectTrigger id={id} className="w-fit whitespace-nowrap">
-                <SelectValue placeholder="Select number of results" />
-              </SelectTrigger>
-              <SelectContent className="[&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2">
-                {[5, 10, 25, 50].map((pageSize) => (
-                  <SelectItem key={pageSize} value={pageSize.toString()}>
-                    {pageSize}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          {/* Page number information */}
-          <div className="text-muted-foreground flex grow justify-end text-sm whitespace-nowrap">
-            <p
-              className="text-muted-foreground text-sm whitespace-nowrap"
-              aria-live="polite"
-            >
-              <span className="text-foreground">
-                {table.getState().pagination.pageIndex *
-                  table.getState().pagination.pageSize +
-                  1}
-                -
-                {Math.min(
-                  Math.max(
-                    table.getState().pagination.pageIndex *
-                      table.getState().pagination.pageSize +
-                      table.getState().pagination.pageSize,
-                    0,
-                  ),
-                  table.getRowCount(),
-                )}
-              </span>{" "}
-              of{" "}
-              <span className="text-foreground">
-                {table.getRowCount().toString()}
-              </span>
-            </p>
-          </div>
-
-          {/* Pagination buttons */}
-          <div>
-            <Pagination>
-              <PaginationContent>
-                {/* First page button */}
-                <PaginationItem>
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className="disabled:pointer-events-none disabled:opacity-50"
-                    onClick={() => table.firstPage()}
-                    disabled={!table.getCanPreviousPage()}
-                    aria-label="Go to first page"
-                  >
-                    <ChevronFirstIcon size={16} aria-hidden="true" />
-                  </Button>
-                </PaginationItem>
-                {/* Previous page button */}
-                <PaginationItem>
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className="disabled:pointer-events-none disabled:opacity-50"
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
-                    aria-label="Go to previous page"
-                  >
-                    <ChevronLeftIcon size={16} aria-hidden="true" />
-                  </Button>
-                </PaginationItem>
-                {/* Next page button */}
-                <PaginationItem>
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className="disabled:pointer-events-none disabled:opacity-50"
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
-                    aria-label="Go to next page"
-                  >
-                    <ChevronRightIcon size={16} aria-hidden="true" />
-                  </Button>
-                </PaginationItem>
-                {/* Last page button */}
-                <PaginationItem>
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className="disabled:pointer-events-none disabled:opacity-50"
-                    onClick={() => table.lastPage()}
-                    disabled={!table.getCanNextPage()}
-                    aria-label="Go to last page"
-                  >
-                    <ChevronLastIcon size={16} aria-hidden="true" />
-                  </Button>
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-        </div>
-        <span>
-          <Icon name="koi" className="size-8" solid />
-        </span>
+        <Paginator
+          state={paginationState}
+          rowCount={rowCount}
+          setPageSize={setPageSize}
+          pageCtrl={pageControls}
+        />
       </HyperCard>
     </div>
   );

@@ -1,8 +1,7 @@
 "use client";
 
-import { Icon } from "@/lib/icons";
 import { Events } from "@/components/webhooks/events";
-import { GPUFan } from "@/components/gpu";
+import { Icon } from "@/lib/icons";
 // import dynamic from "next/dynamic";
 
 // const Blades = dynamic(({on}: {on?: boolean}) => import("@/components/gpu"), {ssr: false})
@@ -10,12 +9,6 @@ import { GPUFan } from "@/components/gpu";
 export function EncryptedChat() {
   return (
     <div className="bg-zinc-300/10 dark:bg-transparent p-4 space-y-4 h-[calc(100vh-48px)] overflow-hidden w-full flex flex-col relative">
-      {/* FANS */}
-      <div className="flex absolute -space-x-4 right-0 top-0 justify-end items-start">
-        <GPUFan on={false} suppressHydrationWarning />
-        <GPUFan on={true} suppressHydrationWarning />
-      </div>
-
       {/* WEBHOOKS */}
       <Events />
     </div>

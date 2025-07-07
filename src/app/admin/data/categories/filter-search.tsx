@@ -33,7 +33,7 @@ export const FilterSearch = ({ col }: Props) => {
           solid
           name="filter"
           aria-hidden="true"
-          className="size-4 text-mac-blue dark:text-geist-teal"
+          className="size-4 text-mac-blue dark:text-cyan-200"
         />
       </div>
       {Boolean(col?.getFilterValue()) && (

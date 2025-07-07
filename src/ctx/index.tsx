@@ -1,11 +1,23 @@
 "use client";
 
 import { TRPC } from "@/trpc/client";
-import { createContext, useMemo, useContext, type ReactNode } from "react";
+import {
+  createContext,
+  useMemo,
+  useContext,
+  type ReactNode,
+  useCallback,
+  useState,
+  useEffect,
+} from "react";
 import { Convex } from "./convex-ctx";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ResizeCtxProvider } from "./resize-ctx";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { handleAsync } from "@/utils/async-handler";
+import { getCookie } from "@/app/actions";
+import { SFXCtxProvider } from "./sfx-ctx";
+import { Toasts } from "./toast-ctx";
 
 interface ProvidersProviderProps {
   children: ReactNode;
@@ -18,6 +30,17 @@ interface ProvidersCtxValues {
 const ProvidersCtx = createContext<ProvidersCtxValues | null>(null);
 
 const ProvidersCtxProvider = ({ children }: ProvidersProviderProps) => {
+  const [defaultMode, setDefaultMode] = useState("dark");
+  const getTheme = useCallback(async () => {
+    const { data, error } = await handleAsync(getCookie)("theme");
+    if (data) setDefaultMode(decodeURI(data));
+    if (error) console.error(error);
+  }, []);
+
+  useEffect(() => {
+    getTheme().catch(console.error);
+  }, [getTheme]);
+
   const value = useMemo(
     () => ({
       on: false,
@@ -25,22 +48,25 @@ const ProvidersCtxProvider = ({ children }: ProvidersProviderProps) => {
     [],
   );
   return (
-    <ThemeProvider
-      enableSystem
-      attribute="class"
-      defaultTheme="system"
-      disableTransitionOnChange
-    >
-      <SidebarProvider>
-        <ProvidersCtx value={value}>
-          <ResizeCtxProvider>
-            <Convex>
-              <TRPC>{children}</TRPC>
-            </Convex>
-          </ResizeCtxProvider>
-        </ProvidersCtx>
-      </SidebarProvider>
-    </ThemeProvider>
+    <ProvidersCtx value={value}>
+      <ThemeProvider
+        enableSystem
+        attribute="class"
+        defaultTheme={defaultMode ?? "system"}
+        disableTransitionOnChange
+      >
+        <SFXCtxProvider>
+          <SidebarProvider>
+            <ResizeCtxProvider>
+              <Convex>
+                <TRPC>{children}</TRPC>
+              </Convex>
+            </ResizeCtxProvider>
+          </SidebarProvider>
+        </SFXCtxProvider>
+      </ThemeProvider>
+      <Toasts />
+    </ProvidersCtx>
   );
 };
 

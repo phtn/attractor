@@ -50,7 +50,7 @@ export const Stats = (): JSX.Element | null => {
       data={stats}
       component={StatItem}
       direction="right"
-      container="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3"
+      container="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3"
     />
   );
 };

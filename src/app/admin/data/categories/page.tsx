@@ -6,7 +6,7 @@ export default async function CategoriesPage() {
   const cats = await convex.query(api.cats.get.active);
 
   return (
-    <div className="p-4">
+    <div className="px-6">
       <Content data={cats} />
     </div>
   );

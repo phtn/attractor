@@ -8,7 +8,7 @@ export const Scene = () => {
   const { rotY } = useGLMotion();
 
   return (
-    <div className="relative aspect-video h-full w-full">
+    <div className="relative bg-transparent aspect-video h-full w-full">
       <Canvas>
         <Suspense fallback="loading">
           <ambientLight intensity={1.5} />
@@ -38,7 +38,7 @@ export const Scene = () => {
                 Euler
             }
             scale={
-              [0.25, 0.25, 0.25] as (
+              [0.33, 0.33, 0.33] as (
                 | number
                 | Vector3
                 | [x: number, y: number, z: number]

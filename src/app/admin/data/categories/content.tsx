@@ -23,7 +23,7 @@ export const Content = ({ data }: ContentProps) => {
     return <>{options.get(showForm)}</>;
   }, [showForm, toogleForm]);
   return (
-    <main className="mt-4 w-full space-x-3 flex">
+    <main className="w-full space-x-3 xl:flex h-[calc(100lvh-72px)] pb-8 overflow-scroll lg:space-y-8 block">
       <CatsTable data={data} create={showForm} toogleForm={toogleForm} />
       <CatForm />
     </main>

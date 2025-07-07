@@ -149,14 +149,14 @@ const CenterResizer = ({ resizeFn, expanded, onHover }: ResizeControlProps) => (
         "bg-gray-400 group-hover/center:scale-x-[120%]",
         "group-hover/center:bg-blue-950/70",
         // DARK STYLES
-        "dark:bg-zinc-600 dark:group-hover/center:bg-teal-100",
+        "dark:bg-zinc-600 dark:group-hover/center:bg-neutral-50",
         {
           "group-hover/center:mx-4 mx-10 scale-x-[120%] dark:bg-teal-50/60":
             expanded,
         },
         // FOCUS
         "group-focus/center:scale-x-[120%] group-focus/center:mx-14",
-        "dark:group-focus/center:bg-teal-50 ",
+        "dark:group-focus/center:bg-neutral-50 ",
       )}
     />
   </button>

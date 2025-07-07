@@ -8,7 +8,7 @@ export const useThemes = () => {
 
   const toggleTheme = useCallback(async () => {
     const currentTheme = theme === "dark" ? "light" : "dark";
-    handleAsync(setCookie)("theme", currentTheme);
+    await handleAsync(setCookie)("theme", currentTheme);
     setTheme(currentTheme);
   }, [setTheme, theme]);
 

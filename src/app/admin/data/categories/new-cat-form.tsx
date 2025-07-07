@@ -4,8 +4,11 @@ import {
   TextFieldConfig,
 } from "@/components/tanstack/form/schema";
 import { useAppForm } from "@/components/tanstack/form/utils";
-import { useCallback, useMemo } from "react";
+import { useMutation } from "convex/react";
+import { useActionState, useCallback, useMemo } from "react";
 import { Cat, CatSchema } from "vx/cats/d";
+import { api } from "@@/api";
+import { handleAsync } from "@/utils/async-handler";
 
 interface NewCatFormProps {
   onSuccess?: () => void;
@@ -13,12 +16,14 @@ interface NewCatFormProps {
 
 export function NewCatForm({ onSuccess }: NewCatFormProps) {
   const initialState = {} as Cat;
-  // const createCategory = useMutation(api.categories.create.default);
+  const createCategory = useMutation(api.cats.create.default);
+
   const form = useAppForm({
     defaultValues: initialState,
     validators: {
       onChange: CatZodSchema,
-      onSubmit: () => {
+      onSubmit: async ({ value }) => {
+        await handleAsync(createCategory)(value as Cat);
         onSuccess?.();
       },
     },
@@ -59,19 +64,6 @@ export function NewCatForm({ onSuccess }: NewCatFormProps) {
         </form.AppField>
       );
     },
-    [form],
-  );
-
-  const Submit = useCallback(
-    () => (
-      <form.AppForm>
-        <form.SubmitButton
-          title="Create"
-          pending={false}
-          className="bg-ultra-fade border-none text-panel rounded-none flex-1 size-full dark:text-white text-sm dark:bg-zark font-sans tracking-tight font-medium"
-        />
-      </form.AppForm>
-    ),
     [form],
   );
 
@@ -116,15 +108,22 @@ export function NewCatForm({ onSuccess }: NewCatFormProps) {
     // would need to be adjusted to 'return fieldConfigurations;' and the initial 'keys' definition corrected.
   }, []);
 
+  const [, action, pending] = useActionState(createCategory, initialState);
+
+  const Submit = useCallback(
+    () => (
+      <form.AppForm>
+        <form.SubmitButton
+          title="Create"
+          pending={pending}
+          className="bg-ultra-fade border-none text-panel rounded-none h-12 flex-1 size-full dark:text-white text-sm font-sans tracking-tight font-medium"
+        />
+      </form.AppForm>
+    ),
+    [form, pending],
+  );
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        void form.handleSubmit();
-      }}
-      className="space-y-4"
-    >
+    <form action={action} className="space-y-4">
       <HyperList
         data={cats}
         delay={0.5}

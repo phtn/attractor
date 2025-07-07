@@ -1,10 +1,22 @@
+import { GPUFan } from "../gpu";
 import { Stats } from "../webhooks/stats";
 
-export const ReviewerHeader = () => {
+export const ReviewerStats = () => {
   return (
-    <div className="px-4 pt-4">
-      <div className="dark:bg-card-origin/40 bg-card text-card-foreground flex flex-col rounded-xl py-5 shadow-sm dark:inset-shadow-[0_1px_rgb(255_255_255/0.15)] gap-4">
-        <Stats />
+    <div className="px-4 pt-2 inline-flex w-full">
+      <div className="dark:bg-card-origin/40 bg-card text-card-foreground overflow-hidden flex flex-col rounded-xl py-5 shadow-sm dark:inset-shadow-[0_1px_rgb(255_255_255/0.15)] gap-4 w-full">
+        <div className="flex items-start">
+          <Stats />
+          <div>
+            <div className="h-1 w-16 bg-orange-200/30 -ml-1.5 rounded-full"></div>
+            <div className="h-1 w-24 bg-void -ml-1.5 rounded-full"></div>
+            <div className="flex flex-1 relative right-2 top-0 border border-slate-200/60 shadow-2xs border-t -space-x-6 h-20 px-0 rounded-tl-xs rounded-tr-xl rounded-b-xl justify-end items-center bg-gray-600 mr-2">
+              <GPUFan on={false} suppressHydrationWarning />
+              <GPUFan on={true} suppressHydrationWarning />
+              <GPUFan on={true} suppressHydrationWarning />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

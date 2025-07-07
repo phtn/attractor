@@ -1,19 +1,16 @@
 "use client";
 
-import { getCookie } from "@/app/actions";
 import { useSidebar } from "@/components/ui/sidebar";
 import { useSFX } from "@/hooks/use-sfx";
 import { useToggle } from "@/hooks/use-toggle";
-import { handleAsync } from "@/utils/async-handler";
 import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
   type ReactNode,
 } from "react";
+import { useSFXCtx } from "./sfx-ctx";
 
 interface ResizeProviderProps {
   children: ReactNode;
@@ -24,6 +21,7 @@ interface ResizeCtxValues {
   toggleLeft: VoidFunction;
   toggleRight: VoidFunction;
   sideHoverSfx: VoidFunction;
+  leftExpanded: boolean;
   centerHoverSfx: VoidFunction;
   rightExpanded: boolean;
   centerExpanded: boolean;
@@ -33,20 +31,7 @@ interface ResizeCtxValues {
 const ResizeCtx = createContext<ResizeCtxValues | null>(null);
 
 const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
-  const [soundEnabled, setSoundEnabled] = useState(false);
-  const soundState = handleAsync(getCookie)("soundEnabled");
-  const sfxEnabled = useCallback(
-    async () =>
-      soundState
-        .then(({ data }) => setSoundEnabled(data ?? true))
-        .catch(console.error),
-    [soundState],
-  );
-
-  useEffect(() => {
-    sfxEnabled().catch(console.error);
-  }, [sfxEnabled]);
-
+  const { soundEnabled } = useSFXCtx();
   const { on: centerExpanded, toggle: centerToggle } = useToggle();
   const {
     on: rightExpanded,
@@ -126,14 +111,15 @@ const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
 
   const { sfxDiamond: centerHoverSfx } = useSFX({
     playbackRate: 1.8,
-    volume: 0.1,
+    volume: 0.01,
     interrupt: false,
+    soundEnabled,
   });
   const { sfxDiamond: sideHoverSfx } = useSFX({
-    playbackRate: 2.0,
-    volume: 0.1,
+    playbackRate: 2.8,
+    volume: 0.008,
     interrupt: false,
-    soundEnabled: false,
+    soundEnabled,
   });
   const value = useMemo(
     () => ({
@@ -142,6 +128,7 @@ const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
       sideHoverSfx,
       toggleCenter,
       handleToggle,
+      leftExpanded,
       rightExpanded,
       centerExpanded,
       centerHoverSfx,
@@ -152,6 +139,7 @@ const ResizeCtxProvider = ({ children }: ResizeProviderProps) => {
       sideHoverSfx,
       toggleCenter,
       handleToggle,
+      leftExpanded,
       rightExpanded,
       centerExpanded,
       centerHoverSfx,

@@ -24,7 +24,7 @@ export const FilterStatus = ({
     <PopoverTrigger>
       <HyperButton solid asChild label="status" icon="circle-filled">
         {selected.length > 0 && (
-          <span className="bg-background text-muted-foreground/70 -me-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
+          <span className="bg-background -me-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
             {selected.length}
           </span>
         )}

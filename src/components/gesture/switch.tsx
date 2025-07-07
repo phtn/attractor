@@ -74,7 +74,8 @@ export default function GestureSwitch() {
             className={cn(
               "dark:bg-gradient-to-br relative transition-all duration-700 ease-out",
               "dark:from-zinc-900 dark:via-zinc-800/90 dark:to-zinc-800",
-              "bg-gradient-to-r from-white via-cream to-chalk",
+              " bg-radial-[at_20%_60%] from-background to-accent",
+              // "bg-gradient-to-r from-white via-cream to-chalk",
               "border-[2px] border-xy",
             )}
             style={{
@@ -99,15 +100,15 @@ export default function GestureSwitch() {
             {/* State Indicator */}
             <motion.div
               className={cn(
-                "absolute bg-gradient-to-b rounded-full",
+                "absolute bg-radial-[at_15%_65%] rounded-full",
                 " top-1/2 left-2 w-1 h-6 -translate-y-1/2",
                 "dark:group-hover:bg-gradient-to-t",
-                "from-orange-200 to-orange-400",
+                "from-orange-300 to-orange-500",
                 "dark:from-teal-200 dark:to-zinc-300/60",
-                "border-xy border-[0.33px]",
+                "dark:border-xy border-[0.33px]",
               )}
               animate={{
-                x: isDark ? baseSize - 28 : 12,
+                x: isDark ? baseSize - 24 : 8,
                 opacity: [0.7, 1, 0.7],
               }}
               transition={{
@@ -118,16 +119,18 @@ export default function GestureSwitch() {
 
             {/* Precision Markings */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex space-x-4">
+              <div className="flex space-x-3 dark:mr-4">
                 {[0, 1].map((i) => (
                   <motion.div
                     key={i}
-                    className={`w-0.5 h-3 rounded-full dark:bg-card-origin bg-zinc-400/80`}
+                    className={`dark:w-0.5 dark:h-2.5 w-5 h-px rounded-full dark:bg-cream/60 bg-zinc-500/80`}
                     animate={{
-                      opacity: (isDark ? 1 - i : i) === 1 ? 0.8 : 0.3,
+                      opacity: (isDark ? 1 - i : i) === 1 ? 0.95 : 0.2,
                       scaleY: (isDark ? 1 - i : i) === 1 ? 1.2 : 0.8,
                     }}
-                    transition={{ duration: 0.3 }}
+                    transition={{
+                      duration: 0.3,
+                    }}
                   />
                 ))}
               </div>
@@ -135,7 +138,7 @@ export default function GestureSwitch() {
 
             {/* Pressure Response Overlay */}
             <motion.div
-              className="absolute inset-0 border rounded-full bg-radial-[at_0%_60%] from-orange-100/20 to-orange-300/10 dark:from-zinc-600/10 dark:to-teal-600/5"
+              className="absolute inset-0 rounded-full bg-radial-[at_0%_60%] from-orange-100/20 to-orange-300/10 dark:from-zinc-600/10 dark:to-teal-600/5"
               animate={{
                 opacity: pressureLevel,
                 scale: 1 + pressureLevel * 0.05,
@@ -146,7 +149,7 @@ export default function GestureSwitch() {
 
           {/* Haptic Feedback Ring */}
           <motion.div
-            className="absolute border inset-0 -m-2 rounded-full"
+            className="absolute inset-0 -m-2 rounded-full"
             animate={{
               scale: isPressed ? 1.1 : 1,
               opacity: isPressed ? 0.6 : 0,

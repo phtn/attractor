@@ -24,8 +24,8 @@ const space = Space_Mono({
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
-  title: "Hydra",
-  description: "Code Reviewer",
+  title: "re-up.ph",
+  description: "Secure Cloud Systems",
   icons: ["/re-up-icon-v3.svg"],
 };
 

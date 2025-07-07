@@ -1,7 +1,4 @@
+import { Content } from "./content";
 export default function AdminPage() {
-  return (
-    <div className="border">
-      <h1>Admin Page</h1>
-    </div>
-  );
+  return <Content />;
 }

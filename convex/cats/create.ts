@@ -7,7 +7,7 @@ import { generateId } from "ai";
 const create = mutation({
   args: CatSchema,
   handler: async ({ db }, data) => {
-    const cat = data?.cid && (await checkItem(db, data.cid));
+    const cat = data?.name && (await checkItem(db, data.name));
     if (cat) {
       await db.patch(cat._id, {
         updated_at: Date.now(),
@@ -28,9 +28,9 @@ export default create;
 
 export const checkItem = async <DB extends GenericDatabaseWriter<DataModel>>(
   db: DB,
-  cid: string,
+  name: string,
 ) =>
   await db
     .query("categories")
-    .withIndex("by_cid", (q) => q.eq("cid", cid))
+    .withIndex("by_name", (q) => q.eq("name", name))
     .first();

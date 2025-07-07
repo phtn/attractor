@@ -28,37 +28,75 @@ export const XorGlass = () => {
         alphaMode: "opaque",
       });
 
-      const shaderModule = device.createShaderModule({
+      const desertFragmentModule = device.createShaderModule({
         code: `
-        @group(0) @binding(0) var<uniform> time : f32;
+        @group(0) @binding(0) var<uniform> uTime: f32;
+
+        fn hash(n: f32) -> f32 {
+            return fract(sin(n) * 43758.5453123);
+        }
+
+        fn noise(x: vec2<f32>) -> f32 {
+            let i = floor(x);
+            let f = fract(x);
+
+            let a = hash(dot(i, vec2(1.0, 57.0)));
+            let b = hash(dot(i + vec2(1.0, 0.0), vec2(1.0, 57.0)));
+            let c = hash(dot(i + vec2(0.0, 1.0), vec2(1.0, 57.0)));
+            let d = hash(dot(i + vec2(1.0, 1.0), vec2(1.0, 57.0)));
+
+            let u = f * f * (3.0 - 2.0 * f);
+            return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+        }
 
         @fragment
-        fn main(@location(0) fragCoord: vec2<f32>) -> @location(0) vec4<f32> {
-          let r = vec2(708.0, 429.0); // resolution placeholder
-          let uv = (fragCoord - 0.5 * r) / r.y;
-          var o = 0.0;
-          var z = 0.0;
-          var t = time;
+        fn fs_main(@builtin(position) fragCoord: vec4<f32>) -> @location(0) vec4<f32> {
+            let iResolution = vec2(800.0, 600.0); // replace with dynamic resolution if needed
+            let uv = fragCoord.xy / iResolution.xy * 2.0 - 1.0;
+            let aspect = iResolution.x / iResolution.y;
+            let p = vec2(uv.x * aspect, uv.y);
 
-          for (var i = 1.0; i <= 100.0; i = i + 1.0) {
-            let dir = normalize(vec3(uv * 2.0 - r.xyx / r.y, 1.0));
-            var p = z * dir;
-            p = vec3(atan2(p.y, p.x) * 2.0, p.z / 3.0, length(p.xy) - 6.0);
+            // Scroll forward
+            let speed = 1.5;
+            let t = uTime * speed;
+            let pos = vec2(p.x * 2.0, t + p.y * 10.0);
 
-            var d = 1.0;
-            for (var j = 1.0; j < 9.0; j = j + 1.0) {
-              p = p + sin(p.yzx * j - t + 0.2 * i) / j;
-            }
+            // Terrain shape (dunes via noise)
+            var height = noise(pos * 0.2) * 0.5;
+            height += noise(pos * 0.5) * 0.25;
+            height += noise(pos * 1.0) * 0.1;
 
-            d = 0.2 * length(vec4(0.1 * cos(p * 3.0) - 0.1, p.z));
-            z = z + d;
-            o = o + (1.0 + cos(i * 0.7 + t + vec4<f32>(6.0, 1.0, 2.0, 0.0)).x) / d / i;
-          }
+            let brightness = smoothstep(0.0, 0.5, height - p.y);
 
-          o = tanh(o * o / 900.0);
-          return vec4<f32>(vec3(o), 1.0);
+            // Color palette: desert golds and browns
+            let sand = vec3(0.96, 0.75, 0.48);
+            let darker = vec3(0.8, 0.6, 0.3);
+            let sky = vec3(0.7, 0.9, 1.0);
+
+            let color = mix(sky, mix(darker, sand, brightness), step(0.0, p.y));
+
+            return vec4(color, 1.0);
         }
-`,
+        `,
+      });
+
+      const desertVertexModule = device.createShaderModule({
+        code: `
+
+        @vertex
+        fn vs_main(@builtin(vertex_index) vertexIndex: u32) -> @builtin(position) vec4<f32> {
+            var positions = array<vec2<f32>, 6>(
+                vec2(-1.0, -1.0),
+                vec2(1.0, -1.0),
+                vec2(-1.0, 1.0),
+                vec2(-1.0, 1.0),
+                vec2(1.0, -1.0),
+                vec2(1.0, 1.0),
+            );
+            let pos = positions[vertexIndex];
+            return vec4(pos, 0.0, 1.0);
+        }
+        `,
       });
 
       const uniformBuffer = device.createBuffer({
@@ -68,26 +106,11 @@ export const XorGlass = () => {
 
       const pipeline = device.createRenderPipeline({
         vertex: {
-          module: device.createShaderModule({
-            code: `
-              @vertex
-              fn main(@builtin(vertex_index) index: u32) -> @builtin(position) vec4<f32> {
-                var pos = array<vec2<f32>, 6>(
-                  vec2<f32>(-1.0, -1.0),
-                  vec2<f32>(1.0, -1.0),
-                  vec2<f32>(-1.0, 1.0),
-                  vec2<f32>(-1.0, 1.0),
-                  vec2<f32>(1.0, -1.0),
-                  vec2<f32>(1.0, 1.0),
-                );
-                return vec4<f32>(pos[index], 0.0, 1.0);
-              }
-            `,
-          }),
+          module: desertVertexModule,
           entryPoint: "main",
         },
         fragment: {
-          module: shaderModule,
+          module: desertFragmentModule,
           entryPoint: "main",
           targets: [{ format }],
         },

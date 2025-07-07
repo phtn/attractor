@@ -47,6 +47,17 @@
   }
 }
 
+.penta {
+  aspect-ratio: 1.75;
+  --o: calc(280% * tan(-22deg));
+  clip-path: polygon(
+    var(--o) 175%,
+    100% var(--o),
+    calc(100% - var(--o)) 60%,
+    0% calc(200% - var(--o))
+  );
+}
+
 @keyframes enter {
   0% {
     opacity: 0;
@@ -194,8 +205,6 @@
   --color-mac-pink: var(--mac-pink);
   --color-mac-brown: var(--mac-brown);
   --color-mac-gray: var(--mac-gray);
-  /* BOX SHADOWS */
-  --shadow-med-t: var(--shadow-med-t);
   /* ANIMATE */
   --animate-enter: var(--enter);
   --animate-synth: var(--synth);

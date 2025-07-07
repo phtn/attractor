@@ -68,7 +68,7 @@ export const GPUFan = ({ on = false }: GPUFanProps) => {
   // };
 
   return (
-    <div className="flex items-center justify-center size-24">
+    <div className="flex items-center justify-center size-[5.75rem] -mx-2">
       <GPUFanSVG fanSpeed={fanSpeed} fanDirection={fanDirection} isOn={isOn} />
 
       {/* Controls */}

@@ -8,11 +8,10 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
       <AdminSidebar />
       <div className="w-full">
         <Header />
-        <main className="flex-1 flex flex-col px-4">{children}</main>
+        <main className="flex-1 flex flex-col">{children}</main>
       </div>
     </div>
   );
 };
 
 export default AdminLayout;
-
