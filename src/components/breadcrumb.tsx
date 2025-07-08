@@ -27,7 +27,7 @@ export const Breadcrumb = ({ root }: Props) => {
       >
         <Icon name="root-folder" className="size-5" />
       </Link>
-      {pathSegments.slice(2).map((segment, index) => {
+      {pathSegments.slice(1).map((segment, index) => {
         const href = "/" + pathSegments.slice(0, index + 1).join("/");
         const isLast = index === pathSegments.length - 1;
         return (

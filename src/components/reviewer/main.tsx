@@ -4,17 +4,17 @@ import { Stats } from "../webhooks/stats";
 export const ReviewerStats = () => {
   return (
     <div className="px-4 pt-2 inline-flex w-full">
-      <div className="dark:bg-card-origin/40 bg-card text-card-foreground overflow-hidden flex flex-col rounded-xl py-5 shadow-sm dark:inset-shadow-[0_1px_rgb(255_255_255/0.15)] gap-4 w-full">
+      <div className="dark:bg-origin/80 bg-card text-card-foreground overflow-hidden flex flex-col rounded-xl py-5 shadow-sm dark:inset-shadow-[0_1px_rgb(255_255_255/0.15)] gap-4 w-full">
         <div className="flex items-start">
           <Stats />
           <div>
-            <div className="h-1 w-16 bg-orange-200/30 -ml-1.5 rounded-full"></div>
-            <div className="h-1 w-24 bg-void -ml-1.5 rounded-full"></div>
-            <div className="flex flex-1 relative right-2 top-0 border border-slate-200/60 shadow-2xs border-t -space-x-6 h-20 px-0 rounded-tl-xs rounded-tr-xl rounded-b-xl justify-end items-center bg-gray-600 mr-2">
+            <div className="flex flex-1 relative right-2 top-0 border border-slate-200/60 shadow-2xs border-t -space-x-6 h-20 px-0 rounded-bl-xs rounded-e-xl rounded-tl-xl justify-end items-center bg-gray-600 mr-2">
               <GPUFan on={false} suppressHydrationWarning />
               <GPUFan on={true} suppressHydrationWarning />
               <GPUFan on={true} suppressHydrationWarning />
             </div>
+            <div className="h-1.5 w-24 bg-void -ml-1.5 rounded-xs"></div>
+            <div className="h-0.5 w-16 bg-orange-200/40 -ml-0.5"></div>
           </div>
         </div>
       </div>

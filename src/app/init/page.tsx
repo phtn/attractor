@@ -1,14 +1,8 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
-export default function InitPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace("/init/apps");
-  }, [router]);
-
-  return null;
-}
+import { convex } from "@/lib/convex/client";
+import { Content } from "./content";
+import { api } from "@@/api";
+const Page = async () => {
+  const cats = await convex.query(api.cats.get.active);
+  return <Content data={cats} />;
+};
+export default Page;

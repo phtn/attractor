@@ -25,7 +25,7 @@ export const Scene = () => {
                 Vector3
             }
             rotation={
-              [-1.6, rotY, 2.84] as (
+              [-1.6, rotY, 2.64] as (
                 | number
                 | Euler
                 | [

@@ -30,21 +30,21 @@ export const CardImageItem = <T extends CatZod>(props: T) => {
             unoptimized
             alt="thumbnail"
             src="https://media.ed.edmunds-media.com/hyundai/n-vision-74/hero/hyundai_n-vision-74_prf_hero_714221_1280.jpg"
-            className="h-auto md:w-96 w-auto aspect-auto object-cover rounded-b-md rounded-t-3xl shadow-2xs select-none"
+            className="h-auto md:min-w-96 w-auto aspect-auto object-cover rounded-b-md rounded-t-3xl shadow-2xs select-none"
           />
         </CardItem>
-        <div className="flex justify-between items-center px-6 py-4">
+        <div className="flex justify-between items-center px-5 py-3">
           <CardItem
             as="button"
             translateZ={20}
-            className="py-2 font-sans uppercase tracking-tighter rounded-xl dark:text-mask dark:bg-black/0 text-void text-lg font-semibold"
+            className="py-2 font-sans capitalize tracking-tighter rounded-xl dark:text-lime-100 dark:bg-black/0 text-slate-700 md:text-base text-sm font-semibold"
           >
             {props.name}
           </CardItem>
           <CardItem
             as="a"
             translateZ={60}
-            className="px-3 py-2 rounded-lg text-xs font-normal bg-void text-chalk dark:text-white dark:bg-chalk/5"
+            className="px-2 py-1.5 rounded-lg text-sm font-medium bg-mac-red/80 text-white dark:text-white dark:bg-chalk/5"
           >
             enter →
           </CardItem>
