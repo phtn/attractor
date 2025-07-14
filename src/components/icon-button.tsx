@@ -23,11 +23,11 @@ export const IconButton = ({
   loading = false,
   disabled = false,
 }: IconButtonProps) => {
-  const { sfxTick } = useSFX({ playbackRate: 1.25 });
+  const { sfxPopDown: fx } = useSFX({ playbackRate: 0.55, volume: 0.02 });
   const handleClick = useCallback(() => {
-    sfxTick();
+    fx();
     fn();
-  }, [sfxTick, fn]);
+  }, [fx, fn]);
   return (
     <button
       disabled={disabled}

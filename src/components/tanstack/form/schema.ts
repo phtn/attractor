@@ -58,6 +58,7 @@ export interface BaseFieldConfig {
   autoComplete?: string;
   validators?: Record<string, FieldValidator>;
   className?: string;
+  hint?: string;
 }
 
 // Text field config

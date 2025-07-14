@@ -9,10 +9,23 @@ import { useActionState, useCallback, useMemo } from "react";
 import { Cat, CatSchema } from "vx/cats/d";
 import { api } from "@@/api";
 import { handleAsync } from "@/utils/async-handler";
+import { cn } from "@/lib/utils";
 
 interface NewCatFormProps {
   onSuccess?: () => void;
 }
+
+const hints: Record<keyof Cat, string> = {
+  name: "Name of the Category",
+  href: "Route / pathname of category",
+  icon: "Icon name",
+  tags: "Meta tags and other labels",
+  desc: "Brief description of the category",
+  slug: "slug including '/'",
+  image: "Image url",
+  style: "Tailwind styling",
+  active: "Live status of category",
+};
 
 export function NewCatForm({ onSuccess }: NewCatFormProps) {
   const initialState = {} as Cat;
@@ -58,7 +71,8 @@ export function NewCatForm({ onSuccess }: NewCatFormProps) {
               label={props.label}
               required={props.required}
               autoComplete={props.autoComplete}
-              className="bg-super-fade dark:bg-neutral-600/60"
+              hint={props.hint}
+              className="bg-super-fade dark:bg-neutral-600/60 border dark:border-zinc-400"
             />
           )}
         </form.AppField>
@@ -96,6 +110,7 @@ export function NewCatForm({ onSuccess }: NewCatFormProps) {
         type: type,
         required: isRequired,
         autoComplete: "off", // Default autocomplete
+        hint: hints[key],
       };
     });
     const excludedKeys = ["cid", "created_at", "updated_at", "created_by"];
@@ -116,21 +131,28 @@ export function NewCatForm({ onSuccess }: NewCatFormProps) {
         <form.SubmitButton
           title="Create"
           pending={pending}
-          className="bg-ultra-fade border-none text-panel rounded-none h-12 flex-1 size-full dark:text-white text-sm font-sans tracking-tight font-medium"
+          className={cn(
+            "dark:bg-background text-panel rounded-none h-12 flex-1 size-full dark:text-lime-200 font-sans tracking-tight font-medium",
+          )}
         />
       </form.AppForm>
     ),
     [form, pending],
   );
   return (
-    <form action={action} className="space-y-4">
+    <form
+      action={action}
+      className="rounded-lg dark:bg-void/20 dark:border-origin/60 shadow-inner border px-4 space-y-10 py-5"
+    >
       <HyperList
         data={cats}
         delay={0.5}
-        container="lg:space-y-5 space-y-2 grid grid-rows-2 gap-x-4"
+        container="lg:space-y-10 space-y-2 grid grid-rows-2 gap-x-4"
         component={FormField}
       />
-      <Submit />
+      <div className="h-20 rounded-xl overflow-hidden">
+        <Submit />
+      </div>
     </form>
   );
 }

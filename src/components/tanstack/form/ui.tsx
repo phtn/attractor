@@ -31,7 +31,7 @@ export const SubmitButton = ({
       type="submit"
       disabled={pending || isSubmitted}
       className={cn(
-        "w-32 h-12 bg-panel dark:bg-hot-dark border-panel",
+        "w-32 h-12 border bg-panel dark:bg-hot-dark border-panel",
         "border-[0.33px] cursor-pointer rounded-full",
         "flex flex-row items-center justify-center",
         "text-[15px] font-semibold font-quick text-white",
