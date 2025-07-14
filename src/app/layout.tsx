@@ -1,6 +1,12 @@
 import { ProvidersCtxProvider } from "@/ctx";
 import type { Metadata } from "next";
-import { Fira_Mono, Geist, Geist_Mono, Space_Mono } from "next/font/google";
+import {
+  Oxanium,
+  Fira_Mono,
+  Geist,
+  Geist_Mono,
+  Space_Mono,
+} from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,9 +24,15 @@ const jet = Fira_Mono({
   weight: ["400"],
   subsets: ["latin"],
 });
+
 const space = Space_Mono({
   variable: "--font-space",
   weight: ["400"],
+  subsets: ["latin"],
+});
+const ox = Oxanium({
+  variable: "--font-ox",
+  weight: ["400", "600"],
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
@@ -37,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${jet.variable} ${space.variable} antialiased`}
+        className={`${ox.variable} ${geistSans.variable} ${geistMono.variable} ${jet.variable} ${space.variable} antialiased`}
       >
         <ProvidersCtxProvider>{children}</ProvidersCtxProvider>
       </body>

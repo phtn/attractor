@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { HyperButton } from "@/components/hyper";
 import { Label } from "@/components/ui/label";
 import {
   Pagination,
@@ -7,18 +7,12 @@ import {
 } from "@/components/ui/pagination";
 import { Select } from "@/components/ui/select";
 import {
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@radix-ui/react-select";
 import { PaginationState } from "@tanstack/react-table";
-import {
-  ChevronFirstIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronLastIcon,
-} from "lucide-react";
 import { useId } from "react";
 import { type PaginationCtrl } from "./cats-table";
 
@@ -38,9 +32,15 @@ export const Paginator = ({
   return (
     <div className="flex items-center justify-between gap-8">
       {/* Results per page */}
-      <div className="flex items-center gap-3">
-        <Label htmlFor={id} className="max-sm:sr-only">
-          Rows per page
+      <div className="flex items-center ">
+        <Label
+          htmlFor={id}
+          className="max-sm:sr-only space-x-2 font-mono text-muted-foreground tracking-tight"
+        >
+          <span className="font-semibold rounded-sm bg-muted dark:bg-zinc-400/10 py-0.5 px-2">
+            {rowCount}
+          </span>
+          <span>items</span>
         </Label>
         <Select value={state.pageSize.toString()} onValueChange={setPageSize}>
           <SelectTrigger id={id} className="w-fit whitespace-nowrap">
@@ -58,7 +58,7 @@ export const Paginator = ({
       {/* Page number information */}
       <div className="text-muted-foreground flex grow justify-end text-sm whitespace-nowrap">
         <p
-          className="text-muted-foreground text-sm whitespace-nowrap"
+          className="hidden text-muted-foreground text-sm whitespace-nowrap"
           aria-live="polite"
         >
           <span className="text-foreground">
@@ -76,8 +76,18 @@ export const Paginator = ({
       <div>
         <Pagination>
           <PaginationContent>
-            {/* First page button */}
             <PaginationItem>
+              <HyperButton
+                icon="chevron-right"
+                className="disabled:pointer-events-none size-8 disabled:opacity-50"
+                fn={pageCtrl.gotoNext}
+                disabled={pageCtrl.disabledNext}
+                aria-label="Go to next page"
+                iconStyle="size-5"
+              />
+            </PaginationItem>
+            {/* First page button */}
+            {/* <PaginationItem>
               <Button
                 size="icon"
                 variant="outline"
@@ -88,9 +98,9 @@ export const Paginator = ({
               >
                 <ChevronFirstIcon size={16} aria-hidden="true" />
               </Button>
-            </PaginationItem>
+            </PaginationItem> */}
             {/* Previous page button */}
-            <PaginationItem>
+            {/* <PaginationItem>
               <Button
                 size="icon"
                 variant="outline"
@@ -101,22 +111,11 @@ export const Paginator = ({
               >
                 <ChevronLeftIcon size={16} aria-hidden="true" />
               </Button>
-            </PaginationItem>
+            </PaginationItem> */}
             {/* Next page button */}
-            <PaginationItem>
-              <Button
-                size="icon"
-                variant="outline"
-                className="disabled:pointer-events-none disabled:opacity-50"
-                onClick={pageCtrl.gotoNext}
-                disabled={pageCtrl.disabledNext}
-                aria-label="Go to next page"
-              >
-                <ChevronRightIcon size={16} aria-hidden="true" />
-              </Button>
-            </PaginationItem>
+
             {/* Last page button */}
-            <PaginationItem>
+            {/* <PaginationItem>
               <Button
                 size="icon"
                 variant="outline"
@@ -127,7 +126,7 @@ export const Paginator = ({
               >
                 <ChevronLastIcon size={16} aria-hidden="true" />
               </Button>
-            </PaginationItem>
+            </PaginationItem> */}
           </PaginationContent>
         </Pagination>
       </div>

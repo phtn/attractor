@@ -252,19 +252,19 @@ export const traverseFS = `
         o=tanh(o*o);
       */
 
-      for (var i = 0u; i < 16u; i = i + 1u) {
+      for (var i = 0u; i < 18u; i = i + 1u) {
           p = z * rayDir;
-          p.z += t * 0.75;
-          p = vec3(p.x * 0.6, p.y * 0.4, p.z);
-          let wave = sin(p + sin(p * 7.) / 4.);
+          p.z += t * 0.25;
+          p = vec3(p.x * 0.75, p.y * 0.4, p.z);
+          let wave = sin(p + sin(p * 7.) / 4.5);
           let shape = dot(cos(p / 0.6), wave.zyx);
           let d = abs(shape * 0.4 + p.y / 0.7 + 0.7);
 
-          let stepSize = max(d, 0.1);
+          let stepSize = max(d, 0.02);
 
-          let colMod = cos(p.y * (0.6 + 0.03 * z) + vec3(6.0, 5.0, 4.8)) + vec3(1.);
-          let safeZ = max(z, 0.001);
-          col += colMod * stepSize / safeZ / 6.;
+          let colMod = cos(p.y * (0.6 + 0.14 * z) + vec3(6.0, 5.0, 4.8)) + vec3(1.);
+          let safeZ = max(z, 0.01);
+          col += colMod * stepSize / safeZ / 7.5;
           z += stepSize;
 
           if (z > 100.0) {

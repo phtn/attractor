@@ -123,7 +123,7 @@ export default function GestureSwitch() {
                 {[0, 1].map((i) => (
                   <motion.div
                     key={i}
-                    className={`dark:w-0.5 dark:h-2.5 w-5 h-px rounded-full dark:bg-cream/60 bg-zinc-500/80`}
+                    className={`dark:w-0.5 dark:h-2.5 w-1 h-3 rounded-full dark:bg-cream/60 bg-zinc-500/60`}
                     animate={{
                       opacity: (isDark ? 1 - i : i) === 1 ? 0.95 : 0.2,
                       scaleY: (isDark ? 1 - i : i) === 1 ? 1.2 : 0.8,

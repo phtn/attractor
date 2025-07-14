@@ -12,6 +12,7 @@ interface IconButtonProps {
   iconStyle?: ClassName;
   className?: ClassName;
   loading?: boolean;
+  disabled?: boolean;
 }
 export const IconButton = ({
   fn,
@@ -20,6 +21,7 @@ export const IconButton = ({
   iconStyle,
   solid = false,
   loading = false,
+  disabled = false,
 }: IconButtonProps) => {
   const { sfxTick } = useSFX({ playbackRate: 1.25 });
   const handleClick = useCallback(() => {
@@ -28,6 +30,7 @@ export const IconButton = ({
   }, [sfxTick, fn]);
   return (
     <button
+      disabled={disabled}
       onClick={handleClick}
       className={cn(
         "group/btn inline-flex items-center justify-center whitespace-nowrap bg-card p-0",

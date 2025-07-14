@@ -26,7 +26,7 @@ export const ColumnVisibility = ({ cols }: Props) => {
           return (
             <DropdownMenuCheckboxItem
               key={column.id}
-              className="capitalize"
+              className="uppercase text-xs"
               checkStyles="dark:text-cyan-200"
               checked={column.getIsVisible()}
               onCheckedChange={(value) => column.toggleVisibility(!!value)}

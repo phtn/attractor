@@ -10,10 +10,12 @@ import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { handleAsync } from "@/utils/async-handler";
+import { useSFX } from "@/hooks/use-sfx";
 
 export function Header() {
   const [loading, setLoading] = useState(false);
   const { setSfxState } = useSFXCtx();
+  const { sfxTech: sfx } = useSFX({});
   const router = useRouter();
   const handleRoute = useCallback(
     (path: string) => () => {
@@ -40,6 +42,8 @@ export function Header() {
       console.error(error);
     }
   }, [signIn]);
+
+  const fx = useCallback(() => sfx({ playbackRate: 2 }), [sfx]);
 
   return (
     <header className="flex items-center justify-between md:py-4 py-2 w-full max-w-7xl mx-auto">
@@ -73,6 +77,12 @@ export function Header() {
           icon="voice-message"
           iconStyle="size-6"
           fn={setSfxState}
+        />
+        <IconButton
+          solid
+          icon="code-one"
+          iconStyle="size-5 text-sky-400"
+          fn={fx}
         />
         <GestureSwitch />
       </div>

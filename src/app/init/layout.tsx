@@ -5,7 +5,7 @@ import { Header } from "./_c_/header";
 
 export default function InitLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="md:h-screen h-fit bg-radial-[at_0%_80%] dark:bg-gradient-to-b from-chalk to-emerald-50/80 dark:from-zinc-400 dark:via-zinc-300 dark:via-80% dark:to-zinc-700 dark:to-90% flex flex-col w-screen">
+    <div className="md:h-screen h-fit bg-radial-[at_20%_80%] dark:bg-gradient-to-b from-sky-100 to-cyan-300/10 dark:from-zinc-400 dark:via-zinc-300 dark:via-80% dark:to-zinc-700 dark:to-90% flex flex-col w-screen">
       <Header />
       <BreadCrumbs />
       <main className="relative h-[calc(80lvh)]">

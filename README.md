@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# re-up.ph
 
-## Getting Started
+### web app 2025
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+timestamp ⸬ Mon Jul 14, 2025 20:34:23 pm - +08:00
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Categories
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Apps
+2. Services
 
-## Learn More
+   a. **_rues_**
 
-To learn more about Next.js, take a look at the following resources:
+   > **rues** is an end-to-end (e2e) encryption service
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   b. jwts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   > **jwts** is a JSON Web Token service
 
-## Deploy on Vercel
+3. Products
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   a. Invoicing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   > **Send custom invoices** with a payment link.
+
+   b. FRNG
+
+   > **FRNG** Provably Fair Random Number Generator for online games.
+
+- Libraries
+
+  - Paymongo
+  - Xendit
+  - UBP
+
+- Guides
+
+  - Payments
+
+- DevTools
+  - Color Blender
+  - Snippets
+  - Converters

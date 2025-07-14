@@ -51,6 +51,7 @@
         "cmdk": "^1.1.1",
         "cobe": "^0.6.4",
         "convex": "^1.25.2",
+        "date-fns": "^4.1.0",
         "dotenv": "^16.6.1",
         "effect": "^3.16.13",
         "embla-carousel-react": "^8.6.0",
