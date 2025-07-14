@@ -50,3 +50,15 @@ export const checkUser = async <DB extends GenericDatabaseWriter<DataModel>>(
     .query("users")
     .withIndex("by_uid", (q) => q.eq("uid", uid))
     .first();
+
+export const findUserByEmail = async <
+  DB extends GenericDatabaseWriter<DataModel>,
+>(
+  db: DB,
+  email: string | undefined,
+) =>
+  email &&
+  (await db
+    .query("users")
+    .withIndex("by_email", (q) => q.eq("email", email))
+    .first());

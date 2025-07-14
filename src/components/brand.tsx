@@ -48,7 +48,7 @@ export const Brand = ({ label, dark = false }: Props) => (
           className={cn(
             "text-mac-gray font-sans translate-y-px md:-pb-2 flex capitalize space-x-1.5 relative z-2",
             "transition-transform duration-500 ease-[cubic-bezier(0,0.55,0.45,1)]",
-            "group-hover/logo:translate-y-0.5 group-hover/logo:drop-shadow-xs",
+            "group-hover/logo:translate-y-px group-hover/logo:drop-shadow-xs",
             "text-slate-600 dark:text-slate-700 group-hover/logo:text-slate-500",
             {
               "dark:text-cyan-200 font-mono font-light md:text-lg tracking-tight capitalize":

@@ -5,10 +5,12 @@ import { Header } from "./_c_/header";
 
 export default function InitLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="md:h-screen h-fit bg-radial-[at_30%_30%] from-chalk to-emerald-50/80 dark:from-foreground/70 dark:to-origin/30 flex flex-col w-screen">
+    <div className="md:h-screen h-fit bg-radial-[at_0%_80%] dark:bg-gradient-to-b from-chalk to-emerald-50/80 dark:from-zinc-400 dark:via-zinc-300 dark:via-80% dark:to-zinc-700 dark:to-90% flex flex-col w-screen">
       <Header />
       <BreadCrumbs />
-      <main className="relative z-10 w-full max-w-7xl mx-auto">{children}</main>
+      <main className="relative h-[calc(80lvh)]">
+        <div className=" z-10 w-full max-w-7xl mx-auto">{children}</div>
+      </main>
       <FootGL />
     </div>
   );

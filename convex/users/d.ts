@@ -11,9 +11,8 @@ const BalanceSchema = v.object({
   amount: v.float64(),
 });
 
-export const MetadataSchema = v.optional(
-  v.array(v.record(v.string(), v.any())),
-);
+export const MetadataSchema =
+  v.optional(v.array(v.record(v.string(), v.any()))) || null;
 export type Metadata = Infer<typeof MetadataSchema>;
 
 export const UserMetadataSchema = v.optional(
@@ -47,18 +46,18 @@ export const CreateUserSchema = v.object({
 
 export const UserSchema = v.object({
   balance: BalanceSchema,
-  contact: ContactSchema,
+  contact: v.optional(ContactSchema),
   uid: v.string(),
-  accountId: v.string(),
-  email: v.string(),
-  username: v.string(),
-  fullname: v.string(),
-  photoUrl: v.string(),
-  phone: v.string(),
+  accountId: v.optional(v.string()),
+  email: v.optional(v.string()),
+  username: v.optional(v.string()),
+  fullname: v.optional(v.string()),
+  photoUrl: v.optional(v.string()),
+  phone: v.optional(v.string()),
   emailVerified: v.boolean(),
   // userMetadata: UserMetadataSchema,
-  metadata: MetadataSchema,
-  location: v.string(),
+  metadata: v.optional(MetadataSchema),
+  location: v.optional(v.string()),
   updated_at: v.float64(),
   created_at: v.float64(),
 });

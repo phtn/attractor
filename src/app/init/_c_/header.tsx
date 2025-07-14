@@ -7,9 +7,12 @@ import { Input } from "@/components/ui/input";
 import { useSFXCtx } from "@/ctx/sfx-ctx";
 import { onSuccess } from "@/ctx/toast-ctx";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { handleAsync } from "@/utils/async-handler";
 
 export function Header() {
+  const [loading, setLoading] = useState(false);
   const { setSfxState } = useSFXCtx();
   const router = useRouter();
   const handleRoute = useCallback(
@@ -18,10 +21,25 @@ export function Header() {
     },
     [router],
   );
+  const { signIn } = useAuthActions();
+  const onSignin = useCallback(async () => {
+    setLoading(true);
+    const { data, error } = await handleAsync(signIn)("github", {
+      redirectTo: "/init",
+    });
 
-  const handleToast = useCallback(() => {
-    onSuccess("Successful");
-  }, []);
+    if (!!data?.signingIn) {
+      if (!data.signingIn) {
+        setLoading(false);
+        console.log(data);
+        onSuccess("You're signed in!");
+      }
+    }
+
+    if (error) {
+      console.error(error);
+    }
+  }, [signIn]);
 
   return (
     <header className="flex items-center justify-between md:py-4 py-2 w-full max-w-7xl mx-auto">
@@ -43,7 +61,13 @@ export function Header() {
           iconStyle="size-4"
           fn={handleRoute("/reviewer")}
         />
-        <IconButton solid icon="warning" iconStyle="size-4" fn={handleToast} />
+        <IconButton
+          solid
+          icon="github"
+          loading={loading}
+          iconStyle="size-4"
+          fn={onSignin}
+        />
         <IconButton
           solid
           icon="voice-message"

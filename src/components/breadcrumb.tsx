@@ -15,17 +15,17 @@ export const Breadcrumb = ({ root }: Props) => {
   return (
     <nav className="flex items-center font-sans lowercase">
       <Link
-        href="/"
+        href={root ?? "/init"}
         className={cn(
-          "",
-          "text-muted-foreground hover:text-mac-blue",
-          "dark:hover:text-white dark:text-lime-50",
+          "w-5 h-4 flex items-center justify-center overflow-visible rounded transition-colors duration-300",
+          "text-muted-foreground hover:bg-mac-red/80 hover:text-white",
+          "dark:border-0 dark:border-white/60 backdrop-blur-3xl dark:hover:bg-origin/80 dark:bg-mac-gray dark:text-lime-50 dark:hover:text-white ",
           {
             "": root,
           },
         )}
       >
-        <Icon name="root-folder" className="size-5" />
+        <Icon name="root-folder" className="size-6 shrink-0" />
       </Link>
       {pathSegments.slice(1).map((segment, index) => {
         const href = "/" + pathSegments.slice(0, index + 1).join("/");
@@ -34,24 +34,28 @@ export const Breadcrumb = ({ root }: Props) => {
           <div key={href} className="flex items-center space-x-2 first:hidden">
             <Icon
               solid
-              size={10}
               name="slash-forward"
-              className="ml-2 text-muted-foreground dark:text-origin"
+              className="ml-4 size-3 text-muted-foreground dark:text-origin"
             />
             <Link
-              href={href}
+              href={pathSegments.pop() === segment ? "#" : href}
               className={cn(
-                "font-semibold text-muted-foreground flex items-center underline-offset-2",
-                "dark:text-origin leading-none tracking-tight",
+                "flex items-center leading-none px-2",
+                " underline-offset-6 decoration-[0.70px] decoration-transparent",
+                "transition-colors duration-500 animate-out:delay-200",
+                "text-slate-500 dark:text-slate-700",
+                "hover:text-slate-600",
                 {
-                  "hover:underline hover:decoration-mac-blue dark:hover:decoration-lime-50 dark:hover:text-void":
+                  "hover:underline hover:decoration-mac-red/80 dark:hover:decoration-origin dark:hover:text-lime-50":
                     !isLast,
-                  "text-mac-blue dark:text-void dark:bg-lime-50/50 backdrop-blur-xl px-1 py-0.5 rounded-md":
+                  "text-mac-red dark:text-void dark:bg-lime-50/50 backdrop-blur-xl px-1 py-0.5 rounded-md":
                     isLast,
                 },
               )}
             >
-              <span className="">{segment}</span>
+              <span className="font-medium font-sans tracking-tight">
+                {segment}
+              </span>
             </Link>
           </div>
         );

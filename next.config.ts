@@ -1,13 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  hostname: ["media.ed.edmunds-media.com"],
   images: {
     remotePatterns: [
       {
+        hostname: "https://media.ed.edmunds-media.com",
         protocol: "https",
-        hostname: "media.ed.edmunds-media.com",
-        port: "",
         pathname: "/**",
       },
     ],

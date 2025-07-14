@@ -2,8 +2,10 @@ import { defineSchema, defineTable } from "convex/server";
 import { UserSchema } from "vx/users/d";
 import { CategorySchema } from "./categories/d";
 import { CatSchema } from "./cats/d";
+import { authTables } from "@convex-dev/auth/server";
 
 export default defineSchema({
+  ...authTables,
   /// == USERS ==
   users: defineTable(UserSchema)
     .index("by_uid", ["uid"])
