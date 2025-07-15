@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Cell,
   Column,
@@ -35,6 +33,7 @@ import {
 } from "@/components/ui/table";
 import { Icon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import { Cat } from "vx/cats/d";
 import { ColumnVisibility } from "./col-visibility";
 import { FilterSearch } from "./filter-search";
@@ -43,7 +42,6 @@ import { HeaderSorter } from "./header-sorter";
 import { MoreOptions } from "./more-options";
 import { Paginator } from "./pagination";
 import { RowActions } from "./row-actions";
-import { format } from "date-fns";
 
 // type Item = {
 //   id: string;
@@ -72,30 +70,9 @@ const statusFilterFn: FilterFn<Cat> = (
   return filterValue.includes(status);
 };
 
-const columns: ColumnDef<Cat>[] = [
-  // {
-  //   id: "select",
-  //   header: ({ table }) => (
-  //     <Checkbox
-  //       checked={
-  //         table.getIsAllPageRowsSelected() ||
-  //         (table.getIsSomePageRowsSelected() && "indeterminate")
-  //       }
-  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //       aria-label="Select all"
-  //     />
-  //   ),
-  //   cell: ({ row }) => (
-  //     <Checkbox
-  //       checked={row.getIsSelected()}
-  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //       aria-label="Select row"
-  //     />
-  //   ),
-  //   size: 28,
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
+const createColumns = (
+  onEditCategory: (category: Cat) => void,
+): ColumnDef<Cat>[] => [
   {
     header: "Name",
     accessorKey: "name",
@@ -132,6 +109,7 @@ const columns: ColumnDef<Cat>[] = [
     size: 100,
     filterFn: multiColumnFilterFn,
     enableHiding: true,
+    enableSorting: true,
   },
   {
     header: "Status",
@@ -148,6 +126,7 @@ const columns: ColumnDef<Cat>[] = [
     ),
     size: 80,
     filterFn: statusFilterFn,
+    enableSorting: true,
   },
 
   // {
@@ -188,6 +167,7 @@ const columns: ColumnDef<Cat>[] = [
       );
     },
     size: 180,
+    enableSorting: true,
   },
   {
     header: "cid",
@@ -212,7 +192,7 @@ const columns: ColumnDef<Cat>[] = [
         />
       </div>
     ),
-    cell: ({ row }) => <RowActions row={row} />,
+    cell: ({ row }) => <RowActions row={row} onEditCategory={onEditCategory} />,
     size: 0,
     enableHiding: false,
   },
@@ -221,7 +201,10 @@ const columns: ColumnDef<Cat>[] = [
 interface CatsTableProps<T extends Cat> {
   data: T[];
   create: boolean;
+  edit: boolean;
+  editingRowId: string | null;
   toogleForm: VoidFunction;
+  toggleEditForm: (category?: Cat) => void;
 }
 
 export interface PaginationCtrl {
@@ -233,11 +216,14 @@ export interface PaginationCtrl {
   gotoLast: VoidFunction;
 }
 
-export default function CatsTable<T extends Cat>({
+export const CatsTable = <T extends Cat>({
   data,
   create,
   toogleForm,
-}: CatsTableProps<T>) {
+  edit,
+  editingRowId,
+  toggleEditForm,
+}: CatsTableProps<T>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [pagination, setPagination] = useState<PaginationState>({
@@ -262,6 +248,11 @@ export default function CatsTable<T extends Cat>({
     setData(updatedData);
     table.resetRowSelection();
   };
+
+  const columns = useMemo(
+    () => createColumns(toggleEditForm),
+    [toggleEditForm],
+  );
 
   const table = useReactTable({
     data,
@@ -372,7 +363,7 @@ export default function CatsTable<T extends Cat>({
       className={cn(
         "flex w-full transition-[max-width] duration-500 ease-in xl:max-w-[calc(82lvw)] md:max-w-[100lvw]",
         {
-          "xl:max-w-[calc(100lvw-42vw)] gap-4": create,
+          "xl:max-w-[calc(100lvw-42vw)] gap-4": create || edit,
         },
       )}
     >
@@ -405,7 +396,7 @@ export default function CatsTable<T extends Cat>({
               className={cn(
                 "ml-auto translate-x-0 delay-200 ease-[cubic-bezier(0.87,0,0.13,1)] duration-500",
                 {
-                  "translate-x-40": create,
+                  "translate-x-40": create || edit,
                 },
               )}
               label="Add Category"
@@ -444,7 +435,11 @@ export default function CatsTable<T extends Cat>({
             </TableHeader>
 
             <TableBody>
-              {tableRows.length ? tableRows.map(renderRow) : <EmptyTable />}
+              {tableRows.length ? (
+                tableRows.map((row) => renderRow(row, editingRowId))
+              ) : (
+                <EmptyTable colSpan={columns.length} />
+              )}
             </TableBody>
           </Table>
         </div>
@@ -459,37 +454,55 @@ export default function CatsTable<T extends Cat>({
       </HyperCard>
     </div>
   );
-}
+};
 
-const renderRow = <T,>(row: Row<T>) => (
-  <TableRow
-    key={row.id}
-    data-state={row.getIsSelected() && "selected"}
-    className={cn(
-      "h-14 overflow-hidden dark:border-card-origin peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background",
-      "transition-colors duration-300",
-    )}
-  >
-    {row.getVisibleCells().map(renderCell)}
-  </TableRow>
-);
+const renderRow = <T extends Cat & { _id: string }>(
+  row: Row<T>,
+  editingRowId: string | null,
+) => {
+  const isEditing = editingRowId === row.getValue("cid");
 
-const renderCell = <TData, TValue>(cell: Cell<TData, TValue>) => (
+  return (
+    <TableRow
+      key={row.id}
+      data-state={row.getIsSelected() && "selected"}
+      className={cn(
+        "h-14 overflow-hidden dark:border-card-origin peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background",
+        "transition-colors duration-300",
+        {
+          // Apply editing styles - same as hover but persistent
+          "bg-mac-blue/5 dark:bg-sky-600/40 last:rounded-tr-2xl": isEditing,
+        },
+      )}
+    >
+      {row.getVisibleCells().map((cell) => renderCell(cell, isEditing))}
+    </TableRow>
+  );
+};
+
+const renderCell = <TData, TValue>(
+  cell: Cell<TData, TValue>,
+  isEditing: boolean,
+) => (
   <TableCell
     key={cell.id}
     className={cn(
       "last:py-0 group-hover/row:first:rounded-l-lg group-hover/row:last:rounded-r-lg overflow-hidden dark:group-hover/row:bg-chalk-100/5",
       "transition-colors duration-300",
+      {
+        // Apply editing cell styles - same as hover but persistent
+        "first:rounded-l-lg last:rounded-r-lg dark:bg-chalk-100/5": isEditing,
+      },
     )}
   >
     {flexRender(cell.column.columnDef.cell, cell.getContext())}
   </TableCell>
 );
 
-const EmptyTable = () => (
+const EmptyTable = ({ colSpan }: { colSpan: number }) => (
   <TableRow>
     <TableCell
-      colSpan={columns.length}
+      colSpan={colSpan}
       className="h-24 text-center rounded-xl font-space text-muted-foreground"
     >
       No results.

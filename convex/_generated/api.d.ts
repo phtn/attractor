@@ -20,6 +20,7 @@ import type * as categories_get from "../categories/get.js";
 import type * as cats_create from "../cats/create.js";
 import type * as cats_d from "../cats/d.js";
 import type * as cats_get from "../cats/get.js";
+import type * as cats_update from "../cats/update.js";
 import type * as http from "../http.js";
 import type * as users_create from "../users/create.js";
 import type * as users_d from "../users/d.js";
@@ -41,6 +42,7 @@ declare const fullApi: ApiFromModules<{
   "cats/create": typeof cats_create;
   "cats/d": typeof cats_d;
   "cats/get": typeof cats_get;
+  "cats/update": typeof cats_update;
   http: typeof http;
   "users/create": typeof users_create;
   "users/d": typeof users_d;

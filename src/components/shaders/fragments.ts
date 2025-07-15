@@ -230,7 +230,14 @@ export const traverseFS = `
   fn fs_main(input: VertexOutput) -> @location(0) vec4<f32> {
       let uv = input.uv;
       let iResolution = vec2(1280.0, 720.0);
-      let aspect = iResolution.x / iResolution.y;
+      var aspect = f32(0.0);
+
+      if (iResolution.x > iResolution.y){
+        aspect = iResolution.x / iResolution.y;
+      } else {
+        aspect = iResolution.x/6 ;
+      };
+
       let coord = vec2(uv.x * 2.0 - 1.0, uv.y * 3.0 - 1.0);
       let screen = vec2(coord.x * aspect, coord.y);
       let rayDir = normalize(vec3(screen, 1));
@@ -240,15 +247,9 @@ export const traverseFS = `
       var p = vec3(0.0);
       /*
      vec3 p;
-     for(float i,z,d;
-        i++<2e1;
-        o+=(cos(p.y/(.1+.05*z)+
-        vec4(6,5,4,0))+1.)*d/z/7.)
-        p=z*normalize(FC.rgb*2.-r.xyy),
-        p.z-=t,p.xy*=.4,
-        z+=d=(dot(cos(p/.6),
-        sin(p+sin(p*7.)/4.).zyx)
-        *.4+p.y/.7+.7);
+     for(float i,z,d; |> i++<2e1; |> o+=(cos(p.y/(.1+.05*z) + vec4(6,5,4,0))+1.)*d/z/7.)
+        p=z*normalize(FC.rgb*2.-r.xyy), |> p.z-=t,p.xy*=.4, |> z+=d=(dot(cos(p/.6),
+        sin(p+sin(p*7.)/4.).zyx) * .4+p.y/.7+.7);
         o=tanh(o*o);
       */
 
@@ -262,7 +263,7 @@ export const traverseFS = `
 
           let stepSize = max(d, 0.02);
 
-          let colMod = cos(p.y * (0.6 + 0.14 * z) + vec3(6.0, 5.0, 4.8)) + vec3(1.);
+          let colMod = cos(p.y * (0.6 + 0.5 * z) + vec3(6.0, 5.0, 4.8)) + vec3(1.);
           let safeZ = max(z, 0.01);
           col += colMod * stepSize / safeZ / 7.5;
           z += stepSize;

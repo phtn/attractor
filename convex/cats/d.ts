@@ -3,6 +3,8 @@ import { Infer } from "next/dist/compiled/superstruct";
 
 export const CatSchema = v.object({
   cid: v.optional(v.string()),
+  grp: v.optional(v.string()),
+  col: v.optional(v.string()),
   name: v.optional(v.string()),
   href: v.optional(v.string()),
   icon: v.optional(v.string()),

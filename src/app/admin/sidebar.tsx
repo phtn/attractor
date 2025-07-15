@@ -31,7 +31,7 @@ export const AdminSidebar = () => {
         label: "icons",
         name: "icons",
         value: Object.keys(icons).length,
-        icon: "icons",
+        icon: "px-checkbox",
       },
       {
         label: "images",
@@ -79,11 +79,11 @@ export const AdminSidebar = () => {
           <SectionHeader label="general" />
           <SectionContainer expanded={expandedSections.pages}>
             <SectionTrigger
-              label="pages"
-              fn={toggleSection("pages")}
               name="pages"
+              label="pages"
+              icon="px-file"
               expanded={expandedSections.pages}
-              icon="tsx-solid"
+              fn={toggleSection("pages")}
             />
 
             <SectionBody expanded={expandedSections.pages}>
@@ -120,18 +120,18 @@ export const AdminSidebar = () => {
             {/* Components Section */}
             <div className="">
               <SectionTrigger
-                label="lists"
-                fn={toggleSection("lists")}
                 name="lists"
-                expanded={expandedSections.lists}
+                label="lists"
                 icon="px-rows"
+                expanded={expandedSections.lists}
+                fn={toggleSection("lists")}
               />
 
               <SectionBody expanded={expandedSections.lists}>
                 <HyperList
                   data={lists}
-                  component={SubSectionItem}
                   disableAnimation
+                  component={SubSectionItem}
                 />
               </SectionBody>
             </div>
@@ -172,8 +172,8 @@ interface ISectionBody {
 const SectionContainer = ({ expanded, children }: ISectionBody) => (
   <div
     className={cn(
-      "rounded-lg border border-mac-gray/30 overflow-hidden",
-      "dark:bg-origin/30",
+      "rounded-lg border border-slate-300 overflow-hidden",
+      "dark:bg-origin/30 dark:border-origin",
       {
         "dark:bg-origin/80 hover:bg-mac-gray/20 bg-mac-gray/30": expanded,
       },
@@ -194,31 +194,37 @@ const SectionTrigger = ({ expanded, label, fn, icon }: ISectionItem) => (
   <Button
     variant="ghost"
     className={cn(
-      "flex h-auto w-full justify-between md:ps-3 md:pe-1.5 md:py-2.5 ps-3 pe-1.5",
+      "flex h-auto w-full justify-between md:ps-2.5 md:pe-1.5 md:py-2.5 ps-3 pe-1.5",
       "transition-colors duration-300",
       "hover:bg-mac-gray/20 dark:bg-origin/50 dark:hover:bg-background/50",
       {
-        "dark:bg-origin/50 hover:bg-mac-gray/15": expanded,
+        "dark:bg-origin/50 hover:bg-slate-200 bg-zinc-200": expanded,
       },
     )}
     onClick={fn}
   >
     <div className="flex items-center w-full capitalize gap-2">
-      <Icon name={icon} solid className="md:size-5 size-3.5 text-foreground" />
+      <Icon
+        solid
+        name={icon}
+        className="md:size-5 size-3.5 text-muted-foreground"
+      />
       <span className="tracking-tight">{label}</span>
     </div>
     <Icon
       solid
       name="px-chevrons-vertical"
-      className={cn("size-5 text-mac-gray", { "text-foreground": expanded })}
+      className={cn("size-5 dark:text-lime-100 text-mac-gray", {
+        "text-foreground": expanded,
+      })}
     />
   </Button>
 );
 
 interface ISubSectionItem {
-  section: string;
-  label: string;
   path: string;
+  label: string;
+  section: string;
 }
 const SubSectionItem = ({ label, section, path }: ISubSectionItem) => {
   const route = useMemo(() => `/admin/${section}/${path}`, [section, path]);
@@ -227,7 +233,6 @@ const SubSectionItem = ({ label, section, path }: ISubSectionItem) => {
   const isActive = pathname === route;
 
   const onClick = useCallback(() => {
-    console.log(route);
     router.push(route);
   }, [route, router]);
   //
@@ -237,8 +242,7 @@ const SubSectionItem = ({ label, section, path }: ISubSectionItem) => {
       onClick={onClick}
       className={cn(
         "group rounded-none w-full h-auto flex items-end justify-start",
-        "md:text-sm text-xs",
-        "border-t border-mac-gray p-2.5",
+        "md:text-sm text-xs border-t border-slate-400/60 p-2.5",
         "dark:hover:bg-background/80 dark:bg-background/80 bg-[#FFFEF9] hover:bg-[#FFFEF9]",
         {
           "text-foreground dark:text-cyan-200": isActive,
@@ -265,7 +269,7 @@ const SubSectionItem = ({ label, section, path }: ISubSectionItem) => {
 const SectionBody = ({ expanded, children }: ISectionBody) => (
   <div
     className={cn(
-      "space-y-1 dark:bg-background/80 bg-background overflow-hidden transition-all duration-300",
+      "dark:bg-background/80 bg-background overflow-hidden transition-all duration-300",
       {
         "max-h-0": !expanded,
         "max-h-40 shadow-med-t": expanded, // Adjust max-height as needed
@@ -300,24 +304,24 @@ const ListSectionItem = ({
       onClick={onClick}
       variant="ghost"
       className={cn(
-        "w-full flex justify-between md:ps-1 md:py-1 h-auto tracking-tight dark:hover:bg-card-origin",
-        "ps-2 pe-1",
+        "w-full flex justify-between md:ps-3 md:py-1 h-10 tracking-tight dark:hover:bg-card-origin",
+        "ps-2 pe-1 text-slate-700",
         {
           "text-mac-blue dark:text-cyan-200": isActive,
         },
       )}
     >
       <Icon
-        name={icon}
         solid
-        className="md:size-4 size-3.5 dark:text-muted-foreground"
+        name={icon}
+        className="md:size-5 size-3.5 text-slate-700 dark:text-muted-foreground"
       />
-      <h3 className="capitalize flex w-full md:font-medium opacity-90">
+      <h3 className="capitalize flex w-full dark:text-muted-foreground md:font-medium opacity-90">
         {label}
       </h3>
       <div
         className={cn(
-          "flex-1 font-jet md:rounded-md rounded-sm bg-accent md:text-sm text-xs py-px px-1",
+          "flex-1 font-jet md:rounded-md rounded-sm dark:text-foreground bg-accent md:text-sm text-xs py-px px-1",
         )}
       >
         {value}

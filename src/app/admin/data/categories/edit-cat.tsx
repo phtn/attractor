@@ -1,13 +1,18 @@
 import { HyperCard } from "@/components/hyper/card";
-import { NewCatForm } from "./new-cat-form";
+import { EditCatForm } from "./edit-cat-form";
 import { cn } from "@/lib/utils";
 import { IconButton } from "@/components/icon-button";
+import { Cat } from "vx/cats/d";
 
 interface Props {
-  toggleFn: VoidFunction;
   show: boolean;
+  toggleFn: VoidFunction;
+  categoryData: Cat | null;
 }
-export const CreateCat = ({ toggleFn, show }: Props) => {
+
+export const EditCat = ({ toggleFn, show, categoryData }: Props) => {
+  if (!categoryData) return null;
+
   return (
     <HyperCard
       className={cn(
@@ -18,21 +23,21 @@ export const CreateCat = ({ toggleFn, show }: Props) => {
     >
       <div className="flex items-center justify-between w-full ">
         <h2 className="text-2xl animate-in whitespace-nowrap dark:text-lime-100 fade-in-from-right-40 font-bold font-sans tracking-tight">
-          Add New Category
+          Edit Category
         </h2>
         <IconButton
+          solid
           icon="circle"
+          fn={toggleFn}
           iconStyle="size-4"
           className="border-chalk/20"
-          solid
-          fn={toggleFn}
         />
       </div>
 
       <h3 className="-mt-4 mb-4 text-xs font-ox tracking-widest text-muted-foreground uppercase">
-        App Categories
+        {categoryData.name}
       </h3>
-      <NewCatForm toggleForm={toggleFn} />
+      <EditCatForm toggleForm={toggleFn} initialData={categoryData} />
     </HyperCard>
   );
 };

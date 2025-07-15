@@ -1,13 +1,13 @@
 import { api } from "@@/api";
 import { Content } from "./content";
-import { convex } from "@/lib/convex/client";
+import { preloadQuery } from "convex/nextjs";
 
 export default async function CategoriesPage() {
-  const cats = await convex.query(api.cats.get.active);
+  const preloaded = await preloadQuery(api.cats.get.active);
 
   return (
     <div className="px-6">
-      <Content data={cats} />
+      <Content preloaded={preloaded} />
     </div>
   );
 }

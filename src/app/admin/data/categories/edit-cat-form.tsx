@@ -13,8 +13,9 @@ import { useMutation } from "convex/react";
 import { useActionState, useCallback, useMemo } from "react";
 import { Cat, CatSchema } from "vx/cats/d";
 
-interface NewCatFormProps {
+interface EditCatFormProps {
   toggleForm: VoidFunction;
+  initialData: Cat;
 }
 
 const hints: Record<keyof Cat, string> = {
@@ -27,14 +28,15 @@ const hints: Record<keyof Cat, string> = {
   image: "Image url",
   style: "Tailwind styling",
   active: "Live status of category",
+  grp: "Optional group category",
+  col: "Optional collection category",
 };
 
-export function NewCatForm({ toggleForm }: NewCatFormProps) {
-  const initialState = {} as Cat;
-  const createCategory = useMutation(api.cats.create.default);
+export function EditCatForm({ toggleForm, initialData }: EditCatFormProps) {
+  const updateCategory = useMutation(api.cats.update.default);
 
   const form = useAppForm({
-    defaultValues: initialState,
+    defaultValues: initialData,
     validators: {
       onChange: CatZodSchema,
       onSubmitAsync: async ({ value }) => {
@@ -43,26 +45,23 @@ export function NewCatForm({ toggleForm }: NewCatFormProps) {
     },
   });
 
-  // const form = useForm({
-  //   defaultValues: {
-  //     name: "",
-  //     cid: "",
-  //   },
-  //   onSubmit: async ({ value }) => {
-  //     try {
-  //       await createCategory({ name: value.name, cid: value.cid });
-  //       toast.success("Category created successfully!");
-  //       form.reset();
-  //       onSuccess?.();
-  //     } catch (error) {
-  //       toast.error("Failed to create category.");
-  //       console.error("Failed to create category:", error);
-  //     }
-  //   },
-  // });
-
   const FormField = useCallback(
     (props: TextFieldConfig) => {
+      const fieldName = props.name as keyof Cat;
+      const rawValue = initialData[fieldName];
+
+      // Convert different data types to string for form inputs
+      let defaultValue = "";
+      if (rawValue !== null && rawValue !== undefined) {
+        if (typeof rawValue === "boolean") {
+          defaultValue = rawValue.toString();
+        } else if (Array.isArray(rawValue)) {
+          defaultValue = rawValue.join(",");
+        } else {
+          defaultValue = String(rawValue);
+        }
+      }
+
       return (
         <form.AppField {...props} name={props.name as keyof Cat as string}>
           {(field) => (
@@ -73,13 +72,14 @@ export function NewCatForm({ toggleForm }: NewCatFormProps) {
               required={props.required}
               autoComplete={props.autoComplete}
               hint={props.hint}
+              defaultValue={defaultValue}
               className="bg-super-fade dark:bg-neutral-600/60 border dark:border-zinc-400"
             />
           )}
         </form.AppField>
       );
     },
-    [form],
+    [form, initialData],
   );
 
   const cats = useMemo(() => {
@@ -87,30 +87,28 @@ export function NewCatForm({ toggleForm }: NewCatFormProps) {
       CatSchema.fields,
     ).map((key: keyof Cat) => {
       const fieldSchema = CatSchema.fields;
-      // Attempt to infer 'required' status from Zod schema properties
       const isRequired =
         fieldSchema &&
-          "isOptional" in fieldSchema &&
-          typeof fieldSchema.isOptional === "function"
+        "isOptional" in fieldSchema &&
+        typeof fieldSchema.isOptional === "function"
           ? !fieldSchema.isOptional()
-          : true; // Default to required if not clearly optional
+          : true;
 
-      // Attempt to infer 'type' based on Zod schema type name
       const type =
         fieldSchema &&
-          "typeName" in fieldSchema &&
-          typeof fieldSchema.typeName === "string"
+        "typeName" in fieldSchema &&
+        typeof fieldSchema.typeName === "string"
           ? fieldSchema.typeName.includes("String")
             ? "text"
             : "number"
-          : "text"; // Default to 'text' if type cannot be inferred
+          : "text";
 
       return {
         name: key,
-        label: key.toString().charAt(0).toUpperCase() + key.toString().slice(1), // Capitalize first letter for label
+        label: key.toString().charAt(0).toUpperCase() + key.toString().slice(1),
         type: type,
         required: isRequired,
-        autoComplete: "off", // Default autocomplete
+        autoComplete: "off",
         hint: hints[key],
       };
     });
@@ -118,13 +116,9 @@ export function NewCatForm({ toggleForm }: NewCatFormProps) {
     const keyFilterPredicate = (config: TextFieldConfig) =>
       !excludedKeys.includes(config.name as string);
     return fieldConfigurations.filter(keyFilterPredicate);
-    // Note: The 'fieldConfigurations' array is created here.
-    // However, the subsequent 'return' statement in the useMemo block still references the original 'keys' variable
-    // and its mapping logic. For 'HyperList' to use these TextFieldConfig objects, the 'return' statement
-    // would need to be adjusted to 'return fieldConfigurations;' and the initial 'keys' definition corrected.
   }, []);
 
-  const createAction = useCallback(
+  const updateAction = useCallback(
     async (state: CatZod | null, fd: FormData) => {
       const validated = CatZodSchema.safeParse({
         name: fd.get("name") as string,
@@ -135,16 +129,21 @@ export function NewCatForm({ toggleForm }: NewCatFormProps) {
         slug: fd.get("slug") as string,
         image: fd.get("image") as string,
         style: fd.get("style") as string,
+        grp: fd.get("grp") as string,
+        col: fd.get("col") as string,
       });
 
       if (validated.success) {
-        const result = await handleAsync(createCategory)({
-          ...validated.data,
-          active: fd.get("active") === "true",
-          tags: [...String(validated.data.tags)?.split(",")],
+        const result = await handleAsync(updateCategory)({
+          id: initialData._id,
+          data: {
+            ...validated.data,
+            active: fd.get("active") === "true",
+            tags: [...String(validated.data.tags)?.split(",")],
+          },
         });
         if (result) {
-          onSuccess("Created!");
+          onSuccess("Updated!");
           toggleForm();
         }
         console.log(validated);
@@ -154,17 +153,17 @@ export function NewCatForm({ toggleForm }: NewCatFormProps) {
         console.error(validated.error);
       }
     },
-    /// eslint-disable-next-line @react-hooks/exhaustive-deps
-    [toggleForm],
+    /// eslint-disable-next-line react-hooks/exhaustive-dep
+    [toggleForm, initialData._id],
   );
 
-  const [, action, pending] = useActionState(createAction, initialState);
+  const [, action, pending] = useActionState(updateAction, initialData);
 
   const Submit = useCallback(
     () => (
       <form.AppForm>
         <form.SubmitButton
-          title="Create"
+          title="Update"
           pending={pending}
           className={cn(
             "dark:bg-background text-panel rounded-none h-12 flex-1 size-full dark:text-lime-200 font-sans tracking-tight font-medium",
@@ -174,6 +173,7 @@ export function NewCatForm({ toggleForm }: NewCatFormProps) {
     ),
     [form, pending],
   );
+
   return (
     <form
       action={action}

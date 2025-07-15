@@ -17,8 +17,21 @@ import { Row } from "@tanstack/react-table";
 import { useCallback } from "react";
 import { Cat } from "vx/cats/d";
 
-export function RowActions({ row }: { row: Row<Cat> }) {
-  const handleClick = useCallback(() => console.log(row), [row]);
+interface RowActionsProps {
+  row: Row<Cat>;
+  onEditCategory: (category: Cat) => void;
+}
+
+export function RowActions({ row, onEditCategory }: RowActionsProps) {
+  const handleEdit = useCallback(() => {
+    onEditCategory(row.original);
+  }, [row.original, onEditCategory]);
+
+  const handleDelete = useCallback(() => {
+    // TODO: Implement delete functionality
+    console.log("Delete category:", row.original);
+  }, [row.original]);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,12 +40,12 @@ export function RowActions({ row }: { row: Row<Cat> }) {
             size="icon"
             variant="ghost"
             className="shadow-none w-9 rounded-lg cursor-pointer"
-            aria-label="Edit item"
-            onClick={handleClick}
+            aria-label="Row actions"
           >
             <Icon
-              name="spinners-3-dots-move"
-              className="size-4 text-muted-foreground"
+              solid
+              name="ellipsis-block"
+              className="size-6 text-muted-foreground"
               aria-hidden="true"
             />
           </Button>
@@ -40,40 +53,55 @@ export function RowActions({ row }: { row: Row<Cat> }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleEdit}>
+            <Icon name="px-pen" className="size-4 mr-2" />
             <span>Edit</span>
             <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <span>Duplicate</span>
-            <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <span>Archive</span>
-            <DropdownMenuShortcut>⌘A</DropdownMenuShortcut>
+            <Icon name="px-pen" className="size-4 mr-2" />
+            <span>View</span>
           </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Icon name="px-pen" className="size-4 mr-2" />
+            <span>Duplicate</span>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger>More</DropdownMenuSubTrigger>
+            <DropdownMenuSubTrigger>
+              <Icon name="px-pen" className="size-4 mr-2" />
+              More
+            </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <DropdownMenuItem>Move to project</DropdownMenuItem>
-                <DropdownMenuItem>Move to folder</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Icon name="px-pen" className="size-4 mr-2" />
+                  Print
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Icon name="px-pen" className="size-4 mr-2" />
+                  Email
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Advanced options</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Icon name="px-pen" className="size-4 mr-2" />
+                  Advanced
+                </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>Share</DropdownMenuItem>
-          <DropdownMenuItem>Add to favorites</DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive focus:text-destructive">
+        <DropdownMenuItem
+          className="text-destructive focus:text-destructive"
+          onClick={handleDelete}
+        >
+          <Icon name="px-pen" className="size-4 mr-2" />
           <span>Delete</span>
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>

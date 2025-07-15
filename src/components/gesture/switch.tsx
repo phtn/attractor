@@ -12,7 +12,7 @@ export default function GestureSwitch() {
   const [isPressed, setIsPressed] = useState(false);
   const [pressureLevel, setPressureLevel] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [playbackRate, setPlaybackRate] = useState(1);
+  const [playbackRate, setPlaybackRate] = useState(isDark ? 0.35 : 1.05);
   const { sfxToggle } = useSFX({ playbackRate });
 
   // Physics-based values
@@ -37,7 +37,7 @@ export default function GestureSwitch() {
 
     // Trigger toggle with sophisticated timing
     setTimeout(() => {
-      setPlaybackRate((value) => value + (isDark ? 0.1 : -0.1));
+      setPlaybackRate(() => (isDark ? 1.1 : 0.35));
       sfxToggle();
       toggleTheme();
     }, 50);
@@ -76,7 +76,7 @@ export default function GestureSwitch() {
               "dark:from-zinc-900 dark:via-zinc-800/90 dark:to-zinc-800",
               " bg-radial-[at_20%_60%] from-background to-accent",
               // "bg-gradient-to-r from-white via-cream to-chalk",
-              "border-[2px] border-xy",
+              "border border-slate-500",
             )}
             style={{
               width: `${baseSize}px`,
@@ -86,7 +86,7 @@ export default function GestureSwitch() {
           >
             {/* Optical Element */}
             <motion.div
-              className="absolute hidden inset-1 rounded-sm bg-linear-to-r from-zinc-100 to-zinc-300 dark:from-zinc-800 dark:to-zinc-900"
+              className="absolute hidden inset-1 rounded-sm bg-linear-to-r from-zinc-100 to-slate-300 dark:from-zinc-800 dark:to-zinc-900"
               animate={{
                 opacity: isDark ? [0.3, 0.6, 0.3] : [0.4, 0.7, 0.4],
               }}
@@ -105,10 +105,10 @@ export default function GestureSwitch() {
                 "dark:group-hover:bg-gradient-to-t",
                 "from-orange-300 to-orange-500",
                 "dark:from-teal-200 dark:to-zinc-300/60",
-                "dark:border-xy border-[0.33px]",
+                "dark:border-xy border-[0.33px] border-transparent drop-shadow-2xs",
               )}
               animate={{
-                x: isDark ? baseSize - 24 : 8,
+                x: isDark ? baseSize - 26 : 8,
                 opacity: [0.7, 1, 0.7],
               }}
               transition={{
@@ -119,13 +119,13 @@ export default function GestureSwitch() {
 
             {/* Precision Markings */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex space-x-3 dark:mr-4">
+              <div className="flex space-x-3 -mr-2 dark:mr-4">
                 {[0, 1].map((i) => (
                   <motion.div
                     key={i}
-                    className={`dark:w-0.5 dark:h-2.5 w-1 h-3 rounded-full dark:bg-cream/60 bg-zinc-500/60`}
+                    className={`dark:w-0.5 dark:h-2.5 w-0.5 h-3 rounded-full dark:bg-cream/60 bg-slate-500/60`}
                     animate={{
-                      opacity: (isDark ? 1 - i : i) === 1 ? 0.95 : 0.2,
+                      opacity: (isDark ? 1 - i : i) === 1 ? 0.95 : 0.4,
                       scaleY: (isDark ? 1 - i : i) === 1 ? 1.2 : 0.8,
                     }}
                     transition={{

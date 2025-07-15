@@ -7,12 +7,14 @@ export const CatZodSchema = z.object({
   name: z.optional(z.string()),
   href: z.optional(z.string()),
   icon: z.optional(z.string()),
-  tags: z.optional(z.array(z.string())),
+  tags: z.optional(z.string()),
   desc: z.optional(z.string()),
   slug: z.optional(z.string()),
   image: z.optional(z.string()),
   style: z.optional(z.string()),
-  active: z.optional(z.boolean()),
+  grp: z.optional(z.string()),
+  col: z.optional(z.string()),
+  active: z.optional(z.string()),
   updated_at: z.optional(z.number()),
   created_at: z.optional(z.number()),
   created_by: z.optional(z.string()),
@@ -31,6 +33,9 @@ export type FieldName = (
   | "active"
   | "tags"
   | "uid"
+  | "style"
+  | "grp"
+  | "col"
 ) &
   keyof Cat;
 
@@ -59,6 +64,7 @@ export interface BaseFieldConfig {
   validators?: Record<string, FieldValidator>;
   className?: string;
   hint?: string;
+  defaultValue?: string | number | null;
 }
 
 // Text field config

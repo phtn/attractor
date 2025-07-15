@@ -54,6 +54,7 @@ export const InputField = (item: TextFieldConfig) => {
         type={item.type}
         required={item.required}
         autoComplete={item.autoComplete}
+        defaultValue={item.defaultValue || ""}
         className={cn(
           " dark:bg-origin/60",
           { "dark:bg-border dark:border-pink-100/20": onFocus },

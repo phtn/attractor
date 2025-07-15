@@ -4,18 +4,16 @@ import { Brand } from "@/components/brand";
 import GestureSwitch from "@/components/gesture/switch";
 import { IconButton } from "@/components/icon-button";
 import { Input } from "@/components/ui/input";
-import { useSFXCtx } from "@/ctx/sfx-ctx";
 import { onSuccess } from "@/ctx/toast-ctx";
+import { useSFX } from "@/hooks/use-sfx";
+import { handleAsync } from "@/utils/async-handler";
+import { useAuthActions } from "@convex-dev/auth/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
-import { useAuthActions } from "@convex-dev/auth/react";
-import { handleAsync } from "@/utils/async-handler";
-import { useSFX } from "@/hooks/use-sfx";
 
 export function Header() {
   const [loading, setLoading] = useState(false);
-  const { setSfxState } = useSFXCtx();
-  const { sfxTech: sfx } = useSFX({});
+  const { sfxDarbuka: sfx } = useSFX({ interrupt: true });
   const router = useRouter();
   const handleRoute = useCallback(
     (path: string) => () => {
@@ -43,7 +41,10 @@ export function Header() {
     }
   }, [signIn]);
 
-  const fx = useCallback(() => sfx({ playbackRate: 2 }), [sfx]);
+  const fx = useCallback(
+    (playbackRate: number) => () => sfx({ playbackRate }),
+    [sfx],
+  );
 
   return (
     <header className="flex items-center justify-between md:py-4 py-2 w-full max-w-7xl mx-auto">
@@ -56,33 +57,45 @@ export function Header() {
         <IconButton
           solid
           icon="slashes"
-          iconStyle="size-4"
+          iconStyle="size-5 text-slate-500"
           fn={handleRoute("/admin")}
         />
         <IconButton
           solid
           icon="asterisk"
-          iconStyle="size-4"
-          fn={handleRoute("/reviewer")}
+          iconStyle="size-5 text-slate-500"
+          fn={fx(0.5)}
+          // fn={handleRoute("/reviewer")}
         />
         <IconButton
           solid
           icon="github"
           loading={loading}
-          iconStyle="size-4"
+          iconStyle="size-5 text-slate-500"
           fn={onSignin}
         />
+
         <IconButton
           solid
-          icon="voice-message"
-          iconStyle="size-6"
-          fn={setSfxState}
+          icon="px-code"
+          iconStyle="size-6 text-slate-500"
+          onHover={fx(2)}
+          fn={fx(2)}
         />
         <IconButton
           solid
-          icon="code-one"
-          iconStyle="size-5 text-sky-400"
-          fn={fx}
+          icon="px-file"
+          iconStyle="size-4 text-slate-500"
+          onHover={fx(3)}
+          fn={fx(3)}
+        />
+        <IconButton
+          solid
+          icon="dollar-lite"
+          iconStyle="size-5 text-slate-500"
+          onHover={fx(4.5)}
+          fn={fx(4)}
+          // fn={setSfxState}
         />
         <GestureSwitch />
       </div>

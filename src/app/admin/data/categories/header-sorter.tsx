@@ -14,13 +14,19 @@ export const HeaderSorter = <TData, TValue>({
   header,
   flexRender,
 }: Props<TData, TValue>) => {
+  const handleSort = () => {
+    if (header.column.getCanSort()) {
+      header.column.toggleSorting();
+    }
+  };
+
   return header.isPlaceholder ? null : header.column.getCanSort() ? (
     <div
       className={cn(
         header.column.getCanSort() &&
           "flex h-full cursor-pointer items-center justify-between gap-4 select-none",
       )}
-      onClick={header.column.getToggleSortingHandler()}
+      onClick={handleSort}
       onKeyDown={(e) => {
         // Enhanced keyboard handling for sorting
         if (
@@ -28,7 +34,7 @@ export const HeaderSorter = <TData, TValue>({
           (e.key === "Enter" || e.key === " ")
         ) {
           e.preventDefault();
-          header.column.getToggleSortingHandler()?.(e);
+          handleSort();
         }
       }}
       tabIndex={header.column.getCanSort() ? 0 : undefined}
