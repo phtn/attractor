@@ -90,16 +90,16 @@ export function NewCatForm({ toggleForm }: NewCatFormProps) {
       // Attempt to infer 'required' status from Zod schema properties
       const isRequired =
         fieldSchema &&
-          "isOptional" in fieldSchema &&
-          typeof fieldSchema.isOptional === "function"
+        "isOptional" in fieldSchema &&
+        typeof fieldSchema.isOptional === "function"
           ? !fieldSchema.isOptional()
           : true; // Default to required if not clearly optional
 
       // Attempt to infer 'type' based on Zod schema type name
       const type =
         fieldSchema &&
-          "typeName" in fieldSchema &&
-          typeof fieldSchema.typeName === "string"
+        "typeName" in fieldSchema &&
+        typeof fieldSchema.typeName === "string"
           ? fieldSchema.typeName.includes("String")
             ? "text"
             : "number"
@@ -154,7 +154,7 @@ export function NewCatForm({ toggleForm }: NewCatFormProps) {
         console.error(validated.error);
       }
     },
-    /// eslint-disable-next-line @react-hooks/exhaustive-deps
+    ///eslint-disable-next-line @react-hooks/exhaustive-deps
     [toggleForm],
   );
 

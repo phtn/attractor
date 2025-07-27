@@ -13,7 +13,7 @@ export const CreateCat = ({ toggleFn, show }: Props) => {
       className={cn(
         "py-6 w-full xl:min-h-[calc(88lvh)] bg-mask translate-x-40 overflow-y-scroll ease-[cubic-bezier(0.34,1.56,0.64,1)] transition-[max-width] duration-1000",
         "max-w-[0px]",
-        { "max-w-[calc(-40vw)] px-4 flex-1 translate-x-0 delay-500": show },
+        { "max-w-[calc(40vw)] px-4 flex-1 translate-x-0 delay-500": show },
       )}
     >
       <div className="flex items-center justify-between w-full ">

@@ -189,11 +189,10 @@ export const marsFS = `
   `;
 
 export const traverseFS = `
-  // Vertex shader for full-screen quad
   struct VertexOutput {
       @builtin(position) position: vec4<f32>,
       @location(0) uv: vec2<f32>,
-  }
+  };
 
   @vertex
   fn vs_main(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {

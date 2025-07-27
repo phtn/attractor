@@ -5,7 +5,7 @@ import {
   Fira_Mono,
   Geist,
   Geist_Mono,
-  Space_Mono,
+  Space_Grotesk,
 } from "next/font/google";
 import "./globals.css";
 
@@ -25,14 +25,14 @@ const jet = Fira_Mono({
   subsets: ["latin"],
 });
 
-const space = Space_Mono({
+const space = Space_Grotesk({
   variable: "--font-space",
-  weight: ["400"],
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
 const ox = Oxanium({
   variable: "--font-ox",
-  weight: ["400", "600"],
+  weight: ["400", "600", "700", "800"],
   subsets: ["latin"],
 });
 export const metadata: Metadata = {

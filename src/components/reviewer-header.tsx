@@ -24,8 +24,13 @@ export function ReviewerHeader() {
       </div>
 
       <div className="h-16 flex items-center justify-end">
-        <div className="flex gap-x-2 h-full items-center justify-end">
-          <IconButton solid size={24} icon="power-tool" fn={handleToast} />
+        <div className="flex gap-x-3 h-full items-center justify-end">
+          <IconButton
+            solid
+            icon="power-tool"
+            iconStyle="size-6"
+            fn={handleToast}
+          />
 
           <IconButton solid icon="warning" iconStyle="size-5" fn={handleWarn} />
           <div className="h-16 w-fit flex items-center justify-start">

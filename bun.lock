@@ -43,7 +43,7 @@
         "@trpc/server": "^11.4.3",
         "@xyflow/react": "^12.8.2",
         "ai": "^4.3.17",
-        "animejs": "^4.0.2",
+        "animejs": "^4.1.1",
         "better-auth": "^1.2.12",
         "bun": "^1.2.18",
         "class-variance-authority": "^0.7.1",
@@ -67,6 +67,7 @@
         "react-hot-toast": "^2.5.2",
         "react-resizable-panels": "^3.0.3",
         "recharts": "^3.1.0",
+        "server-only": "^0.0.1",
         "sonner": "^2.0.6",
         "superjson": "^2.2.2",
         "tailwind-merge": "^3.3.1",
@@ -766,7 +767,7 @@
 
     "ajv": ["ajv@6.12.6", "", { "dependencies": { "fast-deep-equal": "^3.1.1", "fast-json-stable-stringify": "^2.0.0", "json-schema-traverse": "^0.4.1", "uri-js": "^4.2.2" } }, "sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g=="],
 
-    "animejs": ["animejs@4.0.2", "", {}, "sha512-f0L/kSya2RF23iMSF/VO01pMmLwlAFoiQeNAvBXhEyLzIPd2/QTBRatwGUqkVCC6seaAJYzAkGir55N4SL+h3A=="],
+    "animejs": ["animejs@4.1.1", "", {}, "sha512-IQiV/Mxg5/ViKlRPGUYcZzj9Me6zQRTQQOTtNTXEEVY4VjeokGjGxpKjaBf7nO+q/kgaqC2HKfUlawGvvnrPwQ=="],
 
     "ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
 

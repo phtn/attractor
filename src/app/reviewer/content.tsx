@@ -35,7 +35,7 @@ export const Content = () => {
               className={cn(
                 "flex-[7] will-change-transform transition-all duration-500 relative",
                 {
-                  "flex-[7]": centerExpanded,
+                  "flex-[9]": centerExpanded,
                   "flex-[8]": rightExpanded,
                 },
               )}
@@ -45,13 +45,16 @@ export const Content = () => {
                 <ReviewerStats />
               </div>
             </div>
-
             <HyperCard
               light
               className={cn(
-                "will-change-transform translate-x-0 transition-all duration-500 rounded rounded-tl-[2rem] ",
-                { "translate-x-96 origin-right flex-2": centerExpanded },
-                { "translate-x-[32rem] flex-1": rightExpanded },
+                "flex-1 will-change-transform translate-x-0 transition-all duration-500 rounded rounded-tl-lg",
+                {
+                  "translate-x-[32rem] origin-right flex-1":
+                    centerExpanded && !rightExpanded,
+                },
+                { "flex-[3]": rightExpanded },
+                { "flex-[4]": !leftExpanded && centerExpanded },
               )}
             >
               <EncryptedChat />

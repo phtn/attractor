@@ -13,7 +13,7 @@ export const Breadcrumb = ({ root }: Props) => {
   const pathSegments = pathname.split("/").filter((segment) => segment);
 
   return (
-    <nav className="flex items-center font-sans lowercase">
+    <nav className="flex items-center font-sans lowercase px-2">
       <Link
         href={root ?? "/init"}
         className={cn(

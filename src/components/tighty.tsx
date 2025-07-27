@@ -2,7 +2,7 @@ import { ClassName } from "@/app/types";
 import { useSFX } from "@/hooks/use-sfx";
 import { Icon, type IconName } from "@/lib/icons";
 import { cn } from "@/lib/utils";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 interface Props {
   icon?: IconName;
@@ -23,12 +23,15 @@ export const Tighty = ({
   solid = false,
 }: Props) => {
   const { sfxTick } = useSFX({ playbackRate: 1.25 });
+  const [loading, setLoading] = useState(false);
   const handleClick = useCallback(() => {
     sfxTick();
+    setLoading(true);
     fn();
   }, [sfxTick, fn]);
   return (
     <button
+      disabled={loading}
       onClick={handleClick}
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap bg-card",
@@ -49,7 +52,7 @@ export const Tighty = ({
       {icon && (
         <Icon
           size={size}
-          name={icon}
+          name={loading ? "spinners-ring" : icon}
           solid={solid}
           className={cn(
             "shrink-0 text-muted-foreground dark:text-teal-50/60",

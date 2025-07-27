@@ -21,23 +21,23 @@ export const Content = ({ preloaded }: ContentProps) => {
   const toogleForm = useCallback(() => {
     setShowCreateForm((prev) => !prev);
     // Close edit form when opening create form
-    if (!showCreateForm) {
+    if (showEditForm) {
       setShowEditForm(false);
       setEditingCategory(null);
       setEditingRowId(null);
     }
-  }, [showCreateForm]);
+  }, [showEditForm]);
 
   const toggleEditForm = useCallback(
     (category?: Cat) => {
       setShowEditForm((prev) => !prev);
-      setEditingCategory(category || null);
-      setEditingRowId(category?.cid || null);
-      if (!showEditForm) {
+      setEditingCategory(category ?? null);
+      setEditingRowId(category?.cid ?? null);
+      if (showCreateForm) {
         setShowCreateForm(false);
       }
     },
-    [showEditForm],
+    [showCreateForm],
   );
 
   const reactive = usePreloadedQuery(preloaded);

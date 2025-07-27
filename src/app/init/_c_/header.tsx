@@ -49,50 +49,30 @@ export function Header() {
   return (
     <header className="flex items-center justify-between md:py-4 py-2 w-full max-w-7xl mx-auto">
       <div className="flex items-center">
-        <Brand label="Secure Servers" />
+        <Brand label="Web Technologies | Research & Development" />
         <div className="flex items-center"></div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <IconButton
-          solid
-          icon="slashes"
-          iconStyle="size-5 text-slate-500"
-          fn={handleRoute("/admin")}
-        />
+      <div className="flex items-center gap-3">
+        <IconButton solid icon="slashes" fn={handleRoute("/admin")} />
         <IconButton
           solid
           icon="asterisk"
-          iconStyle="size-5 text-slate-500"
-          fn={fx(0.5)}
-          // fn={handleRoute("/reviewer")}
+          onHover={fx(2)}
+          fn={handleRoute("/reviewer")}
         />
         <IconButton
           solid
-          icon="github"
+          icon="px-chevrons-vertical"
           loading={loading}
-          iconStyle="size-5 text-slate-500"
           fn={onSignin}
         />
 
-        <IconButton
-          solid
-          icon="px-code"
-          iconStyle="size-6 text-slate-500"
-          onHover={fx(2)}
-          fn={fx(2)}
-        />
-        <IconButton
-          solid
-          icon="px-file"
-          iconStyle="size-4 text-slate-500"
-          onHover={fx(3)}
-          fn={fx(3)}
-        />
+        <IconButton solid icon="px-code" onHover={fx(2)} fn={fx(2)} />
+        <IconButton solid icon="px-arrow-up" onHover={fx(3)} fn={fx(3)} />
         <IconButton
           solid
           icon="dollar-lite"
-          iconStyle="size-5 text-slate-500"
           onHover={fx(4.5)}
           fn={fx(4)}
           // fn={setSfxState}

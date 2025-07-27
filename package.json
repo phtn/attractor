@@ -3,8 +3,8 @@
   "version": "0.1.5",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "bun --bun next dev",
+    "build": "bun --bun next build",
     "start": "next start",
     "lint:fix": "next lint --fix"
   },
@@ -48,7 +48,7 @@
     "@trpc/server": "^11.4.3",
     "@xyflow/react": "^12.8.2",
     "ai": "^4.3.17",
-    "animejs": "^4.0.2",
+    "animejs": "^4.1.1",
     "better-auth": "^1.2.12",
     "bun": "^1.2.18",
     "class-variance-authority": "^0.7.1",
@@ -72,6 +72,7 @@
     "react-hot-toast": "^2.5.2",
     "react-resizable-panels": "^3.0.3",
     "recharts": "^3.1.0",
+    "server-only": "^0.0.1",
     "sonner": "^2.0.6",
     "superjson": "^2.2.2",
     "tailwind-merge": "^3.3.1",
