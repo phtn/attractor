@@ -1,4 +1,4 @@
-import { Tracer } from "@/app/init/apps/animejs";
+import { Tracer } from "@/app/init/apps/tracer";
 import { Icon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 

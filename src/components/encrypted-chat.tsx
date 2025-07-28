@@ -2,15 +2,25 @@
 
 import { Events } from "@/components/webhooks/events";
 import { Icon } from "@/lib/icons";
+import { GPUFan } from "./gpu";
 // import dynamic from "next/dynamic";
 
 // const Blades = dynamic(({on}: {on?: boolean}) => import("@/components/gpu"), {ssr: false})
 
 export function EncryptedChat() {
   return (
-    <div className="bg-zinc-300/10 dark:bg-transparent p-4 space-y-4 h-[calc(100vh-48px)] overflow-hidden w-full flex flex-col relative">
+    <div className="bg-zinc-300/10 border-t dark:bg-creamy/10 p-4 space-y-4 h-[calc(100vh-48px)] overflow-hidden w-full flex flex-col relative rounded-tl-xl">
       {/* WEBHOOKS */}
       <Events />
+      <div className="fixed -bottom-1 right-1.5 w-fit px-2">
+        <div className="flex space-x-2 flex-1 relative overflow-hidden border-slate-200/60 shadow-2xs border-t h-20 rounded-bl-xs rounded-e-xl rounded-tl-xl justify-end items-center bg-muffin dark:bg-gray-600">
+          <GPUFan on={false} suppressHydrationWarning />
+          <GPUFan on={true} suppressHydrationWarning />
+          <GPUFan on={true} suppressHydrationWarning />
+        </div>
+        <div className="h-2.5 w-24 bg-void ml-2.5 rounded-xs"></div>
+        <div className="h-0.5 w-16 bg-orange-200/40 ml-3.5"></div>
+      </div>
     </div>
   );
 }

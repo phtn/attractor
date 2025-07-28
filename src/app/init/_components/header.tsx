@@ -63,12 +63,13 @@ export function Header() {
         />
         <IconButton
           solid
+          className="hidden"
           icon="px-chevrons-vertical"
           loading={loading}
           fn={onSignin}
         />
 
-        <IconButton solid icon="px-code" onHover={fx(2)} fn={fx(2)} />
+        {/* <IconButton solid icon="px-code" onHover={fx(2)} fn={fx(2)} /> */}
         <IconButton solid icon="px-arrow-up" onHover={fx(3)} fn={fx(3)} />
         <IconButton
           solid

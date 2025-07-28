@@ -16,7 +16,7 @@ export function ReviewerHeader() {
     onError("Warning");
   }, []);
   return (
-    <div className=" dark:border-origin/40 h-16 ps-4 py-4 flex items-center justify-between">
+    <div className="flex-1 dark:border-origin/40 h-16 ps-4 py-4 flex items-center justify-between">
       <div className="flex items-center w-fit">
         <Brand />
         <Slash />
@@ -45,7 +45,11 @@ export function ReviewerHeader() {
 const Brand = () => (
   <Link href={"/"} className="flex items-center w-fit">
     <div className="text-zinc-500 h-full w-6 relative flex items-center justify-center">
-      <Icon solid size={16} name="re-up.ph" className="text-origin" />
+      <Icon
+        solid
+        name="re-up.ph"
+        className="text-origin size-5 aspect-square dark:text-zinc-100"
+      />
     </div>
   </Link>
 );
@@ -53,7 +57,7 @@ const Brand = () => (
 const ProjectLinks = () => {
   return (
     <div className="flex items-center w-fit space-x-2">
-      <Tighty label="Force" fn={() => console.log()} />
+      <Tighty label="Code Reviewer" fn={() => console.log()} />
     </div>
   );
 };

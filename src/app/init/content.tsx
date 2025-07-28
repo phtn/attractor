@@ -1,11 +1,15 @@
 "use client";
 
-import { AssetGallery } from "@/app/init/_c_/asset-gallery";
+import { AssetGallery } from "@/app/init/_components/asset-gallery";
 import { XCardProps } from "@/components/hyper/xcard";
 
 interface Props {
   data: XCardProps[];
 }
 export const Content = ({ data }: Props) => {
-  return <AssetGallery category="apps" data={data} />;
+  return (
+    <div>
+      <AssetGallery category="apps" data={data} />
+    </div>
+  );
 };

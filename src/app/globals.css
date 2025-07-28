@@ -211,6 +211,8 @@
   /* CUSTOM COLORS */
   --color-chalk: var(--chalk);
   --color-cream: var(--cream);
+  --color-creamy: oklch(0.9964 0.0067 97.35);
+  --color-muffin: oklch(0.8507 0.0331 71.85);
   --color-void: var(--void);
   --color-geist-teal: oklch(0.829 0.133 174.96);
   --color-mask: oklch(0.909 0.175 113.96);

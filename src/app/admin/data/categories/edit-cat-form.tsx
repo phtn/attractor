@@ -153,8 +153,7 @@ export function EditCatForm({ toggleForm, initialData }: EditCatFormProps) {
         console.error(validated.error);
       }
     },
-    /// eslint-disable-next-line react-hooks/exhaustive-dep
-    [toggleForm, initialData._id],
+    [toggleForm, initialData._id], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const [, action, pending] = useActionState(updateAction, initialData);

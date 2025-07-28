@@ -14,8 +14,8 @@ export const Events = (): JSX.Element => {
   return (
     <div className="w-full space-y-4">
       <div className="w-full">
-        <div className="flex items-center justify-start mb-20">
-          <Icon name="github" size={12} className="text-muted-foreground" />
+        <div className="flex w-fit p-2 bg-zinc-800/80 rounded-md items-center justify-start mb-20">
+          <Icon name="github" size={12} className="text-white" />
           <h2
             className={`text-xs font-semibold ml-2 uppercase font-sans tracking-[0.20em] dark:text-cream text-foreground`}
           >
@@ -32,7 +32,7 @@ export const Events = (): JSX.Element => {
             }
             size={13}
             className={cn("text-macd-red", {
-              "text-green-500/90": connectionStatus === "connected",
+              "text-geist-teal": connectionStatus === "connected",
               "text-macd-orange animate-pulse":
                 connectionStatus === "connecting",
             })}

@@ -55,7 +55,8 @@ export default function GestureSwitch() {
         {/* Main Control Surface */}
         <motion.div
           className={cn(
-            "group relative flex-1 cursor-pointer border-xy/60 shadow-inner/15 dark:bg-zinc-950/10 select-none flex border-[0.33px] items-center p-2",
+            "group relative flex-1 cursor-pointer border-xy/60  dark:bg-lime-50/15 select-none flex items-center p-2",
+            "shadow-[0px_0px_1px_1px_theme(colors.black/4%),0_0px_1px_theme(colors.black/4%),0_1px_2px_theme(colors.black/4%),0_2px_4px_theme(colors.black/6%)]",
           )}
           style={{
             scale,
@@ -76,7 +77,7 @@ export default function GestureSwitch() {
               "dark:from-zinc-900 dark:via-zinc-800/90 dark:to-zinc-800",
               " bg-radial-[at_20%_60%] from-background to-accent",
               // "bg-gradient-to-r from-white via-cream to-chalk",
-              "border border-slate-500",
+              "border border-slate-400 dark:border-slate-900",
             )}
             style={{
               width: `${baseSize}px`,

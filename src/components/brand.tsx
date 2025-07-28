@@ -89,7 +89,7 @@ const BrandLabel = ({ dark, label }: BrandTitleProps) => {
               <div
                 key={text}
                 className={cn(
-                  "font-space h-5 text-slate-800 flex items-center",
+                  "font-space h-5 text-slate-900 flex items-center",
                   {
                     "font-semibold tracking-tight text-base": idx === 0,
                     "font-normal tracking-normal text-xs font-sans opacity-80":

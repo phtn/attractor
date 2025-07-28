@@ -1,7 +1,8 @@
 import { ClassName } from "@/app/types";
 import { Icon, type IconName } from "@/lib/icons";
 import { cn } from "@/lib/utils";
-import { MouseEvent, useCallback, useState } from "react";
+import { ComponentProps, MouseEvent, useCallback, useState } from "react";
+import { Slot } from "@radix-ui/react-slot";
 
 interface IconButtonProps {
   icon: IconName;
@@ -13,6 +14,7 @@ interface IconButtonProps {
   loading?: boolean;
   disabled?: boolean;
   onHover?: (e: MouseEvent<HTMLButtonElement>) => void;
+  asChild?: boolean;
 }
 export const IconButton = ({
   fn,
@@ -23,14 +25,18 @@ export const IconButton = ({
   loading = false,
   disabled = false,
   onHover,
-}: IconButtonProps) => {
+  asChild = false,
+}: ComponentProps<"button"> & IconButtonProps) => {
   const [_loading, setLoading] = useState(loading);
   const handleClick = useCallback(() => {
     setLoading(true);
     fn();
   }, [fn]);
+
+  const Comp = asChild ? Slot : "button";
+
   return (
-    <button
+    <Comp
       disabled={disabled || _loading}
       onClick={handleClick}
       onMouseEnter={onHover}
@@ -53,21 +59,23 @@ export const IconButton = ({
         className,
       )}
     >
-      <Icon
-        name={icon}
-        solid={solid}
-        className={cn(
-          "absolute shrink-0 z-2 size-5 scale-150 text-white dark:text-lime-50 blur-xs",
-        )}
-      />
-      <Icon
-        solid={solid}
-        name={_loading ? "spinners-ring" : icon}
-        className={cn(
-          "relative z-10 shrink-0 size-5 text-muted-foreground group-hover/btn:text-foreground dark:text-white dark:group-hover/btn:text-white",
-          iconStyle,
-        )}
-      />
-    </button>
+      <div>
+        <Icon
+          name={icon}
+          solid={solid}
+          className={cn(
+            "absolute shrink-0 z-2 size-5 scale-150 text-white dark:text-lime-50 blur-xs",
+          )}
+        />
+        <Icon
+          solid={solid}
+          name={_loading ? "spinners-ring" : icon}
+          className={cn(
+            "relative z-10 shrink-0 size-5 text-muted-foreground group-hover/btn:text-foreground dark:text-white dark:group-hover/btn:text-white",
+            iconStyle,
+          )}
+        />
+      </div>
+    </Comp>
   );
 };

@@ -60,10 +60,10 @@ interface IStat {
   value?: number;
 }
 const StatItem = ({ label, value = 0 }: IStat) => (
-  <div className="bg-card/40 dark:bg-transparent rounded-md space-y-1.5 px-4 py-2">
-    <h3 className="text-xs font-medium font-mono uppercase tracking-widest text-muted-foreground">
+  <div className="dark:bg-transparent rounded-md px-4 py-3">
+    <h3 className="text-xs font-medium font-space uppercase tracking-widest text-foreground">
       {label}
     </h3>
-    <p className="text-2xl font-jet text-foreground/80">{value}</p>
+    <p className="text-xl font-space text-foreground/80">{value}</p>
   </div>
 );

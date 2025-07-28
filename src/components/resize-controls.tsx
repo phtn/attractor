@@ -25,7 +25,7 @@ export const ResizeControls = () => {
     [],
   );
   return (
-    <div className="flex items-center rounded-full justify-center w-full absolute z-10 -top-[9.5px] left-0">
+    <div className="flex items-center rounded-full justify-center fixed z-20 top-[24px] left-1/2 -translate-x-1/2">
       <div className="absolute pointer-events-none w-[32rem] top-2.5 h-1" />
       <button
         onMouseEnter={onHover(sideHoverSfx)}
@@ -53,7 +53,7 @@ export const ResizeControls = () => {
             // LIGHT
             "bg-rose-600/40 group-hover/left:bg-rose-400/80",
             // DARK
-            "dark:bg-teal-400/80 dark:group-hover/left:bg-geist-teal",
+            "dark:bg-teal-400 dark:group-hover/left:bg-geist-teal",
             "dark:group-hover/left:border-geist-teal",
             // FOCUS
             "dark:group-focus/left:bg-geist-teal",
@@ -97,7 +97,7 @@ export const ResizeControls = () => {
             // LIGHT
             "bg-blue-600/50 group-hover/right:bg-indigo-400 ",
             // DARK
-            "dark:bg-teal-400/80 h-[0.25rem] dark:group-hover/right:bg-geist-teal",
+            "dark:bg-teal-400 h-[0.25rem] dark:group-hover/right:bg-geist-teal",
             "dark:group-hover/left:bg-teal-300/45",
             // FOCUS
             "group-focus/right:bg-indigo-400",

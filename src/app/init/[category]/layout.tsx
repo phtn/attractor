@@ -1,4 +1,4 @@
-import { Header } from "@/app/init/_c_/header";
+import { Header } from "@/app/init/_components/header";
 import { type ReactNode } from "react";
 
 export default function CategoryLayout({ children }: { children: ReactNode }) {

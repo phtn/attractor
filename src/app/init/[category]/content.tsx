@@ -1,8 +1,8 @@
 "use client";
 
 import { Cat } from "vx/cats/d";
-import { AssetGallery } from "../_c_/asset-gallery";
-import CategoryGrid from "../_c_/category-grid";
+import { AssetGallery } from "../_components/asset-gallery";
+import CategoryGrid from "../_components/category-grid";
 
 interface Props {
   cats: Cat[];

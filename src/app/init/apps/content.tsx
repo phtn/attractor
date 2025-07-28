@@ -1,6 +1,6 @@
 "use client";
 
-import { AssetGallery } from "@/app/init/_c_/asset-gallery";
+import { AssetGallery } from "@/app/init/_components/asset-gallery";
 import { Preloaded, usePreloadedQuery } from "convex/react";
 import { api } from "vx/_generated/api";
 
@@ -9,5 +9,10 @@ interface Props {
 }
 export const Content = ({ preloaded }: Props) => {
   const reactive = usePreloadedQuery(preloaded);
-  return <AssetGallery category="apps" data={reactive} />;
+  return (
+    <div>
+      <AssetGallery category="apps" data={reactive} />
+      <div>YOOO</div>
+    </div>
+  );
 };

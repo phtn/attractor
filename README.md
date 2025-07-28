@@ -45,3 +45,31 @@ timestamp ⸬ Mon Jul 14, 2025 20:34:23 pm - +08:00
   - Color Blender
   - Snippets
   - Converters
+
+## Tony Soprano
+
+- men who are quiet
+- has seen too much
+- Felt too deep
+- never talks about pain
+- but always think about the mistake
+- does not need someone to listen
+- he learned no one really listens
+- calm on the outside
+- storm on the inside
+- storm he navigates and control
+- turned into a therapist, motivators, protector
+- does not seek revenge and focus on peace
+- does not fear being alone
+- he gain power and strength from silence
+- battles had been fought and learned the outcome
+- he walks away in peace
+
+## MEn
+
+- Men does not respond to nag
+- does not respond to criticism
+- does not respond to attitude
+- men respond to feminism
+- men respond to calm and sweetness
+- men respond to
