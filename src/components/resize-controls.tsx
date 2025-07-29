@@ -25,7 +25,7 @@ export const ResizeControls = () => {
     [],
   );
   return (
-    <div className="flex items-center rounded-full justify-center fixed z-20 top-[24px] left-1/2 -translate-x-1/2">
+    <div className="flex items-center rounded-full justify-center fixed z-20 top-[4px] left-1/2 -translate-x-1/2">
       <div className="absolute pointer-events-none w-[32rem] top-2.5 h-1" />
       <button
         onMouseEnter={onHover(sideHoverSfx)}

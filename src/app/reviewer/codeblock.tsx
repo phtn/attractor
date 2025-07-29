@@ -139,7 +139,7 @@ const CodeBlock: FC<Props> = memo(({ language, children }) => {
 
   return (
     <div className="relative w-full font-sans border-0 codeblock">
-      <div className="flex items-center justify-between border-0 w-full px-6 py-1 pr-4 bg-zinc-800/90">
+      <div className="flex items-center justify-between rounded-t-md w-full px-6 py-1 pr-4 -mb-0.5 bg-zinc-700/80">
         <span className="text-xs lowercase text-zinc-300">
           {normalizedLanguage}
         </span>
@@ -153,7 +153,7 @@ const CodeBlock: FC<Props> = memo(({ language, children }) => {
           <IconButton
             fn={onCopy}
             icon={isCopied ? "px-check" : "px-dollar"}
-            iconStyle="text-stone-300 group-hover:text-teal-300"
+            iconStyle="text-stone-300 group-hover:text-teal-300 size-4"
           />
         </div>
       </div>
@@ -177,6 +177,7 @@ const CodeBlock: FC<Props> = memo(({ language, children }) => {
             fontFamily: "var(--font-mono)",
           },
         }}
+        className="rounded-t-0"
       >
         {children}
       </SyntaxHighlighter>

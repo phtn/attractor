@@ -23,7 +23,7 @@ import {
 import { ImperativePanelHandle } from "react-resizable-panels";
 import { ChatPanel } from "./chat-panel";
 import { ReviewContent } from "./review-content";
-import { HighlightItem } from "./types";
+// import { HighlightItem } from "./types";
 import { exampleMarkdown } from "./static-md";
 
 export const Content = () => {
@@ -79,8 +79,8 @@ export const Content = () => {
   const [selectedModel, setSelectedModel] = useState("gemini-1.5-pro");
   const [loading] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [highlights] = useState<HighlightItem[]>([]);
-  const [externalLinks] = useState<string[]>([]);
+  // const [highlights] = useState<HighlightItem[]>([]);
+  // const [externalLinks] = useState<string[]>([]);
   const [input, setInput] = useState("");
 
   // == useChat ==
@@ -104,16 +104,16 @@ export const Content = () => {
 
   return (
     <EventsCtxProvider>
-      <div className="bg-radial-[at_60%_30%] from-background to-muted/20 dark:from-foreground/80 dark:to-card-origin/80 ">
+      <div className="reviewer bg-radial-[at_60%_30%] from-background to-muted/20 dark:from-foreground/80 dark:to-card-origin/80">
         <ReviewerHeader />
-        <main className="h-[calc(94lvh)] flex flex-col w-screen">
-          <div className="overflow-hidden">
+        <main className=" flex flex-col w-screen overflow-hidden scrollbar-none">
+          <div className="z-40">
             {/* Fixed Resize Controls - Always Centered */}
             <ResizeControls />
 
             <ResizablePanelGroup
               direction="horizontal"
-              className="h-[calc(100vh-50px)]"
+              className="pointer-events-none"
             >
               {/* Left Panel - Repositories */}
               <ResizablePanel
@@ -122,9 +122,9 @@ export const Content = () => {
                 minSize={0}
                 maxSize={30}
                 collapsible={true}
-                className="border-r-0"
+                className="h-full pointer-events-none border-r-0 mt-16 z-50"
               >
-                <div>
+                <div className="pointer-events-auto">
                   <ChatPanel
                     messages={messages}
                     loading={loading}
@@ -145,8 +145,9 @@ export const Content = () => {
                 ref={centerPanelRef}
                 defaultSize={50}
                 minSize={30}
+                className="mt-8 h-[97vh] pointer-events-auto"
               >
-                <div className="relative h-full">
+                <div className="z-100">
                   <div className="flex items-center justify-between w-full">
                     <ReviewerStats />
                   </div>
@@ -162,17 +163,12 @@ export const Content = () => {
               {/* Right Panel - Chat */}
               <ResizablePanel
                 ref={rightPanelRef}
-                defaultSize={20}
                 minSize={20}
                 maxSize={25}
+                defaultSize={20}
+                className="mt-16 pointer-events-none"
               >
                 <EncryptedChat />
-                <div className={` bg-white flex `}>
-                  <div>INDEXES</div>
-                  <div>
-                    {highlights.length} | {externalLinks.length}
-                  </div>
-                </div>
               </ResizablePanel>
             </ResizablePanelGroup>
           </div>

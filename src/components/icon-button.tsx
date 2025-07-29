@@ -64,7 +64,7 @@ export const IconButton = ({
           name={icon}
           solid={solid}
           className={cn(
-            "absolute shrink-0 z-2 size-5 scale-150 text-white dark:text-lime-50 blur-xs",
+            "absolute shrink-0 z-2 size-5 scale-150 text-white/60 dark:text-lime-50 blur-xs",
           )}
         />
         <Icon

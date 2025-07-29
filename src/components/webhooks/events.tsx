@@ -12,12 +12,12 @@ export const Events = (): JSX.Element => {
   const { events, connectionStatus } = useEventsCtx();
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full">
       <div className="w-full">
-        <div className="flex w-fit p-2 bg-zinc-800/80 rounded-md items-center justify-start mb-20">
-          <Icon name="github" size={12} className="text-white" />
+        <div className="flex w-full p-2 bg-creamy rounded-xs items-center justify-between px-3">
+          <Icon name="github" size={12} className="text-origin" />
           <h2
-            className={`text-xs font-semibold ml-2 uppercase font-sans tracking-[0.20em] dark:text-cream text-foreground`}
+            className={`text-xs text-origin font-normal ml-2 uppercase font-sans tracking-[0.20em]`}
           >
             Webhook Events
           </h2>
@@ -49,7 +49,7 @@ export const Events = (): JSX.Element => {
           <HyperList
             data={events}
             component={EventItem}
-            container="space-y-4 rounded-md h-[calc(100vh-300px)]"
+            container="space-y-px h-[calc(100vh-300px)]"
           />
         )}
       </div>
@@ -62,13 +62,13 @@ const EventItem = (event: WebhookEvent) => (
     key={event.id}
     className={cn(
       "border-[0.33px] p-4 border-red-400 bg-red-50",
-      "dark:bg-card/40 dark:border-xy",
+      "dark:bg-axion/75 dark:border-xy",
       {
         "border-xy bg-card dark:border-zed": event.isValid,
         "border-xy bg-card dark:border-transparent dark:bg-card":
           event.isValid && event.eventType === "push",
       },
-      "bg-card dark:bg-card-origin/44 text-card-foreground flex flex-col rounded-xl py-5 shadow-md dark:inset-shadow-[0_0.5px_rgb(255_255_255/0.20)] gap-4",
+      "bg-card text-card-foreground flex flex-col rounded-xs py-5 shadow-md dark:inset-shadow-[0_0.5px_rgb(255_255_255/0.20)] gap-4",
     )}
   >
     <div className="flex items-start space-y-2 justify-between mb-3">
@@ -83,19 +83,16 @@ const EventItem = (event: WebhookEvent) => (
                 : "pull-request"
               : "warning"
           }
-          className={cn(
-            "p-[2px] rounded-md shrink-0 bg-mac-red/10 text-red-400",
-            {
-              "dark:text-teal-500 text-teal-600 bg-mac-teal/10 dark:bg-teal-200/5":
-                event.isValid,
-              "dark:text-blue-500 text-blue-500 bg-blue-50":
-                event.eventType === "push" && event.isValid,
-            },
-          )}
+          className={cn("p-[2px] shrink-0 bg-mac-red/10 text-red-400", {
+            "dark:text-teal-500 text-teal-600 bg-mac-teal/10 dark:bg-teal-200/5":
+              event.isValid,
+            "dark:text-blue-500 text-blue-500 bg-blue-50":
+              event.eventType === "push" && event.isValid,
+          })}
         />
         <span
           className={cn(
-            "font-bold font-sans uppercase text-red-400 dark:text-red-300/80",
+            "font-semibold font-sans uppercase text-red-400 dark:text-red-300/80",
             {
               "text-blue-400 dark:text-blue-400": event.isValid,
               "text-teal-500 dark:text-teal-300":
@@ -110,11 +107,11 @@ const EventItem = (event: WebhookEvent) => (
           {event.repository?.split("/").pop()?.trim()}
         </span>
       </div>
-      <div className="flex items-center">
-        <span className="text-xs text-muted-foreground/80 font-jet">
+      <div className="flex items-end flex-col">
+        <span className="text-[8px] text-creamy/60 font-jet">
           {formatTimestamp(event.timestamp).split(",").shift()?.trim()}
         </span>
-        <span className="text-xs ml-2 hidden text-muted-foreground/80 2xl:flex font-jet">
+        <span className="text-xs ml-2 hidden text-creamy/60 2xl:flex font-jet tracking-tighter">
           {formatTimestamp(event.timestamp).split(",").pop()?.trim()}
         </span>
       </div>
@@ -127,7 +124,7 @@ const EventItem = (event: WebhookEvent) => (
       </div>
 
       {event.data.action && (
-        <div className="flex cols-span-3 rounded-sm items-center space-x-2 w-fit">
+        <div className="flex cols-span-3 items-center space-x-2 w-fit">
           <FieldName name="action" />
           <span className="font-jet tracking-tight">{event.data.action}</span>
         </div>
@@ -174,7 +171,7 @@ interface FieldNameProps {
   name: string;
 }
 const FieldName = ({ name }: FieldNameProps) => (
-  <p className="text-muted-foreground uppercase text-xs font-mono tracking-widest">
+  <p className="text-creamy/60 uppercase text-xs font-mono tracking-widest">
     {name}
   </p>
 );

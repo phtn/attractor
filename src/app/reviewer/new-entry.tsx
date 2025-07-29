@@ -19,60 +19,6 @@ interface MarkdownParserProps {
   allowDangerousHtml?: boolean;
   maxWidth?: string;
 }
-
-// const CodeBlocks: FC<CodeBlockProps> = ({ children, className, ...props }) => {
-//   const [copied, setCopied] = useState<boolean>(false);
-//   const match = /language-(\w+)/.exec(className || "");
-//   const language = match ? match[1] : "text";
-
-//   const handleCopy = async (): Promise<void> => {
-//     try {
-//       await navigator.clipboard.writeText(children);
-//       setCopied(true);
-//       setTimeout(() => setCopied(false), 2000);
-//     } catch (err) {
-//       console.error("Failed to copy code:", err);
-//     }
-//   };
-
-//   if (!match) {
-//     return (
-//       <code
-//         className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono"
-//         {...props}
-//       >
-//         {children}
-//       </code>
-//     );
-//   }
-
-//   return (
-//     <div className="relative group">
-//       <button
-//         onClick={handleCopy}
-//         className="absolute top-2 right-2 p-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
-//         title={copied ? "Copied!" : "Copy code"}
-//       >
-//         {copied ? <Check size={16} /> : <Copy size={16} />}
-//       </button>
-//       <SyntaxHighlighter
-//         language={language}
-//         style={tomorrow}
-//         showLineNumbers={true}
-//         wrapLines={true}
-//         customStyle={{
-//           margin: 0,
-//           borderRadius: "0.5rem",
-//           fontSize: "0.875rem",
-//         }}
-//         {...props}
-//       >
-//         {children}
-//       </SyntaxHighlighter>
-//     </div>
-//   );
-// };
-
 const LinkRenderer: FC<{ href?: string; children: ReactNode }> = ({
   href,
   children,
@@ -83,7 +29,7 @@ const LinkRenderer: FC<{ href?: string; children: ReactNode }> = ({
   return (
     <a
       href={href}
-      className="text-blue-900 dark:text-zinc-900 dark:hover:decoration-geist-teal dark:hover:text-zinc-950 underline decoration underline-offset-4 hover:decoration-blue-600 dark:decoration-orange-300/30 transition-colors duration-200"
+      className="text-blue-900 dark:text-geist-teal dark:hover:decoration-white dark:hover:text-zinc-950 decoration-underline underline-offset-4 hover:decoration-blue-600 dark:decoration-zinc-600/60 transition-colors duration-200"
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener noreferrer" : undefined}
     >
@@ -163,7 +109,7 @@ const HeadingRenderer = (level: number) => {
       6: "text-sm font-medium mt-2 mb-1",
     };
 
-    const className = `${sizes[level as keyof typeof sizes]} text-gray-900 dark:text-gray-100 group`;
+    const className = `${sizes[level as keyof typeof sizes]} text-gray-900 dark:text-gray-100 group font-space tracking-tighter`;
 
     switch (level) {
       case 1:

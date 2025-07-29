@@ -9,11 +9,11 @@ import { GPUFan } from "./gpu";
 
 export function EncryptedChat() {
   return (
-    <div className="bg-zinc-300/10 border-t dark:bg-creamy/10 p-4 space-y-4 h-[calc(100vh-48px)] overflow-hidden w-full flex flex-col relative rounded-tl-xl">
+    <div className="bg-zinc-300/10 dark:bg-creamy/10 h-[calc(100vh-48px)] overflow-hidden flex flex-col relative pointer-events-auto">
       {/* WEBHOOKS */}
       <Events />
       <div className="fixed -bottom-1 right-1.5 w-fit px-2">
-        <div className="flex space-x-2 flex-1 relative overflow-hidden border-slate-200/60 shadow-2xs border-t h-20 rounded-bl-xs rounded-e-xl rounded-tl-xl justify-end items-center bg-muffin dark:bg-gray-600">
+        <div className="flex space-x-2 flex-1 relative overflow-hidden border-slate-200/60 shadow-2xs border-t h-20 rounded-e-xl rounded-tl-xl justify-end items-center bg-muffin dark:bg-gray-600">
           <GPUFan on={false} suppressHydrationWarning />
           <GPUFan on={true} suppressHydrationWarning />
           <GPUFan on={true} suppressHydrationWarning />

@@ -3,7 +3,7 @@ import { Stats } from "../webhooks/stats";
 export const ReviewerStats = () => {
   return (
     <div className="inline-flex w-full">
-      <div className="dark:bg-origin/35 dark:backdrop-blur-lg bg-gray-300 h-fit text-card-foreground overflow-hidden flex flex-col rounded-t-lg rounded-b-xs dark:inset-shadow-[0_1px_rgb(255_255_255/0.25)] w-full">
+      <div className="dark:bg-background dark:backdrop-blur-lg bg-gray-300 h-fit text-card-foreground overflow-hidden flex flex-col rounded-t-lg rounded-b-xs dark:inset-shadow-[0_1px_rgb(255_255_255/0.25)] w-full">
         <div className="flex items-center">
           <Stats />
         </div>

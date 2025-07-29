@@ -230,6 +230,7 @@
   --color-mac-pink: var(--mac-pink);
   --color-mac-brown: var(--mac-brown);
   --color-mac-gray: var(--mac-gray);
+  --color-axion: oklch(0.3134 0.0142 291.29);
   /* ANIMATE */
   --animate-enter: var(--enter);
   --animate-synth: var(--synth);
@@ -379,6 +380,11 @@
   }
   body {
     @apply bg-background text-foreground;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .reviewer {
     ::-webkit-scrollbar {
       display: none;
     }
