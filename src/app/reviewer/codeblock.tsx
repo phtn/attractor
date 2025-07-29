@@ -1,6 +1,5 @@
 "use client";
 
-import { IconButton } from "@/components/icon-button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,6 +30,7 @@ import {
   okaidia,
 } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { szexTheme } from "./szex-theme";
+import { IconMini } from "@/components/icon-mini";
 
 interface Props {
   language: string;
@@ -143,18 +143,10 @@ const CodeBlock: FC<Props> = memo(({ language, children }) => {
         <span className="text-xs lowercase text-zinc-300">
           {normalizedLanguage}
         </span>
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1.5">
           <StyleSelector styles={styles} setStyleName={setStyleName} />
-          <IconButton
-            icon="px-chat"
-            fn={downloadAsFile}
-            iconStyle="text-stone-300 group-hover:text-teal-300"
-          />
-          <IconButton
-            fn={onCopy}
-            icon={isCopied ? "px-check" : "px-dollar"}
-            iconStyle="text-stone-300 group-hover:text-teal-300 size-4"
-          />
+          <IconMini icon="px-download" fn={downloadAsFile} />
+          <IconMini fn={onCopy} icon={isCopied ? "px-check" : "px-copy"} />
         </div>
       </div>
       <SyntaxHighlighter
@@ -206,11 +198,10 @@ const StyleSelector = ({ styles, setStyleName }: StyleSelectorProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <IconButton
+        <IconMini
           asChild
           fn={() => console.log("trigger")}
-          icon="px-chat"
-          iconStyle="text-stone-300 group-hover:text-teal-300"
+          icon="px-chevrons-vertical"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent>

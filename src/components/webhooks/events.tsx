@@ -30,8 +30,7 @@ export const Events = (): JSX.Element => {
                   ? "log-unverified"
                   : "unsupported"
             }
-            size={13}
-            className={cn("text-macd-red", {
+            className={cn("size-5 aspect-square text-macd-red", {
               "text-geist-teal": connectionStatus === "connected",
               "text-macd-orange animate-pulse":
                 connectionStatus === "connecting",

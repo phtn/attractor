@@ -12,7 +12,6 @@ import {
 } from "react";
 import { Icon } from "@/lib/icons";
 import { IQuickAction } from "./types";
-import { IconButton } from "@/components/icon-button";
 
 interface ChatPanelProps {
   input: string;
@@ -46,18 +45,17 @@ export const ChatPanel = ({
   );
 
   return (
-    <div
-      className={`h-[calc(94lvh)] flex flex-col rounded-r-xl overflow-hidden`}
-    >
-      <div className="flex-1 bg-creamy/15 backdrop-blur-3xl flex flex-col">
-        <div className="h-12 px-2 flex items-center justify-between border-b-[0.33px]">
-          <div></div>
-          <div>
-            <IconButton
-              fn={() => console.log("")}
-              icon="px-code"
-              // className="size-5"
-            />
+    <div className={`h-[calc(94lvh)] flex flex-col overflow-hidden`}>
+      <div className="flex-1 bg-origin/35 justify-start backdrop-blur-3xl flex flex-col">
+        <div className="flex items-center justify-between border-b-[0.33px]">
+          <div className="flex w-full p-2.5 bg-creamy rounded-xs items-center justify-between px-3">
+            <Icon name="px-chat" size={12} className="text-origin" />
+            <h2
+              className={`text-xs text-origin font-normal uppercase font-sans tracking-[0.20em]`}
+            >
+              Assistant
+            </h2>
+            <Icon name="px-clock" size={12} className="text-origin" />
           </div>
         </div>
         <ScrollArea className="flex-1 p-4">
@@ -88,33 +86,35 @@ export const ChatPanel = ({
             {messages.length === 0 && (
               <>
                 <div className="flex justify-end">
-                  <div className="min-w-[95%] rounded-lg dark:inset-shadow-[0_1px_rgb(255_255_255/0.20)] p-3 bg-blue-500 text-white">
-                    <div className="text-sm font-medium mb-1">You</div>
-                    <div className="text-sm">
+                  <div className="min-w-[95%] rounded-lg rounded-br-sm p-3 bg-gradient-to-r from-teal-300 via-teal-300 to-teal-300/80  text-gray-900">
+                    <div className="text-sm font-semibold mb-1">You</div>
+                    <div className="text-sm font-space font-light">
                       Can you explain how React hooks work?
                     </div>
                   </div>
                 </div>
                 <div className="flex justify-start">
-                  <div className="min-w-[95%] rounded-md p-3 bg-gray-100 text-gray-900">
-                    <div className="text-sm font-medium mb-1">Assistant</div>
-                    <div className="text-sm">
+                  <div className="min-w-[95%] rounded-lg rounded-bl-sm dark:inset-shadow-[0_1px_rgb(255_255_255/0.20)] p-3 bg-axion text-white">
+                    <div className="text-sm font-semibold mb-1">Assistant</div>
+                    <div className="text-sm font-space font-light">
                       Response rendered in center panel →
                     </div>
                   </div>
                 </div>
                 <div className="flex justify-end ">
-                  <div className="min-w-[95%] rounded-lg dark:inset-shadow-[0_1px_rgb(255_255_255/0.20)] p-3 bg-blue-500 text-white">
-                    <div className="text-sm font-medium mb-1">You</div>
-                    <div className="text-sm">
+                  <div className="min-w-[95%] rounded-lg rounded-br-sm p-3 bg-gradient-to-r from-teal-200 via-teal-200/90 to-teal-300/70  text-gray-900">
+                    <div className="text-sm font-semibold mb-1">You</div>
+                    <div className="text-sm font-space font-light">
                       Whats the difference between useState and useEffect?
                     </div>
                   </div>
                 </div>
                 <div className="flex justify-start">
-                  <div className="min-w-[95%] rounded-lg p-3 bg-creamy  text-gray-900">
-                    <div className="text-sm font-medium mb-1">Assistant</div>
-                    <div className="text-sm">
+                  <div className="min-w-[95%] rounded-lg rounded-bl-sm dark:inset-shadow-[0_1px_rgb(255_255_255/0.20)] p-3 bg-axion text-white">
+                    <div className="text-sm font-semibold font-space mb-1">
+                      Assistant
+                    </div>
+                    <div className="text-sm font-space font-light">
                       Response rendered in center panel →
                     </div>
                   </div>
@@ -143,7 +143,7 @@ export const ChatPanel = ({
                   key={index}
                   variant="ghost"
                   size="sm"
-                  className="h-8 justify-start text-xs rounded-md border border-gray-200 hover:border-gray-300"
+                  className="h-8 justify-start text-xs rounded-sm border border-gray-200 hover:border-gray-400"
                 >
                   <Icon name={action.icon} className="h-3 w-3 mr-1" />
                   {action.text}
@@ -154,7 +154,7 @@ export const ChatPanel = ({
         )}
 
         {/* Input Panel */}
-        <div className="border-t p-4 flex-shrink-0">
+        <div className="p-4 pt-0 flex-shrink-0">
           <form onSubmit={submitAction} className="space-y-3">
             <div className="flex gap-2">
               <div className="flex-1 relative">
@@ -162,7 +162,7 @@ export const ChatPanel = ({
                   value={input}
                   onChange={onChange}
                   placeholder="Ask about programming concepts, languages, or frameworks..."
-                  className="w-full p-3 pr-12 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pb-4 h-24"
+                  className="w-full p-3 pr-12 bg-origin/50 border border-gray-400/60 dark:border-gray-500/60 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pb-4 h-24"
                   disabled={loading}
                   onKeyDown={onKeyPress}
                 />
@@ -204,7 +204,7 @@ interface SelectModelProps {
 const SelectModel = ({ selectedModel, selectModel }: SelectModelProps) => (
   <div className="flex items-center gap-2">
     <select
-      className="text-xs border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      className="text-xs text-axion border border-gray-300 bg-creamy rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       value={selectedModel}
       onChange={selectModel}
     >

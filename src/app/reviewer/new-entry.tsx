@@ -29,7 +29,7 @@ const LinkRenderer: FC<{ href?: string; children: ReactNode }> = ({
   return (
     <a
       href={href}
-      className="text-blue-900 dark:text-geist-teal dark:hover:decoration-white dark:hover:text-zinc-950 decoration-underline underline-offset-4 hover:decoration-blue-600 dark:decoration-zinc-600/60 transition-colors duration-200"
+      className="text-blue-900 dark:text-creamy dark:hover:decoration-white dark:hover:text-creamy decoration-underline underline-offset-4 hover:decoration-blue-600 dark:decoration-zinc-600/60 transition-colors duration-200"
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener noreferrer" : undefined}
     >
