@@ -198,11 +198,7 @@ const StyleSelector = ({ styles, setStyleName }: StyleSelectorProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <IconMini
-          asChild
-          fn={() => console.log("trigger")}
-          icon="px-chevrons-vertical"
-        />
+        <IconMini asChild fn={() => console.log("trigger")} icon="px-paint" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {Object.keys(styles)

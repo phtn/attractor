@@ -47,7 +47,7 @@ export function Header() {
   );
 
   return (
-    <header className="flex items-center justify-between md:py-4 py-2 w-full max-w-7xl mx-auto">
+    <header className="flex items-center justify-between md:py-4 py-1 w-full max-w-7xl mx-auto">
       <div className="flex items-center">
         <Brand label="Web Technologies | Research & Development" />
         <div className="flex items-center"></div>

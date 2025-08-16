@@ -14,7 +14,7 @@ export const szexTheme: Record<string, CSSProperties> = {
     textShadow: "0 1px rgba(0, 0, 0, 0.3)",
     fontFamily:
       '"JetBrainsMono Nerd Font Mono", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
-    fontSize: "1em",
+    fontSize: "1.25em",
     textAlign: "left" as const,
     whiteSpace: "pre" as const,
     wordSpacing: "normal",
@@ -31,11 +31,11 @@ export const szexTheme: Record<string, CSSProperties> = {
   },
   'pre[class*="language-"]': {
     color: "#f8f8f2",
-    background: "oklch(0.233 0.004 308.27)",
+    background: "oklch(0.280 0.012 285)",
     textShadow: "0 1px rgba(0, 0, 0, 0.3)",
     fontFamily:
       '"JetBrainsMono Nerd Font Mono", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
-    fontSize: "1em",
+    fontSize: "17px",
     textAlign: "left" as const,
     whiteSpace: "pre" as const,
     wordSpacing: "normal",
@@ -52,12 +52,12 @@ export const szexTheme: Record<string, CSSProperties> = {
     padding: "1em",
     margin: "0.5em 0",
     overflow: "auto",
-    borderRadius: "0.3em",
+    borderRadius: "0.1em",
   },
   ':not(pre) > code[class*="language-"]': {
-    background: "oklch(0.233 0.004 308.27)",
+    background: "oklch(0.3 0.0 0)",
     padding: "0.1em",
-    borderRadius: "0.3em",
+    borderRadius: "0.0em",
     whiteSpace: "normal" as const,
   },
   comment: {

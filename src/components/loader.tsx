@@ -1,6 +1,9 @@
-import { Tracer } from "@/app/init/apps/tracer";
+"use client";
+
 import { Icon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
+import { animate, stagger, svg } from "animejs";
+import { useEffect } from "react";
 
 export const Loader = () => (
   <div className="size-64 scale-75 relative flex items-start w-full justify-center">
@@ -29,14 +32,42 @@ export const Loader = () => (
           )}
         />
       </div>
-      {/* <Icon
-      name="spinners-3-dots-move"
-      className="size-6 text-mac-red/80"
-      solid
-    /> */}
     </div>
     <div className="absolute w-full flex justify-center size-96 -top-12">
       <Tracer />
     </div>
   </div>
 );
+
+const Tracer = () => {
+  useEffect(() => {
+    animate(svg.createDrawable(".logo-outline"), {
+      draw: ["0 0", "0 0.5", "0 1", "1 1"],
+      ease: "inOutQuad",
+      duration: 1600,
+      delay: stagger(50),
+      loop: true,
+      autoplay: true,
+    });
+  }, []);
+
+  return (
+    <div>
+      <svg
+        width="600"
+        height="600"
+        viewBox="0 0 600 600"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="scale-[16%] text-slate-400 dark:text-slate-200"
+      >
+        <path
+          className="logo-outline"
+          d="M442 437.562V166C442 158 442 158 434 158H166C158 158 158 158 158 166V434C158 442 158 442 166 442H300M442 446.438V555.825C442 584 442 584 470.175 584H584V470.175C584 442 584 442 555.825 442H300M300 442V555.825C300 584 300 584 271.825 584H44.1746C16 584 16 584 16 555.825V44.1746C16 16 16 16 44.1746 16H555.825C584 16 584 16 584 44.1746V271.825C584 300 584 300 555.825 300H443M300 442V302C300 300 300 300 302 300H441"
+          stroke="currentColor"
+          strokeWidth={10}
+        />
+      </svg>
+    </div>
+  );
+};

@@ -8,11 +8,10 @@ interface Props {
   preloaded: Preloaded<typeof api.cats.get.active>;
 }
 export const Content = ({ preloaded }: Props) => {
-  const reactive = usePreloadedQuery(preloaded);
+  const data = usePreloadedQuery(preloaded);
   return (
     <div>
-      <AssetGallery category="apps" data={reactive} />
-      <div>YOOO</div>
+      <AssetGallery category="apps" data={data} />
     </div>
   );
 };

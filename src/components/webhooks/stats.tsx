@@ -50,7 +50,7 @@ export const Stats = (): JSX.Element | null => {
       data={stats}
       component={StatItem}
       direction="right"
-      container="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 px-3"
+      container="flex justify-around items-center space-x-4"
     />
   );
 };
@@ -60,10 +60,12 @@ interface IStat {
   value?: number;
 }
 const StatItem = ({ label, value = 0 }: IStat) => (
-  <div className="dark:bg-transparent rounded-md px-4 py-3">
-    <h3 className="text-xs font-medium font-space uppercase tracking-widest text-foreground">
+  <div className="w-fit">
+    <h3 className="whitespace-nowrap text-xs text-muted-foreground text-right font-light font-space uppercase tracking-wider">
       {label}
     </h3>
-    <p className="text-xl font-space text-foreground/80">{value}</p>
+    <p className="text-lg text-right text-foreground/80 font-space font-semibold">
+      {value}
+    </p>
   </div>
 );

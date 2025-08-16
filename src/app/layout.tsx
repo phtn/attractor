@@ -1,12 +1,13 @@
 import { ProvidersCtxProvider } from "@/ctx";
 import type { Metadata } from "next";
 import {
-  Oxanium,
   Fira_Mono,
   Geist,
   Geist_Mono,
+  Oxanium,
   Space_Grotesk,
 } from "next/font/google";
+import { type ReactNode } from "react";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>

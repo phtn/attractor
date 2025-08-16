@@ -14,7 +14,8 @@ import { useResizeCtx } from "@/ctx/resize-ctx";
 import { useChat } from "@ai-sdk/react";
 import {
   ChangeEvent,
-  KeyboardEvent,
+  type FormEvent,
+  type KeyboardEvent,
   useCallback,
   useEffect,
   useRef,
@@ -25,6 +26,7 @@ import { ChatPanel } from "./chat-panel";
 import { ReviewContent } from "./review-content";
 // import { HighlightItem } from "./types";
 import { exampleMarkdown } from "./static-md";
+import { DefaultChatTransport } from "ai";
 
 export const Content = () => {
   const { leftExpanded, rightExpanded, centerExpanded } = useResizeCtx();
@@ -83,22 +85,36 @@ export const Content = () => {
   // const [externalLinks] = useState<string[]>([]);
   const [input, setInput] = useState("");
 
-  // == useChat ==
+  // == useChat == // AI-SDK v5
   const { messages, sendMessage } = useChat({
-    messages: [],
+    transport: new DefaultChatTransport({
+      api: "/api/reviewer/chat",
+      headers: {},
+    }),
   });
 
   const onChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
-    setInput(e.target.value);
+    setInput(e.currentTarget.value);
   }, []);
 
-  const onKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      sendMessage();
-    }
-  };
+  const onSubmit = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      sendMessage({ text: input });
+    },
+    [sendMessage, input],
+  );
+
+  const onKeyPress = useCallback(
+    (event: KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    },
+    [sendMessage],
+  );
 
   // Removed unused variables and functions
 
@@ -130,7 +146,7 @@ export const Content = () => {
                     loading={loading}
                     input={input}
                     onKeyPress={onKeyPress}
-                    submitAction={sendMessage}
+                    submitAction={onSubmit}
                     onChange={onChange}
                     setSelectedModel={setSelectedModel}
                     selectedModel={selectedModel}
@@ -148,7 +164,7 @@ export const Content = () => {
                 className="mt-8 h-[97vh] pointer-events-auto"
               >
                 <div className="z-100">
-                  <div className="flex items-center justify-between w-full">
+                  <div className="flex items-end justify-between w-full">
                     <ReviewerStats />
                   </div>
                   <ReviewContent
@@ -163,8 +179,8 @@ export const Content = () => {
               {/* Right Panel - Chat */}
               <ResizablePanel
                 ref={rightPanelRef}
-                minSize={20}
-                maxSize={25}
+                minSize={0}
+                maxSize={20}
                 defaultSize={20}
                 className="mt-16 pointer-events-none"
               >

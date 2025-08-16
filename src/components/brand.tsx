@@ -8,21 +8,21 @@ interface Props {
 }
 export const Brand = ({ label, dark = false }: Props) => (
   <Link href={"/"} className="flex items-center w-fit">
-    <div className="group/logo text-zinc-600 dark:text-zinc-900 font-space h-full w-fit relative md:px-2 px-4 flex items-center justify-center md:space-x-4 space-x-2">
+    <div className="group/logo text-zinc-600 dark:text-zinc-900 font-space h-full w-fit relative md:px-2 px-2.5 flex items-center justify-center md:space-x-4 space-x-2">
       <Icon
         solid
         name="re-up.ph"
         className={cn(
           "absolute dark:flex hidden md:left-2 left-4 md:top-1.5 top-2",
-          " translate-x-0 opacity-90 size-10",
-          "group-hover/logo:flex dark:text-emerald-50",
-          "dark:group-hover/logo:text-emerald-50 scale-115 dark:scale-105 dark:blur-sm",
+          " translate-x-0 opacity-90 size-9",
+          "group-hover/logo:flex dark:text-creamy",
+          "dark:group-hover/logo:text-creamy scale-115 dark:scale-105 dark:blur-sm",
           "group-hover/logo:text-teal-50 group-hover/logo:blur-xs group-hover/logo:scale-125",
           "group-hover/logo:translate-x-0 group-hover/logo:opacity-100",
           "transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
           "",
           {
-            "dark:group-hover/logo:text-emerald-50 dark:scale-105  dark:blur-sm":
+            "dark:group-hover/logo:text-creamy dark:scale-105  dark:blur-sm":
               dark,
           },
         )}
@@ -31,14 +31,14 @@ export const Brand = ({ label, dark = false }: Props) => (
         solid
         name="re-up.ph"
         className={cn(
-          "relative z-10 size-9 dark:text-white",
+          "relative z-10 size-8 md:size-9 dark:text-white",
           "dark:group-hover/logo:text-white",
           "text-slate-600 group-hover/logo:text-slate-500",
           "transition-colors duration-300 ease-out",
           { "dark:text-lime-200": dark },
         )}
       />
-      <div className={cn("relative p-1 rounded-md", "")}>
+      <div className={cn("relative md:p-1 p-0.5 rounded-md", "")}>
         <BrandLabel label={label} dark={dark} />
         <div
           className={cn(
@@ -48,14 +48,6 @@ export const Brand = ({ label, dark = false }: Props) => (
             "ease-[cubic-bezier(0.34,1.56,0.64,1)]",
           )}
         />
-        {/* <div
-          className={cn(
-            "h-0.5 dark:bg-white max-w-full bg-mac-gray md:-top-2 -top-1 opacity-90 z-2 relative",
-            "group-hover/logo:max-w-full group-hover/logo:opacity-100",
-            "transition-all duration-500 origin-center rounded-full",
-            " ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-          )}
-        /> */}
       </div>
     </div>
   </Link>
@@ -70,7 +62,7 @@ const BrandLabel = ({ dark, label }: BrandTitleProps) => {
   return (
     <h1
       className={cn(
-        "text-mac-gray font-sans translate-y-px flex capitalize space-x-1 relative z-2",
+        "text-mac-gray font-sans translate-y-px flex capitalize space-x-0.5 relative z-2",
         "transition-transform duration-500 ease-[cubic-bezier(0,0.55,0.45,1)]",
         "group-hover/logo:translate-y-px group-hover/logo:drop-shadow-xs",
         "text-slate-600 dark:text-slate-700 group-hover/logo:text-slate-500",
@@ -81,7 +73,7 @@ const BrandLabel = ({ dark, label }: BrandTitleProps) => {
       )}
     >
       <div className="flex items-center justify-center">
-        <div className="h-9 w-fit text-slate-700 whitespace-nowrap border-t py-[2px] font-medium tracking-tight">
+        <div className="h-8 w-fit text-slate-700 whitespace-nowrap pe-2 font-medium tracking-tight">
           {label
             .split("|")
             .filter((t) => t !== "&")

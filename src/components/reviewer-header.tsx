@@ -16,7 +16,7 @@ export function ReviewerHeader() {
     onError("Warning");
   }, []);
   return (
-    <div className="fixed top-0 z-0 flex-1 w-screen dark:bg-axion h-16 ps-4 py-4 flex items-center justify-between">
+    <div className="fixed top-0 z-0 flex-1 w-screen dark:bg-slate-400 h-16 ps-4 py-4 flex items-center justify-between">
       <div className="flex items-center w-full">
         <Brand />
         <Slash />

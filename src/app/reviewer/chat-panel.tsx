@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { UIMessage } from "ai";
+import { UIMessage } from "@ai-sdk/react";
 import {
   ChangeEvent,
   Dispatch,
+  FormEvent,
   KeyboardEvent,
   SetStateAction,
   useCallback,
@@ -18,7 +19,7 @@ interface ChatPanelProps {
   messages: UIMessage[];
   loading: boolean;
   onKeyPress: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
-  submitAction: VoidFunction;
+  submitAction: (e: FormEvent<HTMLFormElement>) => void;
   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   setSelectedModel: Dispatch<SetStateAction<string>>;
   selectedModel: string;
@@ -76,9 +77,21 @@ export const ChatPanel = ({
                     {message.role === "user" ? "You" : "Assistant"}
                   </div>
                   <div className="text-sm whitespace-pre-wrap">
-                    {message.role === "user"
-                      ? message.content
-                      : "Response rendered in center panel →"}
+                    {messages.map((m) => (
+                      <div key={m.id} className="whitespace-pre-wrap">
+                        {m.role === "user" ? "You: " : "Assistant: "}
+                        {m.parts.map((part, index) => {
+                          if (part.type === "text") {
+                            return (
+                              <span key={`${m.id}-text-${index}`}>
+                                {part.text}
+                              </span>
+                            );
+                          }
+                          return null;
+                        })}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { Icon, IconName } from "@/lib/icons";
 import { icons } from "@/lib/icons/icons";
 import { Slider } from "@/components/ui/slider";
@@ -12,17 +12,40 @@ export default function IconsPage() {
   const [copiedIcon, setCopiedIcon] = useState<IconName | null>(null);
   const [iconSize, setIconSize] = useState(24);
   const [searchQuery, setSearchQuery] = useState("");
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const copyToClipboard = (name: IconName) => () => {
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  const copyToClipboard = useCallback((name: IconName) => () => {
     const componentString = `<Icon name="${name}" size={${iconSize}} />`;
     navigator.clipboard.writeText(componentString);
     setCopiedIcon(name);
-    setTimeout(() => setCopiedIcon(null), 2000);
-  };
+    
+    // Clear existing timeout to prevent memory leaks
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
+    timeoutRef.current = setTimeout(() => {
+      setCopiedIcon(null);
+      timeoutRef.current = null;
+    }, 2000);
+  }, [iconSize]);
 
-  const filteredIcons = Object.keys(icons).filter((name) =>
-    name.toLowerCase().includes(searchQuery.toLowerCase().trim()),
-  );
+  // Memoize filtered icons to prevent unnecessary recalculations
+  const filteredIcons = useMemo(() => {
+    const query = searchQuery.toLowerCase().trim();
+    return Object.keys(icons).filter((name) =>
+      name.toLowerCase().includes(query)
+    );
+  }, [searchQuery]);
 
   return (
     <div className="h-[calc(100vh-64px)] overflow-scroll px-6">

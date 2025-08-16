@@ -13,30 +13,27 @@ export const Events = (): JSX.Element => {
 
   return (
     <div className="w-full">
-      <div className="w-full">
-        <div className="flex w-full p-2 bg-creamy rounded-xs items-center justify-between px-3">
-          <Icon name="github" size={12} className="text-origin" />
-          <h2
-            className={`text-xs text-origin font-normal ml-2 uppercase font-sans tracking-[0.20em]`}
-          >
-            Webhook Events
-          </h2>
-          <Icon
-            solid
-            name={
-              connectionStatus === "connected"
-                ? "circle-filled"
-                : connectionStatus === "connecting"
-                  ? "log-unverified"
-                  : "unsupported"
-            }
-            className={cn("size-5 aspect-square text-macd-red", {
-              "text-geist-teal": connectionStatus === "connected",
-              "text-macd-orange animate-pulse":
-                connectionStatus === "connecting",
-            })}
-          />
-        </div>
+      <div className="flex border-origin border w-full h-10 bg-creamy items-center justify-between px-3">
+        <Icon name="github" className="text-origin size-6" />
+        <h2
+          className={`text-sm text-axion font-normal ml-2 capitalize font-space tracking-tight`}
+        >
+          Events
+        </h2>
+        <Icon
+          solid
+          name={
+            connectionStatus === "connected"
+              ? "circle-filled"
+              : connectionStatus === "connecting"
+                ? "log-unverified"
+                : "unsupported"
+          }
+          className={cn("size-5 aspect-square text-macd-red", {
+            "text-geist-teal": connectionStatus === "connected",
+            "text-macd-orange animate-pulse": connectionStatus === "connecting",
+          })}
+        />
       </div>
 
       <div className="">

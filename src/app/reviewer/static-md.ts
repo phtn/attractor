@@ -13,7 +13,6 @@ React Hooks revolutionized how we write React components by allowing us to use s
 - **Better Logic Reuse**: Custom hooks enable sharing stateful logic
 - **Easier Testing**: Functions are easier to test than classes
 
-## Core Hooks
 
 ## React markdown
 \`\`\`typescript
@@ -50,18 +49,37 @@ interface MarkdownParserProps {
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ children, className, ...props }) => {
   const [copied, setCopied] = React.useState<boolean>(false);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const match = /language-(\w+)/.exec(className || '');
   const language = match ? match[1] : 'text';
 
-  const handleCopy = async (): Promise<void> => {
+  // Cleanup timeout on unmount
+  React.useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleCopy = React.useCallback(async (): Promise<void> => {
     try {
       await navigator.clipboard.writeText(children);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+
+      // Clear existing timeout to prevent memory leaks
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = setTimeout(() => {
+        setCopied(false);
+        timeoutRef.current = null;
+      }, 2000);
     } catch (err) {
       console.error('Failed to copy code:', err);
     }
-  };
+  }, [children]);
 
   // Butt fuck yeah!
 
@@ -342,27 +360,11 @@ Check out [React Markdown](https://github.com/remarkjs/react-markdown) for more 
 
 ### Inline Code
 Use \`const result: string = "Hello World";\` for inline code snippets.
-\`;
 
-  return (
-    <div className="max-w-4xl mx-auto p-8 bg-white dark:bg-gray-900 min-h-screen">
-      <MarkdownParser
-        content={sampleMarkdown}
-        enableLineNumbers={true}
-        enableCopyButton={true}
-        maxWidth="100%"
-      />
-    </div>
-  );
-};
-
-export default Demo;
-
-
-\`\`\`
+## Core Hooks
 
 ### useState Hook
-
+\`\`\`JavaScript
 The \`useState\` hook lets you add state to functional components:
 
 \`\`\`javascript
@@ -382,6 +384,7 @@ function Counter() {
 }
 \`\`\`
 
+---
 ### useEffect Hook
 
 The \`useEffect\` hook lets you perform side effects in function components:
@@ -407,6 +410,7 @@ function Example() {
 }
 \`\`\`
 
+---
 ## Advanced Hooks
 
 ### useContext
@@ -426,6 +430,7 @@ function ThemedButton() {
 }
 \`\`\`
 
+---
 ### useReducer
 
 For complex state logic:
@@ -456,6 +461,7 @@ function Counter() {
 }
 \`\`\`
 
+---
 ## Hook Rules
 
 > **Important**: Hooks have specific rules that must be followed:

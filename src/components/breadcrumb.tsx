@@ -18,7 +18,7 @@ export const Breadcrumb = ({ root }: Props) => {
         href={root ?? "/init"}
         className={cn(
           "w-5 h-4 flex items-center justify-center overflow-visible rounded transition-colors duration-300",
-          "text-muted-foreground hover:bg-mac-red/80 hover:text-white",
+          "text-muted-foreground hover:bg-red-400/80 hover:text-white",
           "dark:border-0 dark:border-white/60 backdrop-blur-3xl dark:hover:bg-origin/40 dark:bg-mac-gray/20 dark:text-chalk dark:hover:text-white ",
           {
             "": root,

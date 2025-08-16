@@ -3,6 +3,8 @@ import { useEffect, useRef } from "react";
 
 export function Shuding() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
   useEffect(() => {
     let width = 0;
     const onResize = () =>
@@ -33,10 +35,22 @@ export function Shuding() {
     });
 
     if (!canvasRef.current) return;
-    setTimeout(() => canvasRef.current?.style.opacity ?? "1", 300);
+    
+    // Store timeout reference for cleanup
+    timeoutRef.current = setTimeout(() => {
+      if (canvasRef.current) {
+        canvasRef.current.style.opacity = "1";
+      }
+      timeoutRef.current = null;
+    }, 300);
+    
     return () => {
       globe.destroy();
       window.removeEventListener("resize", onResize);
+      // Cleanup timeout on unmount
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
   }, []);
   return (

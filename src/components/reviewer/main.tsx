@@ -2,11 +2,10 @@ import { Stats } from "../webhooks/stats";
 
 export const ReviewerStats = () => {
   return (
-    <div className="inline-flex w-full">
-      <div className="dark:bg-background dark:backdrop-blur-lg bg-gray-300 h-fit text-card-foreground overflow-hidden flex flex-col rounded-t-lg rounded-b-xs dark:inset-shadow-[0_1px_rgb(255_255_255/0.25)] w-full">
-        <div className="flex items-center">
-          <Stats />
-        </div>
+    <div className="flex p-4 w-full justify-between dark:bg-background dark:backdrop-blur-lg bg-gray-300 rounded-t-lg rounded-b-none">
+      <div className="w-full flex font-mono">phtn/repo.git</div>
+      <div>
+        <Stats />
       </div>
     </div>
   );

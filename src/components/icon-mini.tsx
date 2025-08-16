@@ -43,12 +43,12 @@ export const IconMini = ({
         "group/btn inline-flex items-center justify-center p-0",
         "will-change-transform transition-all duration-300 ease-[cubic-bezier(0.37,0,0.63,1)] active:scale-85",
         "outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-        "hover:bg-background hover:border-xy",
+        "hover:bg-background/30 hover:border-xy",
         "transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50",
         "aria-disabled:pointer-events-none aria-disabled:text-muted-foreground/50",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 size-7 aspect-square",
         "cursor-pointer disabled:cursor-auto",
-        "relative z-20 rounded-sm",
+        "relative z-20 rounded-md",
         className,
       )}
     >
@@ -57,7 +57,7 @@ export const IconMini = ({
           solid
           name={icon}
           className={cn(
-            "absolute shrink-0 z-2 size-4 scale-115 text-white/30 dark:text-lime-50 blur-xs",
+            "absolute shrink-0 z-2 size-4 scale-115 text-creamy/25 dark:text-creamy/80 blur-xs",
           )}
         />
         <Icon
