@@ -245,7 +245,9 @@ export default function CategoriesDataTable() {
       const data = await res.json();
       setData(data);
     }
-    fetchPosts();
+    return () => {
+      fetchPosts()
+    };
   }, []);
 
   const handleDeleteRows = () => {

@@ -65,6 +65,20 @@ const addToRemoveQueue = (toastId: string) => {
   toastTimeouts.set(toastId, timeout)
 }
 
+const clearToastTimeout = (toastId: string) => {
+  const timeout = toastTimeouts.get(toastId)
+  if (timeout) {
+    clearTimeout(timeout)
+    toastTimeouts.delete(toastId)
+  }
+}
+
+// Clean up all timeouts (useful for cleanup)
+const clearAllToastTimeouts = () => {
+  toastTimeouts.forEach((timeout) => clearTimeout(timeout))
+  toastTimeouts.clear()
+}
+
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "ADD_TOAST":
@@ -108,11 +122,15 @@ export const reducer = (state: State, action: Action): State => {
     }
     case "REMOVE_TOAST":
       if (action.toastId === undefined) {
+        // Clear all timeouts when removing all toasts
+        clearAllToastTimeouts()
         return {
           ...state,
           toasts: [],
         }
       }
+      // Clear specific timeout when removing individual toast
+      clearToastTimeout(action.toastId)
       return {
         ...state,
         toasts: state.toasts.filter((t) => t.id !== action.toastId),
@@ -171,6 +189,10 @@ function useToast() {
       const index = listeners.indexOf(setState)
       if (index > -1) {
         listeners.splice(index, 1)
+      }
+      // Clean up timeouts when component unmounts
+      if (listeners.length === 0) {
+        clearAllToastTimeouts()
       }
     }
   }, []) // Remove state dependency to prevent unnecessary re-subscriptions

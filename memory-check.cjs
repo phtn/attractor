@@ -39,8 +39,16 @@ class MemoryMonitor {
     const heapTrend = this.calculateTrend(recent.map((m) => m.heapUsed));
     const rssTrend = this.calculateTrend(recent.map((m) => m.rss));
 
-    // If heap or RSS is consistently growing by more than 5MB per measurement
-    const LEAK_THRESHOLD = 5 * 1024 * 1024; // 5MB
+    // Dynamic threshold based on current memory usage
+    const avgHeapUsed =
+      recent.reduce((sum, m) => sum + m.heapUsed, 0) / recent.length;
+    const LEAK_THRESHOLD = Math.max(5 * 1024 * 1024, avgHeapUsed * 0.05); // 5MB or 5% of current usage
+
+    // Check for consistent growth pattern (not just spikes)
+    const consistentGrowth = this.checkConsistentGrowth(
+      recent.map((m) => m.heapUsed),
+    );
+    const memoryPressure = this.calculateMemoryPressure(recent);
 
     const analysis = {
       heapTrend:
@@ -55,9 +63,14 @@ class MemoryMonitor {
           : rssTrend < -LEAK_THRESHOLD
             ? "DECREASING"
             : "STABLE",
-      hasLeak: heapTrend > LEAK_THRESHOLD || rssTrend > LEAK_THRESHOLD,
+      hasLeak:
+        (heapTrend > LEAK_THRESHOLD && consistentGrowth) ||
+        rssTrend > LEAK_THRESHOLD,
       heapGrowthRate: this.formatBytes(heapTrend),
       rssGrowthRate: this.formatBytes(rssTrend),
+      consistentGrowth,
+      memoryPressure,
+      gcEfficiency: this.calculateGCEfficiency(recent),
     };
 
     return analysis;
@@ -75,15 +88,96 @@ class MemoryMonitor {
     return sum / (values.length - 1);
   }
 
+  // Check if memory growth is consistent (not just GC spikes)
+  checkConsistentGrowth(values) {
+    if (values.length < 5) return false;
+
+    let growthCount = 0;
+    for (let i = 1; i < values.length; i++) {
+      if (values[i] > values[i - 1]) growthCount++;
+    }
+
+    // Consider it consistent if 70% of measurements show growth
+    return growthCount / (values.length - 1) > 0.7;
+  }
+
+  // Calculate memory pressure indicators
+  calculateMemoryPressure(measurements) {
+    const latest = measurements[measurements.length - 1];
+    const heapUtilization = latest.heapUsed / latest.heapTotal;
+    const externalRatio = latest.external / latest.heapUsed;
+
+    return {
+      heapUtilization: Math.round(heapUtilization * 100),
+      externalRatio: Math.round(externalRatio * 100),
+      pressure:
+        heapUtilization > 0.8
+          ? "HIGH"
+          : heapUtilization > 0.6
+            ? "MEDIUM"
+            : "LOW",
+    };
+  }
+
+  // Estimate GC efficiency by looking at heap total vs used patterns
+  calculateGCEfficiency(measurements) {
+    if (measurements.length < 3) return "UNKNOWN";
+
+    let gcEvents = 0;
+    let totalReclaimed = 0;
+
+    for (let i = 1; i < measurements.length; i++) {
+      const prev = measurements[i - 1];
+      const curr = measurements[i];
+
+      // Detect potential GC event (heap used drops significantly)
+      if (prev.heapUsed - curr.heapUsed > 1024 * 1024) {
+        // 1MB drop
+        gcEvents++;
+        totalReclaimed += prev.heapUsed - curr.heapUsed;
+      }
+    }
+
+    const avgReclaimed = gcEvents > 0 ? totalReclaimed / gcEvents : 0;
+    return {
+      events: gcEvents,
+      avgReclaimed: this.formatBytes(avgReclaimed),
+      efficiency:
+        gcEvents > 0 && avgReclaimed > 5 * 1024 * 1024 ? "GOOD" : "POOR",
+    };
+  }
+
+  // Force garbage collection if available (requires --expose-gc flag)
+  forceGC() {
+    if (global.gc) {
+      global.gc();
+      return true;
+    }
+    return false;
+  }
+
   // Start monitoring
-  startMonitoring(intervalMs = 2000, maxMeasurements = 30) {
-    console.log(`🔍 Starting memory monitoring for ${this.processName}...`);
+  startMonitoring(intervalMs = 2000, maxMeasurements = 30, forceGC = false) {
+    console.log(`Starting memory monitoring for ${this.processName}...`);
     console.log(
-      `📊 Taking measurements every ${intervalMs}ms for ${maxMeasurements} iterations\n`,
+      `Taking measurements every ${intervalMs}ms for ${maxMeasurements} iterations`,
     );
+    if (forceGC) {
+      console.log(
+        `🗑️  Forcing GC before each measurement (requires --expose-gc)`,
+      );
+    }
+    console.log("");
 
     let count = 0;
     const interval = setInterval(() => {
+      // Force GC if requested and available
+      if (forceGC && !this.forceGC()) {
+        console.log(
+          "⚠️  GC not available. Run with --expose-gc flag for more accurate results.",
+        );
+      }
+
       const measurement = this.getMemoryUsage();
       this.measurements.push(measurement);
 
@@ -102,14 +196,20 @@ class MemoryMonitor {
         if (analysis.hasLeak) {
           console.log(`   ⚠️  POTENTIAL LEAK DETECTED!`);
           console.log(
-            `   📈 Heap Growth Rate: ${analysis.heapGrowthRate}/measurement`,
+            `   Heap Growth Rate: ${analysis.heapGrowthRate}/measurement`,
           );
           console.log(
-            `   📈 RSS Growth Rate: ${analysis.rssGrowthRate}/measurement`,
+            `   RSS Growth Rate: ${analysis.rssGrowthRate}/measurement`,
+          );
+          console.log(
+            `   Consistent Growth: ${analysis.consistentGrowth ? "YES" : "NO"}`,
           );
         } else {
-          console.log(`   ✅ Memory usage appears stable`);
+          console.log(`   Memory usage appears stable`);
         }
+        console.log(
+          `   Memory Pressure: ${analysis.memoryPressure.pressure} (${analysis.memoryPressure.heapUtilization}% heap used)`,
+        );
       }
 
       console.log("");
@@ -124,11 +224,11 @@ class MemoryMonitor {
 
   // Generate final report
   generateReport() {
-    console.log("🎯 MEMORY ANALYSIS REPORT");
+    console.log("MEMORY ANALYSIS REPORT");
     console.log("=".repeat(50));
 
     if (this.measurements.length === 0) {
-      console.log("❌ No measurements collected");
+      console.log("No measurements collected");
       return;
     }
 
@@ -136,13 +236,13 @@ class MemoryMonitor {
     const last = this.measurements[this.measurements.length - 1];
     const analysis = this.analyzeMeasurements();
 
-    console.log(`📊 Total Measurements: ${this.measurements.length}`);
+    console.log(`Total Measurements: ${this.measurements.length}`);
     console.log(
-      `⏱️  Duration: ${((last.timestamp - first.timestamp) / 1000).toFixed(1)}s`,
+      ` Duration: ${((last.timestamp - first.timestamp) / 1000).toFixed(1)}s`,
     );
     console.log("");
 
-    console.log("📈 MEMORY CHANGES:");
+    console.log("MEMORY CHANGES:");
     console.log(
       `   RSS: ${this.formatBytes(first.rss)} → ${this.formatBytes(last.rss)} (${this.formatBytes(last.rss - first.rss)})`,
     );
@@ -154,9 +254,9 @@ class MemoryMonitor {
     );
     console.log("");
 
-    console.log("🔍 LEAK ANALYSIS:");
+    console.log("LEAK ANALYSIS:");
     console.log(
-      `   Status: ${analysis.hasLeak ? "❌ POTENTIAL LEAK DETECTED" : "✅ NO LEAK DETECTED"}`,
+      `   Status: ${analysis.hasLeak ? "POTENTIAL LEAK DETECTED" : "NO LEAK DETECTED"}`,
     );
     console.log(
       `   Heap Trend: ${analysis.heapTrend} (${analysis.heapGrowthRate}/measurement)`,
@@ -164,10 +264,19 @@ class MemoryMonitor {
     console.log(
       `   RSS Trend: ${analysis.rssTrend} (${analysis.rssGrowthRate}/measurement)`,
     );
+    console.log(
+      `   Consistent Growth: ${analysis.consistentGrowth ? "YES" : "NO"}`,
+    );
+    console.log(
+      `   Memory Pressure: ${analysis.memoryPressure.pressure} (${analysis.memoryPressure.heapUtilization}% heap utilization)`,
+    );
+    console.log(
+      `   GC Efficiency: ${analysis.gcEfficiency.efficiency} (${analysis.gcEfficiency.events} events, avg ${analysis.gcEfficiency.avgReclaimed} reclaimed)`,
+    );
 
     if (analysis.hasLeak) {
       console.log("");
-      console.log("💡 RECOMMENDATIONS:");
+      console.log("RECOMMENDATIONS:");
       console.log("   1. Check for event listeners that are not being removed");
       console.log(
         "   2. Look for closures holding references to large objects",
@@ -177,6 +286,21 @@ class MemoryMonitor {
       console.log(
         "   5. Review React components for missing cleanup in useEffect",
       );
+      console.log(
+        "   6. Consider using WeakMap/WeakSet for temporary references",
+      );
+      console.log(
+        "   7. Profile with --inspect flag to identify specific leak sources",
+      );
+    } else if (analysis.memoryPressure.pressure === "HIGH") {
+      console.log("");
+      console.log("HIGH MEMORY PRESSURE DETECTED:");
+      console.log("   Consider optimizing memory usage even without leaks");
+      console.log("   1. Review large object allocations");
+      console.log(
+        "   2. Implement object pooling for frequently created objects",
+      );
+      console.log("   3. Use streaming for large data processing");
     }
 
     // Save detailed data
@@ -194,14 +318,25 @@ class MemoryMonitor {
 
     const filename = `memory-report-${Date.now()}.json`;
     fs.writeFileSync(filename, JSON.stringify(reportData, null, 2));
-    console.log(`\n💾 Detailed report saved to: ${filename}`);
+    console.log(`\nDetailed report saved to: ${filename}`);
   }
 }
 
 // Start monitoring if this script is run directly
 if (require.main === module) {
+  const args = process.argv.slice(2);
+  const interval = parseInt(args[0]) || 2000;
+  const measurements = parseInt(args[1]) || 20;
+  const forceGC = args.includes("--gc");
+
+  console.log("Memory Leak Detector");
+  console.log(
+    "Usage: node memory-check.cjs [interval_ms] [measurements] [--gc]",
+  );
+  console.log("Example: node memory-check.cjs 1000 30 --gc\n");
+
   const monitor = new MemoryMonitor("Next.js Dev Server");
-  monitor.startMonitoring(2000, 20); // Every 2 seconds, 20 measurements (40 seconds total)
+  monitor.startMonitoring(interval, measurements, forceGC);
 }
 
 module.exports = MemoryMonitor;

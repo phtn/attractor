@@ -1,3 +1,5 @@
+"use client";
+
 import { ClassName } from "@/app/types";
 import { Icon, type IconName } from "@/lib/icons";
 import { cn } from "@/lib/utils";

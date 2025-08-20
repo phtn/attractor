@@ -5,6 +5,11 @@ import { convertToModelMessages, streamText, UIMessage } from "ai";
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
+  const isDebug = process.env.DEBUG === "true";
+  if (isDebug) {
+    console.log("messages", messages);
+  }
+
   const startTime = Date.now();
   const result = streamText({
     model: cohere("command-a-03-2025"),

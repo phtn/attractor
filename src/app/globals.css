@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *)); /* eslint-disable-line */
 
 @layer utilities {
   .shadow-custom-light-hover:hover {
@@ -28,9 +28,11 @@
       0 6px 20px rgba(0, 0, 0, 0.3),
       0 4px 10px rgba(0, 0, 0, 0.2);
   }
+
   .enter {
     animation: enter 0.3s ease-out normal both;
   }
+
   .em-particle {
     transition: all 0.1s ease-out;
   }
@@ -42,6 +44,7 @@
   .em-particle.magnetic {
     animation: magnetic-glow 2.5s ease-in-out infinite;
   }
+
   .synth {
     animation: synth 18s linear infinite;
   }
@@ -69,6 +72,7 @@
     0% calc(200% - var(--o))
   );
 }
+
 .penta {
   aspect-ratio: 1.5;
   --o: calc(50% * tan(-20deg));
@@ -85,12 +89,14 @@
     opacity: 0;
     transform: translateZ(0) scale(0.9);
   }
+
   60% {
     opacity: 0.75;
     transform: translateZ(0) scale(1.02);
     backface-visibility: hidden;
     -webkit-font-smoothing: antialiased;
   }
+
   100% {
     opacity: 1;
     transform: translateZ(0) scale(1);
@@ -104,6 +110,7 @@
       0 0 8px currentColor,
       0 0 16px currentColor;
   }
+
   50% {
     box-shadow:
       0 0 12px currentColor,
@@ -118,6 +125,7 @@
       0 0 6px currentColor,
       0 0 12px currentColor;
   }
+
   50% {
     box-shadow:
       0 0 10px currentColor,
@@ -129,6 +137,7 @@
   0% {
     transform: translateY(-50%);
   }
+
   100% {
     transform: translateY(0);
   }
@@ -140,7 +149,8 @@
   }
 
   .hyper-link:hover {
-    @apply bg-card-origin; /* Replace with actual Tailwind text color class, like text-blue-500 */
+    @apply bg-card-origin;
+    /* Replace with actual Tailwind text color class, like text-blue-500 */
   }
 
   .hyper-link::after {
@@ -378,12 +388,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+
     ::-webkit-scrollbar {
       display: none;
     }
   }
+
   .reviewer {
     ::-webkit-scrollbar {
       display: none;

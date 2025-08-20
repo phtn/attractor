@@ -9,9 +9,10 @@ export function useTimeoutCleanup() {
 
   // Clear all timeouts on unmount
   useEffect(() => {
+    const timeouts = timeoutsRef.current;
     return () => {
-      timeoutsRef.current.forEach(timeout => clearTimeout(timeout));
-      timeoutsRef.current.clear();
+      timeouts.forEach(timeout => global.clearTimeout(timeout));
+      timeouts.clear();
     };
   }, []);
 
@@ -54,23 +55,9 @@ export function useSingleTimeout() {
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+        global.clearTimeout(timeoutRef.current);
       }
     };
-  }, []);
-
-  const setTimeout = useCallback((callback: () => void, delay: number) => {
-    // Clear existing timeout if any
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    timeoutRef.current = global.setTimeout(() => {
-      callback();
-      timeoutRef.current = null;
-    }, delay);
-
-    return timeoutRef.current;
   }, []);
 
   const clearTimeout = useCallback(() => {
@@ -79,6 +66,20 @@ export function useSingleTimeout() {
       timeoutRef.current = null;
     }
   }, []);
+
+  const setTimeout = useCallback((callback: () => void, delay: number) => {
+    // Clear existing timeout if any
+    if (timeoutRef.current) {
+      clearTimeout();
+    }
+
+    timeoutRef.current = global.setTimeout(() => {
+      callback();
+      timeoutRef.current = null;
+    }, delay);
+
+    return timeoutRef.current;
+  }, [clearTimeout]);
 
   return {
     setTimeout,

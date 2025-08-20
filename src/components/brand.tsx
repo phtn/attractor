@@ -15,7 +15,7 @@ export const Brand = ({ label, dark = false }: Props) => (
         className={cn(
           "absolute dark:flex hidden md:left-2 left-4 md:top-1.5 top-2",
           " translate-x-0 opacity-90 size-9",
-          "group-hover/logo:flex dark:text-creamy",
+          "group-hover/logo:flex dark:text-zinc-100",
           "dark:group-hover/logo:text-creamy scale-115 dark:scale-105 dark:blur-sm",
           "group-hover/logo:text-teal-50 group-hover/logo:blur-xs group-hover/logo:scale-125",
           "group-hover/logo:translate-x-0 group-hover/logo:opacity-100",
@@ -81,7 +81,7 @@ const BrandLabel = ({ dark, label }: BrandTitleProps) => {
               <div
                 key={text}
                 className={cn(
-                  "font-space h-5 text-slate-900 flex items-center",
+                  "font-space h-5 text-slate-900 dark:text-zinc-200 flex items-center",
                   {
                     "font-semibold tracking-tight text-base": idx === 0,
                     "font-normal tracking-normal text-xs font-sans opacity-80":

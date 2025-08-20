@@ -1,2 +1,5 @@
 {
+    "css.customData": [
+        "~/Code/editor/css/tailwindcss.json"
+    ],
 }

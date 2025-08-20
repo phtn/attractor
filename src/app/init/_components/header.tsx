@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { onSuccess } from "@/ctx/toast-ctx";
 import { useSFX } from "@/hooks/use-sfx";
 import { handleAsync } from "@/utils/async-handler";
-import { useAuthActions } from "@convex-dev/auth/react";
+import { opts } from "@/utils/helpers";
+import { useAuthActions, useAuthToken } from "@convex-dev/auth/react";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function Header() {
   const [loading, setLoading] = useState(false);
@@ -21,14 +22,22 @@ export function Header() {
     },
     [router],
   );
-  const { signIn } = useAuthActions();
+  const { signIn, signOut } = useAuthActions();
+  const token = useAuthToken();
+
   const onSignin = useCallback(async () => {
     setLoading(true);
     const { data, error } = await handleAsync(signIn)("github", {
-      redirectTo: "/init",
+      redirectTo: "/admin",
     });
 
+    if (data) {
+      console.log("TOKEN", token);
+      console.log(data);
+    }
+
     if (!!data?.signingIn) {
+      console.log(data);
       if (!data.signingIn) {
         setLoading(false);
         console.log(data);
@@ -39,12 +48,39 @@ export function Header() {
     if (error) {
       console.error(error);
     }
-  }, [signIn]);
+  }, [signIn, token]);
+
+  useEffect(() => {
+    if (token) {
+      console.log("TOKEN", token);
+    }
+  }, [token]);
 
   const fx = useCallback(
     (playbackRate: number) => () => sfx({ playbackRate }),
     [sfx],
   );
+
+  const SignOptions = useCallback(() => {
+    const options = opts(
+      <IconButton
+        icon="px-arrow-up"
+        iconStyle="rotate-90"
+        onHover={fx(4)}
+        fn={signOut}
+      />,
+      <IconButton icon="dollar-lite" onHover={fx(4.5)} fn={onSignin} />,
+    );
+    return <>{options.get(token !== null)}</>;
+  }, [token, fx, onSignin, signOut]);
+
+  const AdminOptions = useCallback(() => {
+    const options = opts(
+      <IconButton icon="slashes" onHover={fx(4)} fn={handleRoute("/admin")} />,
+      null,
+    );
+    return <>{options.get(token !== null)}</>;
+  }, [token, fx, handleRoute]);
 
   return (
     <header className="flex items-center justify-between md:py-4 py-1 w-full max-w-7xl mx-auto">
@@ -54,30 +90,22 @@ export function Header() {
       </div>
 
       <div className="flex items-center gap-3">
-        <IconButton solid icon="slashes" fn={handleRoute("/admin")} />
+        <AdminOptions />
         <IconButton
-          solid
           icon="asterisk"
           onHover={fx(2)}
           fn={handleRoute("/reviewer")}
         />
         <IconButton
-          solid
           className="hidden"
           icon="px-chevrons-vertical"
           loading={loading}
-          fn={onSignin}
+          fn={fx(4)}
         />
 
         {/* <IconButton solid icon="px-code" onHover={fx(2)} fn={fx(2)} /> */}
-        <IconButton solid icon="px-arrow-up" onHover={fx(3)} fn={fx(3)} />
-        <IconButton
-          solid
-          icon="dollar-lite"
-          onHover={fx(4.5)}
-          fn={fx(4)}
-          // fn={setSfxState}
-        />
+        <IconButton icon="px-arrow-up" onHover={fx(3)} fn={fx(3)} />
+        <SignOptions />
         <GestureSwitch />
       </div>
     </header>

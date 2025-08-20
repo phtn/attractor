@@ -12,7 +12,7 @@ export const Content = () => {
   return (
     <main className="h-screen w-full flex items-center justify-center">
       <div className="size-96 flex items-start justify-center">
-        <div className="size-screen flex items-start w-full justify-center">
+        <div className="size-full flex items-start w-full justify-center">
           <Loader />
         </div>
       </div>

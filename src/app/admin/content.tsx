@@ -4,7 +4,7 @@ import { HyperList } from "@/components/hyper";
 import { HyperStat, HyperStatProps } from "@/components/hyper/stat";
 import { useMemo } from "react";
 
-export const Content = () => {
+export const AdminContent = () => {
   const data = useMemo(
     () =>
       [
@@ -69,7 +69,7 @@ export const Content = () => {
         direction="right"
         component={HyperStat}
         itemStyle="mx-auto w-full flex justify-center"
-        container="grid pb-8 grid-cols-1 md:grid-cols-4 gap-6 w-full"
+        container="grid pb-8 grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 w-full"
       />
       <div className="px-6">
         {/* <div className="w-full rounded-3xl h-20 flex items-center justify-center border-[0.33px] border-zinc-400 dark:border-origin bg-radial-[at_10%_70%] dark:from-lime-100/80 dark:via-black/30 dark:to-transparent from-black/5 _to-black/5 shadow-sm"></div> */}

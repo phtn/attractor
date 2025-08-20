@@ -361,16 +361,16 @@ export const CatsTable = <T extends Cat>({
   return (
     <div
       className={cn(
-        "flex w-full transition-[max-width] duration-500 ease-in xl:max-w-[calc(82lvw)] md:max-w-[100lvw]",
+        "flex w-full transition-[max-width] duration-500 ease-in xl:max-w-[100lvw] md:max-w-[100lvw]",
         {
-          "xl:max-w-[calc(100lvw-42vw)] gap-4": create || edit,
+          "xl:max-w-[calc(58lvw)] gap-4": create || edit,
         },
       )}
     >
       <HyperCard className="space-y-4 px-4 h-fit pt-6 pb-4 flex-1">
         {/* Filters */}
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 ">
             <h2 className="text-2xl font-bold font-sans tracking-tight">
               Categories
             </h2>

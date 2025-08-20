@@ -396,7 +396,10 @@ function Example() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    document.title = \`You clicked \${count} times\`;
+    const title = \`You clicked \${count} times\`;
+    return () => {
+      title = document.title
+    }
   });
 
   return (

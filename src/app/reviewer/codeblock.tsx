@@ -105,7 +105,7 @@ const CodeBlock: FC<Props> = memo(({ language, children }) => {
     language?.toLowerCase() ||
     "text";
 
-  const downloadAsFile = () => {
+  const downloadAsFile = useCallback(() => {
     if (typeof window === "undefined") {
       return;
     }
@@ -121,19 +121,24 @@ const CodeBlock: FC<Props> = memo(({ language, children }) => {
     const blob = new Blob([children], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.download = fileName;
-    link.href = url;
-    link.style.display = "none";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
+    
+    try {
+      link.download = fileName;
+      link.href = url;
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+    } finally {
+      // Ensure cleanup happens even if click fails
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+  }, [children, normalizedLanguage]);
 
-  const onCopy = () => {
+  const onCopy = useCallback(() => {
     if (isCopied) return;
     copy("code", children);
-  };
+  }, [isCopied, copy, children]);
 
   const [styleName, setStyleName] = useState<keyof typeof styles>("szex");
 

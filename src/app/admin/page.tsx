@@ -1,4 +1,4 @@
-import { Content } from "./content";
+import { AdminContent } from "./content";
 export default function AdminPage() {
-  return <Content />;
+  return <AdminContent />;
 }

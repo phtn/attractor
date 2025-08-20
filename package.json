@@ -6,7 +6,15 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack && next start",
     "start": "next start",
-    "lint:fix": "next lint --fix"
+    "lint:fix": "next lint --fix",
+    "memory:check": "bun memory-check.cjs",
+    "memory:check:gc": "bun --expose-gc memory-check.cjs 2000 25 --gc",
+    "memory:quick": "bun memory-check.cjs 1000 15",
+    "memory:detailed": "bun --expose-gc memory-check.cjs 1500 40 --gc",
+    "anal:code": "bun analyze-code-patterns.cjs",
+    "anal:code:save": "bun analyze-code-patterns.cjs --save",
+    "anal:quick": "bun analyze-code-patterns.cjs --quick",
+    "anal:src": "bun analyze-code-patterns.cjs src --save"
   },
   "dependencies": {
     "@ai-sdk/cohere": "^2.0.0-beta.8",

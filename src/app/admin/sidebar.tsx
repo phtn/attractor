@@ -100,8 +100,8 @@ export const AdminSidebar = () => {
                   solid
                   name="circle-filled"
                   className={cn(
-                    "rotate-135 size-5 group-hover:text-mac-blue text-muted-foreground/40",
-                    "dark:group-hover:text-cyan-300 dark:text-muted-foreground/30",
+                    "size-4 md:size-5 group-hover:text-mac-blue text-muted-foreground/40",
+                    "dark:group-hover:text-zinc-500 dark:text-muted-foreground/30",
                     "group-hover:translate-x-1.5 group-hover:-rotate-360 group-hover:scale-[60%] transition-all duration-500 ease-in-out",
                   )}
                 />
@@ -242,10 +242,10 @@ const SubSectionItem = ({ label, section, path }: ISubSectionItem) => {
       onClick={onClick}
       className={cn(
         "group rounded-none w-full h-auto flex items-end justify-start",
-        "md:text-sm text-xs border-t border-slate-400/60 p-2.5",
+        "md:text-sm text-xs border-t border-zinc-600/60 p-2.5",
         "dark:hover:bg-background/80 dark:bg-background/80 bg-[#FFFEF9] hover:bg-[#FFFEF9]",
         {
-          "text-foreground dark:text-cyan-200": isActive,
+          "text-foreground dark:text-zinc-300": isActive,
         },
       )}
     >
@@ -255,8 +255,8 @@ const SubSectionItem = ({ label, section, path }: ISubSectionItem) => {
         className={cn(
           "md:size-5 size-4",
           "text-muted-foreground/40 group-hover:text-mac-red",
-          "dark:group-hover:text-cyan-300 dark:text-muted-foreground/30",
-          "group-hover:translate-x-1 group-hover:-rotate-360 group-hover:scale-[85%]",
+          "dark:group-hover:text-zinc-400 dark:text-muted-foreground/30",
+          "group-hover:translate-x-1 group-hover:-rotate-360 group-hover:scale-[75%]",
           "transition-all duration-500 ease-in-out",
         )}
       />

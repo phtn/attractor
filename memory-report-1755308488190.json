@@ -1,0 +1,184 @@
+{
+  "processName": "Next.js Dev Server",
+  "startTime": 1755308448173,
+  "measurements": [
+    {
+      "timestamp": 1755308450175,
+      "rss": 27770880,
+      "heapTotal": 1280000,
+      "heapUsed": 688947,
+      "external": 211091,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308452175,
+      "rss": 27852800,
+      "heapTotal": 1297408,
+      "heapUsed": 711308,
+      "external": 222508,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308454176,
+      "rss": 27852800,
+      "heapTotal": 1297408,
+      "heapUsed": 711447,
+      "external": 222519,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308456177,
+      "rss": 27852800,
+      "heapTotal": 1297408,
+      "heapUsed": 711549,
+      "external": 222525,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308458178,
+      "rss": 27869184,
+      "heapTotal": 1297408,
+      "heapUsed": 729519,
+      "external": 232639,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308460178,
+      "rss": 27852800,
+      "heapTotal": 1297408,
+      "heapUsed": 729692,
+      "external": 232652,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308462178,
+      "rss": 27852800,
+      "heapTotal": 1297408,
+      "heapUsed": 729941,
+      "external": 232661,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308464178,
+      "rss": 22167552,
+      "heapTotal": 1297408,
+      "heapUsed": 730080,
+      "external": 232672,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308466179,
+      "rss": 22183936,
+      "heapTotal": 1297408,
+      "heapUsed": 730333,
+      "external": 232685,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308468179,
+      "rss": 22528000,
+      "heapTotal": 1297408,
+      "heapUsed": 730490,
+      "external": 232698,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308470180,
+      "rss": 22528000,
+      "heapTotal": 1297408,
+      "heapUsed": 730760,
+      "external": 232712,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308472181,
+      "rss": 22659072,
+      "heapTotal": 1297408,
+      "heapUsed": 730915,
+      "external": 232723,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308474182,
+      "rss": 22773760,
+      "heapTotal": 1297408,
+      "heapUsed": 731071,
+      "external": 232735,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308476182,
+      "rss": 22773760,
+      "heapTotal": 1297408,
+      "heapUsed": 731245,
+      "external": 232749,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308478183,
+      "rss": 22773760,
+      "heapTotal": 1297408,
+      "heapUsed": 731657,
+      "external": 232761,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308480184,
+      "rss": 22790144,
+      "heapTotal": 1297408,
+      "heapUsed": 731813,
+      "external": 232773,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308482185,
+      "rss": 24838144,
+      "heapTotal": 1297408,
+      "heapUsed": 733058,
+      "external": 232978,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308484186,
+      "rss": 24838144,
+      "heapTotal": 1297408,
+      "heapUsed": 733251,
+      "external": 232995,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308486187,
+      "rss": 24723456,
+      "heapTotal": 1297408,
+      "heapUsed": 733407,
+      "external": 233007,
+      "arrayBuffers": 0
+    },
+    {
+      "timestamp": 1755308488187,
+      "rss": 24788992,
+      "heapTotal": 1297408,
+      "heapUsed": 733583,
+      "external": 233023,
+      "arrayBuffers": 0
+    }
+  ],
+  "analysis": {
+    "heapTrend": "STABLE",
+    "rssTrend": "STABLE",
+    "hasLeak": false,
+    "heapGrowthRate": "313.67 Bytes",
+    "rssGrowthRate": "245.33 KB",
+    "consistentGrowth": true,
+    "memoryPressure": {
+      "heapUtilization": 57,
+      "externalRatio": 32,
+      "pressure": "LOW"
+    },
+    "gcEfficiency": {
+      "events": 0,
+      "avgReclaimed": "0 Bytes",
+      "efficiency": "POOR"
+    }
+  }
+}

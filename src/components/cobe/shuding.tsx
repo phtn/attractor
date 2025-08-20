@@ -10,7 +10,6 @@ export function Shuding() {
     const onResize = () =>
       canvasRef.current && (width = canvasRef.current.offsetWidth);
     window.addEventListener("resize", onResize);
-    onResize();
     if (!canvasRef.current) return;
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 1,
@@ -44,6 +43,8 @@ export function Shuding() {
       timeoutRef.current = null;
     }, 300);
     
+    onResize();
+
     return () => {
       globe.destroy();
       window.removeEventListener("resize", onResize);
