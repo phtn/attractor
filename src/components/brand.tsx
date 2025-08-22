@@ -73,7 +73,14 @@ const BrandLabel = ({ dark, label }: BrandTitleProps) => {
       )}
     >
       <div className="flex items-center justify-center">
-        <div className="h-8 w-fit text-slate-700 whitespace-nowrap pe-2 font-medium tracking-tight">
+        <div className="h-11 w-fit text-slate-700 whitespace-nowrap pe-2 font-medium tracking-tight">
+          <span className="font-jet font-medium text-slate-100 drop-shadow-xs dark:text-lime-100 tracking-tight lowercase">
+            re-up
+            <span className="text-slate-100 dark:text-lime-100 px-px text-[4px]">
+              ●
+            </span>
+            ph
+          </span>
           {label
             .split("|")
             .filter((t) => t !== "&")
@@ -81,24 +88,27 @@ const BrandLabel = ({ dark, label }: BrandTitleProps) => {
               <div
                 key={text}
                 className={cn(
-                  "font-space h-5 text-slate-900 dark:text-zinc-200 flex items-center",
+                  "font-space h-5 text-slate-900 dark:text-white flex items-center",
                   {
-                    "font-semibold tracking-tight text-base": idx === 0,
-                    "font-normal tracking-normal text-xs font-sans opacity-80":
+                    "font-extrabold tracking-tighter text-xl drop-shadow-xs":
+                      idx === 0,
+                    "font-semibold rounded-xs tracking-tight text-sm dark:text-lime-200 font-space":
                       idx === 1,
                   },
                 )}
               >
-                {idx === 0
-                  ? text.split(" ").map((word, i) => (
+                {idx === 1
+                  ? ""
+                  : text.split(" ").map((word, i) => (
                       <span
                         key={word}
-                        className={cn({ "font-black mr-1.5": i === 0 })}
+                        className={cn({
+                          "font-zinc-900 mr-1.5": i === 0,
+                        })}
                       >
                         {word}
                       </span>
-                    ))
-                  : text}
+                    ))}
               </div>
             ))}
         </div>

@@ -9,7 +9,7 @@ interface Props {
 }
 export const Content = ({ cats, category }: Props) => {
   return (
-    <div className="flex-1 p-4">
+    <div className="flex-1 p-2">
       <AssetGallery data={cats} category={category} />
     </div>
   );

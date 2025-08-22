@@ -8,7 +8,7 @@ interface Props {
 }
 export const Content = ({ data }: Props) => {
   return (
-    <div>
+    <div className="flex-1 p-2 h-[32rem] flex items-center">
       <AssetGallery category="apps" data={data} />
     </div>
   );

@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { traverseFS } from "./fragments";
-import { traverseVS } from "./vertex";
+// import { traverseFS } from "./fragments";
+// import { traverseVS } from "./vertex";
+import { msVS, msFS } from "./original-xor";
 
 export const XORGlass = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -66,14 +67,14 @@ export const XORGlass = () => {
       });
 
       const shaderModuleVertex =
-        traverseVS &&
+        msVS &&
         device.createShaderModule({
-          code: traverseVS,
+          code: msVS,
         });
       const shaderModuleFragment =
-        traverseFS &&
+        msFS &&
         device.createShaderModule({
-          code: traverseFS,
+          code: msFS,
         });
 
       for (const mod of [shaderModuleVertex, shaderModuleFragment]) {
@@ -92,7 +93,7 @@ export const XORGlass = () => {
           bindGroupLayouts: [bindGroupLayout],
         }),
         vertex: {
-          module: shaderModuleFragment,
+          module: shaderModuleVertex,
           entryPoint: "vs_main",
         },
         fragment: {
@@ -107,13 +108,14 @@ export const XORGlass = () => {
 
       // --- Render loop
       const start = performance.now();
+      const fadeStrength = 1.0;
       const render = () => {
         const now = performance.now();
         const t = (now - start) / 1000;
         device.queue.writeBuffer(
           uniformBuffer,
           0,
-          new Float32Array([t, canvasWidth, canvasHeight, 0]), // 0 is padding
+          new Float32Array([t, fadeStrength, canvasWidth, canvasHeight]),
         );
 
         const encoder = device.createCommandEncoder();
@@ -150,15 +152,15 @@ export const XORGlass = () => {
     });
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, []);
+  }, [msVS, msFS]); // eslint-disable-line
 
   return (
     <canvas
-      ref={canvasRef}
       width={1280}
       height={720}
+      ref={canvasRef}
       style={{ width: "100%", height: "100%", display: "block" }}
-      className="w-full h-full block absolute z-0 bottom-0 aspect-video"
+      className="w-full bg-zinc-100 h-full block absolute z-0 bottom-0 aspect-video"
     />
   );
 };

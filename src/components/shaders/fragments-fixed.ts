@@ -47,7 +47,7 @@ export const traverseFS = `
         aspect = iResolution.x/6 ;
       };
 
-      let coord = vec2(uv.x * 2.0 - 1.0, uv.y * 3.0 - 1.0);
+      let coord = vec2(uv.x * 2.0 - 1.0, uv.y * 3.0 - .10);
       let screen = vec2(coord.x * aspect, coord.y);
       let rayDir = normalize(vec3(screen, 1));
       let t = uTime;
@@ -57,17 +57,17 @@ export const traverseFS = `
 
       for (var i = 0u; i < 18u; i = i + 1u) {
           p = z * rayDir;
-          p.z += t * 0.25;
-          p = vec3(p.x * 0.75, p.y * 0.4, p.z);
-          let wave = sin(p + sin(p * 7.) / 4.5);
-          let shape = dot(cos(p / 0.6), wave.zyx);
-          let d = abs(shape * 0.4 + p.y / 0.7 + 0.7);
+          p.z += t * 0.42;
+          p = vec3(p.x * 0.2, p.y * 0.3, p.z);
+          let wave = sin(p + sin(p * 3.) / 2.0);
+          let shape = dot(cos(p / 0.3), wave.zyx);
+          let d = abs(shape * 0.3 + p.y / 0.2 + 0.358);
 
-          let stepSize = max(d, 0.02);
+          let stepSize = max(d, 0.01);
 
           let colMod = cos(p.y * (0.6 + 0.5 * z) + vec3(6.0, 5.0, 4.8)) + vec3(1.);
           let safeZ = max(z, 0.01);
-          col += colMod * stepSize / safeZ / 7.5;
+          col += colMod * stepSize / safeZ / 5.5;
           z += stepSize;
 
           if (z > 100.0) {

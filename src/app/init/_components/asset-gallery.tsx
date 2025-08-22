@@ -9,9 +9,10 @@ interface Props<T> {
 export const AssetGallery = ({ data }: Props<Cat & XCardProps>) => {
   return (
     <HyperList
+      delay={5}
+      data={data}
       component={XCard}
-      data={data.map((e, idx) => ({ ...e, idx }))}
-      container="grid grid-cols-1 md:grid-cols-3 md:mt-16 md:gap-4 md:p-0 p-4 h-fit max-h-[80lvh] w-full overflow-visible"
+      container="grid grid-cols-1 md:grid-cols-3 md:mt-2 md:gap-12 md:p-0 p-4 h-fit max-h-[80lvh] w-full overflow-visible"
     />
   );
 };

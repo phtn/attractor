@@ -83,30 +83,32 @@ export function Header() {
   }, [token, fx, handleRoute]);
 
   return (
-    <header className="flex items-center justify-between md:py-4 py-1 w-full max-w-7xl mx-auto">
-      <div className="flex items-center">
-        <Brand label="Web Technologies | Research & Development" />
-        <div className="flex items-center"></div>
-      </div>
+    <header className="bg-zinc-100/0 md:py-4 py-1 w-full">
+      <div className="flex items-center justify-between max-w-7xl mx-auto ">
+        <div className="flex items-center">
+          <Brand label="Web Technologies | Research & Development" />
+          <div className="flex items-center"></div>
+        </div>
 
-      <div className="flex items-center gap-3">
-        <AdminOptions />
-        <IconButton
-          icon="asterisk"
-          onHover={fx(2)}
-          fn={handleRoute("/reviewer")}
-        />
-        <IconButton
-          className="hidden"
-          icon="px-chevrons-vertical"
-          loading={loading}
-          fn={fx(4)}
-        />
+        <div className="flex items-center gap-3">
+          <AdminOptions />
+          <IconButton
+            icon="asterisk"
+            onHover={fx(2)}
+            fn={handleRoute("/reviewer")}
+          />
+          <IconButton
+            className="hidden"
+            icon="px-chevrons-vertical"
+            loading={loading}
+            fn={fx(4)}
+          />
 
-        {/* <IconButton solid icon="px-code" onHover={fx(2)} fn={fx(2)} /> */}
-        <IconButton icon="px-arrow-up" onHover={fx(3)} fn={fx(3)} />
-        <SignOptions />
-        <GestureSwitch />
+          {/* <IconButton solid icon="px-code" onHover={fx(2)} fn={fx(2)} /> */}
+          <IconButton icon="px-arrow-up" onHover={fx(3)} fn={fx(3)} />
+          <SignOptions />
+          <GestureSwitch />
+        </div>
       </div>
     </header>
   );

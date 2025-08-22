@@ -24,7 +24,7 @@ const BLUR_RANGE: [number, number] = [0, 0.5];
 
 export default function GestureSwitch() {
   const { theme, toggleTheme } = useThemes();
-  const isDark = theme === "dark";
+  const isDark = useMemo(() => theme === "dark", [theme]);
   const [isPressed, setIsPressed] = useState(false);
   const [pressureLevel, setPressureLevel] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -102,7 +102,7 @@ export default function GestureSwitch() {
   const containerClasses = useMemo(
     () =>
       cn(
-        "group relative flex-1 cursor-pointer border-xy/60 dark:bg-lime-50/15 select-none flex items-center p-2",
+        "group flex-1 cursor-pointer border-xy/60 dark:bg-lime-50/15 select-none flex items-center p-2",
         "shadow-[0px_0px_1px_1px_theme(colors.black/4%),0_0px_1px_theme(colors.black/4%),0_1px_2px_theme(colors.black/4%),0_2px_4px_theme(colors.black/6%)]",
       ),
     [],
@@ -120,7 +120,7 @@ export default function GestureSwitch() {
   );
 
   return (
-    <div className="flex flex-col justify-center items-start scale-[56%] rotate-180 _py-8 _space-y-12">
+    <div className="flex flex-col justify-center items-start z-100 relative scale-[56%] rotate-180 _py-8 _space-y-12">
       {/* Primary Interface */}
       <div className="relative" ref={containerRef}>
         {/* Main Control Surface */}
