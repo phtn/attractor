@@ -1,4 +1,5 @@
 import { ProvidersCtxProvider } from "@/ctx";
+import { SmoothCursor } from "@/components/ui/smooth-cursor";
 import type { Metadata } from "next";
 import {
   Fira_Mono,
@@ -6,6 +7,7 @@ import {
   Geist_Mono,
   Oxanium,
   Space_Grotesk,
+  Tektur,
 } from "next/font/google";
 import { type ReactNode } from "react";
 import "./globals.css";
@@ -22,6 +24,11 @@ const geistMono = Geist_Mono({
 
 const jet = Fira_Mono({
   variable: "--font-jet",
+  weight: ["400"],
+  subsets: ["latin"],
+});
+const tek = Tektur({
+  variable: "--font-tek",
   weight: ["400"],
   subsets: ["latin"],
 });
@@ -58,9 +65,17 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${ox.variable} ${geistSans.variable} ${geistMono.variable} ${jet.variable} ${space.variable} antialiased`}
+        className={`${tek.variable} ${ox.variable} ${geistSans.variable} ${geistMono.variable} ${jet.variable} ${space.variable} antialiased`}
       >
         <ProvidersCtxProvider>{children}</ProvidersCtxProvider>
+        <SmoothCursor
+          springConfig={{
+            damping: 75,
+            stiffness: 10,
+            mass: 1,
+            restDelta: 0.01,
+          }}
+        />
       </body>
     </html>
   );

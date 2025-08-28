@@ -14,7 +14,7 @@ export default function InitLayout({ children }: { children: ReactNode }) {
     >
       <Header />
       {/*<div className="h-32" />*/}
-      <main className="relative h-[calc(64lvh)]">
+      <main className="relative h-[calc(64lvh)] z-20">
         <div className=" z-10 w-full max-w-7xl mx-auto">{children}</div>
       </main>
 

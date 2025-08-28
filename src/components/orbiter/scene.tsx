@@ -39,15 +39,15 @@ export const Scene = () => {
     <div className="relative bg-transparent flex justify-center aspect-video h-full w-full">
       <div
         style={{
-          top: (rect?.bottom ?? 1) * 0.22,
-          right: (rect?.right ?? 1) * -1.24,
+          top: (rect?.bottom ?? 1) * 0.28,
+          right: (rect?.right ?? 1) * -1.25,
         }}
         className="z-10 absolute rounded-full overflow-hidden w-10 h-4 -rotate-[8deg] flex justify-center"
       >
         <Particles
           className={cn("absolute inset-0 select-none")}
           quantity={800}
-          ease={10}
+          ease={6}
           vx={-1}
           vy={0.5}
           refresh
@@ -55,15 +55,15 @@ export const Scene = () => {
       </div>
       <div
         style={{
-          top: (rect?.bottom ?? 1) * 0.24,
+          top: (rect?.bottom ?? 1) * 0.28,
           right: (rect?.right ?? 1) * -1.2,
         }}
-        className="z-10 absolute rounded-full overflow-hidden w-14 h-5 -rotate-[26deg] flex justify-center"
+        className="z-10 absolute rounded-full overflow-hidden w-14 h-5 -rotate-[20deg] flex justify-center"
       >
         <Particles
           className={cn("absolute inset-0 select-none")}
           quantity={600}
-          ease={10}
+          ease={90}
           vx={-1}
           vy={0.5}
           refresh

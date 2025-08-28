@@ -20,7 +20,6 @@ export const Brand = ({ label, dark = false }: Props) => (
           "group-hover/logo:text-teal-50 group-hover/logo:blur-xs group-hover/logo:scale-125",
           "group-hover/logo:translate-x-0 group-hover/logo:opacity-100",
           "transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-          "",
           {
             "dark:group-hover/logo:text-creamy dark:scale-105  dark:blur-sm":
               dark,
@@ -74,7 +73,7 @@ const BrandLabel = ({ dark, label }: BrandTitleProps) => {
     >
       <div className="flex items-center justify-center">
         <div className="h-11 w-fit text-slate-700 whitespace-nowrap pe-2 font-medium tracking-tight">
-          <span className="font-jet font-medium text-slate-100 drop-shadow-xs dark:text-lime-100 tracking-tight lowercase">
+          <span className="font-tek font-medium text-slate-100 drop-shadow-xs dark:text-lime-100 tracking-tight lowercase">
             re-up
             <span className="text-slate-100 dark:text-lime-100 px-px text-[4px]">
               ●

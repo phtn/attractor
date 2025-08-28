@@ -55,28 +55,34 @@
   aspect-ratio: 1.15;
   --o: calc(80% * tan(-65deg));
   --p: calc(90% * tan(-18deg));
-  clip-path: polygon(var(--o) 50%,
-      30% var(--o),
-      calc(120% - var(--p)) 10%,
-      0% calc(40% - var(--p)));
+  clip-path: polygon(
+    var(--o) 50%,
+    30% var(--o),
+    calc(120% - var(--p)) 10%,
+    0% calc(40% - var(--p))
+  );
 }
 
 .penta-slim {
   aspect-ratio: 2.25;
   --o: calc(50% * tan(-20deg));
-  clip-path: polygon(var(--o) 0%,
-      100% var(--o),
-      calc(100% - var(--o)) 50%,
-      0% calc(200% - var(--o)));
+  clip-path: polygon(
+    var(--o) 0%,
+    100% var(--o),
+    calc(100% - var(--o)) 50%,
+    0% calc(200% - var(--o))
+  );
 }
 
 .penta {
   aspect-ratio: 1.5;
   --o: calc(50% * tan(-20deg));
-  clip-path: polygon(var(--o) 0%,
-      100% var(--o),
-      calc(100% - var(--o)) 50%,
-      0% calc(200% - var(--o)));
+  clip-path: polygon(
+    var(--o) 0%,
+    100% var(--o),
+    calc(100% - var(--o)) 50%,
+    0% calc(200% - var(--o))
+  );
 }
 
 @keyframes enter {
@@ -99,7 +105,6 @@
 }
 
 @keyframes electric-glow {
-
   0%,
   100% {
     box-shadow:
@@ -115,7 +120,6 @@
 }
 
 @keyframes magnetic-glow {
-
   0%,
   100% {
     box-shadow:
@@ -207,7 +211,10 @@
   --font-jet: var(--font-jet);
   --font-space: var(--font-space);
   --font-ox: var(--font-ox);
-  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms);
+  --font-tek: var(--font-tek);
+
+  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1
+    var(--delay, 0ms);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -426,6 +433,7 @@
     ::-webkit-scrollbar {
       display: none;
     }
+    cursor: none !important;
   }
 
   .reviewer {
