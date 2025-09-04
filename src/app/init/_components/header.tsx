@@ -83,7 +83,7 @@ export function Header() {
   }, [token, fx, handleRoute]);
 
   return (
-    <header className="bg-zinc-100/0 md:py-4 py-1 w-full">
+    <header className="px-2 md:px-0 md:py-4 py-1 w-full">
       <div className="flex items-center justify-between max-w-7xl mx-auto ">
         <div className="flex items-center">
           <Brand label="Web Technologies | Research & Development" />
@@ -105,7 +105,7 @@ export function Header() {
           />
 
           {/* <IconButton solid icon="px-code" onHover={fx(2)} fn={fx(2)} /> */}
-          <IconButton icon="px-arrow-up" onHover={fx(3)} fn={fx(3)} />
+          <IconButton icon="theme-switch" onHover={fx(3)} fn={fx(3)} />
           <SignOptions />
           <GestureSwitch />
         </div>

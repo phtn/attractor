@@ -11,7 +11,7 @@ export const Content = () => {
   }, [router]);
   return (
     <main className="h-screen w-full flex items-start justify-center">
-      <div className="h-1/ flex items-center justify-center">
+      <div className="h-1/2 flex items-center justify-center">
         <div className="size-full flex items-center w-full justify-center">
           <Loader />
         </div>

@@ -30,7 +30,7 @@ interface ProvidersCtxValues {
 const ProvidersCtx = createContext<ProvidersCtxValues | null>(null);
 
 const ProvidersCtxProvider = ({ children }: ProvidersProviderProps) => {
-  const [defaultMode, setDefaultMode] = useState("dark");
+  const [defaultTheme, setDefaultMode] = useState("dark");
   const getTheme = useCallback(async () => {
     const { data, error } = await handleAsync(getCookie)("theme");
     if (data) setDefaultMode(decodeURI(data));
@@ -52,7 +52,7 @@ const ProvidersCtxProvider = ({ children }: ProvidersProviderProps) => {
       <ThemeProvider
         enableSystem
         attribute="class"
-        defaultTheme={defaultMode ?? "system"}
+        defaultTheme={defaultTheme ?? "dark"}
         disableTransitionOnChange
       >
         <SFXCtxProvider>

@@ -1,26 +1,38 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import neostandard, { resolveIgnoresFromGitIgnore, plugins } from "neostandard";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+export default [
+  ...neostandard({
+    ignores: resolveIgnoresFromGitIgnore, // Ignore files in dist/ and tests/ directories
+    ts: true,
+  }),
+  plugins.n.configs["flat/recommended"],
+];
+// export default neostandard({
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+// });
+// import { dirname } from "path";
+// import { fileURLToPath } from "url";
+// import { FlatCompat } from "@eslint/eslintrc";
 
-// == boilerplate ==
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
+
+// const compat = new FlatCompat({
+//   baseDirectory: __dirname,
+// });
+
+// // == boilerplate ==
+// // const configs = [
+// //   ...compat.extends("next/core-web-vitals", "next/typescript"),
+// // ];
+
+// /** @type {import('eslint').Linter.Config[]} */
 // const configs = [
-//   ...compat.extends("next/core-web-vitals", "next/typescript"),
+//   ...compat.extends("next/core-web-vitals"),
+//   ...compat.extends("next/typescript"),
+//   ...compat.extends("plugin:@tanstack/eslint-plugin-query/recommended"),
+//   ...compat.extends("prettier"),
+//   ...compat.plugins("@tanstack/query"),
 // ];
 
-/** @type {import('eslint').Linter.Config[]} */
-const configs = [
-  ...compat.extends("next/core-web-vitals"),
-  ...compat.extends("next/typescript"),
-  ...compat.extends("plugin:@tanstack/eslint-plugin-query/recommended"),
-  ...compat.extends("prettier"),
-  ...compat.plugins("@tanstack/query"),
-];
-
-export default configs;
+// export default configs;

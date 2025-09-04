@@ -1,4 +1,4 @@
-import { HyperButton } from "@/components/hyper";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -6,6 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Icon } from "@/lib/icons";
 import { Column } from "@tanstack/react-table";
 import { Cat } from "vx/cats/d";
 
@@ -15,10 +16,11 @@ interface Props {
 export const ColumnVisibility = ({ cols }: Props) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <HyperButton solid asChild label="view" icon="circle-filled">
-          <span></span>
-        </HyperButton>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" className="bg-background/30 select-none">
+          <Icon name="eye" />
+          <span>View</span>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>

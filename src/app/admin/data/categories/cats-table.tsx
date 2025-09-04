@@ -1,5 +1,6 @@
 import {
   Cell,
+  CellContext,
   Column,
   ColumnDef,
   ColumnFiltersState,
@@ -19,9 +20,7 @@ import {
 
 import { useCallback, useMemo, useState } from "react";
 
-import { HyperButton } from "@/components/hyper";
 import { HyperCard } from "@/components/hyper/card";
-import { Badge } from "@/components/ui/badge";
 
 import {
   Table,
@@ -42,16 +41,7 @@ import { HeaderSorter } from "./header-sorter";
 import { MoreOptions } from "./more-options";
 import { Paginator } from "./pagination";
 import { RowActions } from "./row-actions";
-
-// type Item = {
-//   id: string;
-//   name: string;
-//   email: string;
-//   location: string;
-//   flag: string;
-//   status: "Active" | "Inactive" | "Pending";
-//   balance: number;
-// };
+import { Button } from "@/components/ui/button";
 
 // Custom filter function for multi-column searching
 const multiColumnFilterFn: FilterFn<Cat> = (row, columnId, filterValue) => {
@@ -59,43 +49,59 @@ const multiColumnFilterFn: FilterFn<Cat> = (row, columnId, filterValue) => {
   const searchTerm = (filterValue ?? "").toLowerCase();
   return searchableRowContent.includes(searchTerm);
 };
+export const filterFn: FilterFn<unknown> = (row, columnId, filterValue) => {
+  const value = row.getValue(columnId);
 
+  if (value === null || value === undefined) return false;
+  if (!filterValue) return true; // no filter applied → keep row
+
+  return String(value)
+    .toLowerCase()
+    .includes(String(filterValue).toLowerCase());
+};
 const statusFilterFn: FilterFn<Cat> = (
   row,
   columnId,
   filterValue: string[],
 ) => {
   if (!filterValue?.length) return true;
-  const status = row.getValue(columnId) as string;
+  const status = String(row.getValue(columnId));
   return filterValue.includes(status);
 };
+
+const nameCell = <T,>({ row }: { row: Row<T> }) => (
+  <div className="text-foreground uppercase">{row.getValue("name")}</div>
+);
+interface CellProps<T, D> {
+  prop: D;
+  ctx?: CellContext<T, unknown>;
+}
+const textMuted = <T, D extends string>({ prop, ctx }: CellProps<T, D>) => (
+  <div className="text-muted-foreground">{ctx?.row.getValue(prop)}</div>
+);
+const cellMuted =
+  <T, D extends string>(prop: D) =>
+  (ctx: CellContext<T, unknown>) =>
+    textMuted<T, D>({ prop, ctx });
 
 const createColumns = (
   onEditCategory: (category: Cat) => void,
 ): ColumnDef<Cat>[] => [
   {
-    header: "Name",
+    header: "name",
     accessorKey: "name",
-    cell: ({ row }) => (
-      <div className="font-sans text-foreground uppercase">
-        {row.getValue("name")}
-      </div>
-    ),
+    cell: nameCell,
     size: 100,
-    filterFn: multiColumnFilterFn,
+    filterFn,
     enableHiding: false,
     enableSorting: true,
   },
   {
-    header: "Description",
+    header: "description",
     accessorKey: "desc",
-    cell: ({ row }) => (
-      <div className="font-sans text-muted-foreground lowercase">
-        {row.getValue("desc")}
-      </div>
-    ),
+    cell: cellMuted("desc"),
     size: 150,
-    filterFn: multiColumnFilterFn,
+    filterFn,
     enableHiding: true,
   },
   {
@@ -114,34 +120,30 @@ const createColumns = (
   {
     header: "Status",
     accessorKey: "active",
-    cell: ({ row }) => (
-      <Badge
-        className={cn("px-1 uppercase text-primary-foreground text-xs", {
-          "bg-muted text-mac-blue dark:bg-chalk/10 dark:text-cyan-200":
-            row.getValue("active") as boolean,
-        })}
-      >
-        {row.getValue("active") ? "active" : "inactive"}
-      </Badge>
-    ),
-    size: 80,
+    cell: ({ row }) => {
+      const isActive = row.getValue("active") as boolean;
+      return (
+        <div
+          className={cn(
+            "w-fit rounded-md py-0.5 flex items-center text-foreground/80 bg-zinc-100/60 px-1.5 space-x-1 capitalized dark:text-chalk dark:bg-chalk/5 text-xs",
+            {
+              "": row.getValue("active") as boolean,
+            },
+          )}
+        >
+          <div
+            className={cn("size-2 rounded-full bg-blue-500", {
+              "bg-orange-400": !isActive,
+            })}
+          />
+          <span>{isActive ? "Active" : "Inactive"}</span>
+        </div>
+      );
+    },
+    size: 100,
     filterFn: statusFilterFn,
     enableSorting: true,
   },
-
-  // {
-  //   header: "Created by",
-  //   accessorKey: "created_by",
-  //   cell: ({ row }) => {
-  //     const amount = parseFloat(row.getValue("balance"));
-  //     const formatted = new Intl.NumberFormat("en-US", {
-  //       style: "currency",
-  //       currency: "USD",
-  //     }).format(amount);
-  //     return formatted;
-  //   },
-  //   size: 120,
-  // },
   {
     header: "Created by",
     accessorKey: "created_by",
@@ -255,7 +257,7 @@ export const CatsTable = <T extends Cat>({
   );
 
   const table = useReactTable({
-    data,
+    data: d,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -283,17 +285,12 @@ export const CatsTable = <T extends Cat>({
   // Get unique status values
   const uniqueStatusValues = useMemo(() => {
     if (!facetedUniqueValues) return [];
-
     const values = Array.from(facetedUniqueValues.keys());
-
     return values?.sort();
   }, [facetedUniqueValues]);
 
-  const statusCounts = useMemo(() => {
-    const statusColumn = table.getColumn("active");
-    if (!statusColumn) return new Map();
-    return statusColumn.getFacetedUniqueValues();
-  }, [table]);
+  const statusCounts =
+    table.getColumn("active")?.getFacetedUniqueValues() ?? new Map();
 
   const filterValue = table.getColumn("active")?.getFilterValue() as string[];
   const selectedStatuses = useMemo(() => {
@@ -318,56 +315,40 @@ export const CatsTable = <T extends Cat>({
       ?.setFilterValue(newFilterValue.length ? newFilterValue : undefined);
   };
 
-  const allCols = useMemo(
-    () =>
-      table.getAllColumns().filter((c) => c.getCanHide()) as Column<
-        string,
-        keyof Cat
-      >[],
-    [table],
-  );
+  const allCols = table.getAllColumns().filter((c) => c.getCanHide()) as Column<
+    string,
+    keyof Cat
+  >[];
 
-  const filterCol = useMemo(
-    () => table.getColumn("name") as Column<string, keyof Cat>,
-    [table],
-  );
+  const filterCol = table.getColumn("name") as Column<string, keyof Cat>;
 
-  const rowsSelected = useMemo(
-    () => table.getSelectedRowModel().rows.length,
-    [table],
-  );
+  const rowsSelected = table.getSelectedRowModel().rows.length;
 
-  const paginationState = useMemo(() => table.getState().pagination, [table]);
-  const rowCount = useMemo(() => table.getRowCount(), [table]);
+  const paginationState = table.getState().pagination;
+  const rowCount = table.getRowCount();
   const setPageSize = useCallback(
     (value: string) => table.setPageSize(+value),
     [table],
   );
-  const pageControls = useMemo(
-    () =>
-      ({
-        gotoFirst: () => table.firstPage(),
-        disabledPrev: !table.getCanPreviousPage(),
-        gotoPrev: () => table.previousPage(),
-        disabledNext: !table.getCanNextPage(),
-        gotoNext: () => table.nextPage(),
-        gotoLast: () => table.lastPage(),
-      }) as PaginationCtrl,
-    [table],
-  );
+  const pageControls: PaginationCtrl = {
+    gotoFirst: () => table.firstPage(),
+    disabledPrev: !table.getCanPreviousPage(),
+    gotoPrev: () => table.previousPage(),
+    disabledNext: !table.getCanNextPage(),
+    gotoNext: () => table.nextPage(),
+    gotoLast: () => table.lastPage(),
+  };
 
-  const tableRows = useMemo(() => table.getRowModel().rows, [table]);
+  const tableRows = table.getRowModel().rows;
 
   return (
     <div
       className={cn(
-        "flex w-full transition-[max-width] duration-500 ease-in xl:max-w-[100lvw] md:max-w-[100lvw]",
-        {
-          "xl:max-w-[calc(58lvw)] gap-4": create || edit,
-        },
+        "flex w-full overflow-hidden gap-4 transition-[max-width] duration-500 ease-in-out will-change-[max-width] md:max-w-[100vw] xl:max-w-[100vw]",
+        create || edit ? "xl:max-w-[58vw]" : "xl:max-w-[100vw]",
       )}
     >
-      <HyperCard className="space-y-4 px-4 h-fit pt-6 pb-4 flex-1">
+      <HyperCard className="px-4 h-fit pt-6 pb-4 flex-1 min-w-0 overflow-hidden">
         {/* Filters */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-4 ">
@@ -392,21 +373,22 @@ export const CatsTable = <T extends Cat>({
             {/* Delete button */}
             <MoreOptions rows={rowsSelected} deleteRows={handleDeleteRows} />
             {/* Add item button */}
-            <HyperButton
+            <Button
+              variant="outline"
               className={cn(
-                "ml-auto translate-x-0 delay-200 ease-[cubic-bezier(0.87,0,0.13,1)] duration-500",
+                "ml-auto bg-background/30 translate-x-0 transition-transform duration-300 ease-in-out",
                 {
                   "translate-x-40": create || edit,
                 },
               )}
-              label="Add Category"
-              icon="plus"
-              iconStyle="size-4 dark:text-cyan-200"
-              solid
-              fn={toogleForm}
+              onClick={toogleForm}
             >
+              <Icon name="add" />
+              <span className="font-sans inline-flex items-center gap-2">
+                Add Category
+              </span>
               {/* Add Category */}
-            </HyperButton>
+            </Button>
           </div>
         </div>
 
@@ -424,7 +406,7 @@ export const CatsTable = <T extends Cat>({
                       <TableHead
                         key={header.id}
                         style={{ width: `${header.getSize()}px` }}
-                        className="h-10 font-normal text-xs first:rounded-l-lg last:rounded-r-lg border-b"
+                        className="h-10 font-semibold text-xs first:rounded-l-lg last:rounded-r-lg border-b-[0.5px]"
                       >
                         <HeaderSorter flexRender={flexRender} header={header} />
                       </TableHead>
@@ -468,7 +450,7 @@ const renderRow = <T extends Cat & { _id: string }>(
       data-state={row.getIsSelected() && "selected"}
       className={cn(
         "h-14 overflow-hidden dark:border-card-origin peer-hover:border-transparent bg-transparent hover:last:rounded-tr-2xl hover:bg-mac-blue/5 group/row dark:hover:bg-background",
-        "transition-colors duration-300",
+        "transition-colors duration-50",
         {
           // Apply editing styles - same as hover but persistent
           "bg-mac-blue/5 dark:bg-sky-600/40 last:rounded-tr-2xl": isEditing,

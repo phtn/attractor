@@ -1,6 +1,32 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/*@font-face {
+  font-family: "Courgette";
+  src: url("@/fonts/Courgette-Regular.tff") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font: var(--font-courg);
+}
+
+@font-face {
+  font-family: "Satisfy";
+  src: url("@/fonts/Satisfy-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font: var(--font-satisfy);
+}*/
+@font-face {
+  font-family: var(--satisfy);
+  src: url("@/fonts/Satisfy-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+/*@font-face {
+  font-family: "Courgette";
+  src: url("@/fonts/Courgette-Regular.tff") format("truetype");
+}*/
+
 @custom-variant dark (&:is(.dark *));
 /* eslint-disable-line */
 
@@ -212,6 +238,8 @@
   --font-space: var(--font-space);
   --font-ox: var(--font-ox);
   --font-tek: var(--font-tek);
+  --font-satisfy: var(--font-satisfy);
+  --font-courg: var(--font-courg);
 
   --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1
     var(--delay, 0ms);
@@ -285,9 +313,9 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(0.956 0.002 286.35);
+  --background: oklch(1 0 0);
   /* --background: oklch(0.985 0 0); */
-  --foreground: oklch(0.341 0.005 285.823);
+  --foreground: oklch(0.32 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
@@ -433,7 +461,7 @@
     ::-webkit-scrollbar {
       display: none;
     }
-    cursor: none !important;
+    /*cursor: none !important;*/
   }
 
   .reviewer {

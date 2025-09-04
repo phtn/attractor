@@ -39,7 +39,7 @@ export const Scene = () => {
     <div className="relative bg-transparent flex justify-center aspect-video h-full w-full">
       <div
         style={{
-          top: (rect?.bottom ?? 1) * 0.28,
+          top: (rect?.bottom ?? 1) * 0.24,
           right: (rect?.right ?? 1) * -1.25,
         }}
         className="z-10 absolute rounded-full overflow-hidden w-10 h-4 -rotate-[8deg] flex justify-center"
@@ -55,7 +55,7 @@ export const Scene = () => {
       </div>
       <div
         style={{
-          top: (rect?.bottom ?? 1) * 0.28,
+          top: (rect?.bottom ?? 1) * 0.25,
           right: (rect?.right ?? 1) * -1.2,
         }}
         className="z-10 absolute rounded-full overflow-hidden w-14 h-5 -rotate-[20deg] flex justify-center"

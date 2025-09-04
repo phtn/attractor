@@ -1,5 +1,5 @@
 import { ProvidersCtxProvider } from "@/ctx";
-import { SmoothCursor } from "@/components/ui/smooth-cursor";
+// import { SmoothCursor } from "@/components/ui/smooth-cursor";
 import type { Metadata } from "next";
 import {
   Fira_Mono,
@@ -11,6 +11,21 @@ import {
 } from "next/font/google";
 import { type ReactNode } from "react";
 import "./globals.css";
+
+// const localFonts = localFont({
+//   src: [
+//     {
+//       path: "../src/fonts/Courgette-Regular.tff",
+//       weight: "400",
+//       style: "normal",
+//     },
+//     {
+//       path: "../src/fonts/Satisfy-Regular.tff",
+//       weight: "700",
+//       style: "normal",
+//     },
+//   ],
+// });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,14 +83,14 @@ export default function RootLayout({
         className={`${tek.variable} ${ox.variable} ${geistSans.variable} ${geistMono.variable} ${jet.variable} ${space.variable} antialiased`}
       >
         <ProvidersCtxProvider>{children}</ProvidersCtxProvider>
-        <SmoothCursor
+        {/*<SmoothCursor
           springConfig={{
             damping: 75,
             stiffness: 10,
             mass: 1,
             restDelta: 0.01,
           }}
-        />
+        />*/}
       </body>
     </html>
   );

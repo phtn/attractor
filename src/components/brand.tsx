@@ -14,7 +14,7 @@ export const Brand = ({ label, dark = false }: Props) => (
         name="re-up.ph"
         className={cn(
           "absolute dark:flex hidden md:left-2 left-4 md:top-1.5 top-2",
-          " translate-x-0 opacity-90 size-9",
+          " translate-x-0 opacity-90 size-6 md:size-8",
           "group-hover/logo:flex dark:text-zinc-100",
           "dark:group-hover/logo:text-creamy scale-115 dark:scale-105 dark:blur-sm",
           "group-hover/logo:text-teal-50 group-hover/logo:blur-xs group-hover/logo:scale-125",
@@ -30,7 +30,7 @@ export const Brand = ({ label, dark = false }: Props) => (
         solid
         name="re-up.ph"
         className={cn(
-          "relative z-10 size-8 md:size-9 dark:text-white",
+          "relative z-10 size-6 md:size-8 dark:text-white",
           "dark:group-hover/logo:text-white",
           "text-slate-600 group-hover/logo:text-slate-500",
           "transition-colors duration-300 ease-out",
@@ -66,13 +66,13 @@ const BrandLabel = ({ dark, label }: BrandTitleProps) => {
         "group-hover/logo:translate-y-px group-hover/logo:drop-shadow-xs",
         "text-slate-600 dark:text-slate-700 group-hover/logo:text-slate-500",
         {
-          "dark:text-cyan-200 font-mono font-light md:text-lg tracking-tight capitalize":
+          "dark:text-cyan-200 font-mono font-light text-sm md:text-lg tracking-tight capitalize":
             dark, // dark
         },
       )}
     >
-      <div className="flex items-center justify-center">
-        <div className="h-11 w-fit text-slate-700 whitespace-nowrap pe-2 font-medium tracking-tight">
+      <div className="flex portrait:text-xs text-sm items-center justify-center">
+        <div className="h-[1.80rem] md:h-10 w-fit text-slate-700 whitespace-nowrap pe-2 font-medium tracking-tight">
           <span className="font-tek font-medium text-slate-100 drop-shadow-xs dark:text-lime-100 tracking-tight lowercase">
             re-up
             <span className="text-slate-100 dark:text-lime-100 px-px text-[4px]">
@@ -87,9 +87,9 @@ const BrandLabel = ({ dark, label }: BrandTitleProps) => {
               <div
                 key={text}
                 className={cn(
-                  "font-space h-5 text-slate-900 dark:text-white flex items-center",
+                  "font-space h-4 md:h-5 text-slate-900 dark:text-white flex items-center",
                   {
-                    "font-extrabold tracking-tighter text-xl drop-shadow-xs":
+                    "font-extrabold tracking-tighter text-sm md:text-xl drop-shadow-xs":
                       idx === 0,
                     "font-semibold rounded-xs tracking-tight text-sm dark:text-lime-200 font-space":
                       idx === 1,

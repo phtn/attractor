@@ -15,16 +15,14 @@ export const HeaderSorter = <TData, TValue>({
   flexRender,
 }: Props<TData, TValue>) => {
   const handleSort = () => {
-    if (header.column.getCanSort()) {
-      header.column.toggleSorting();
-    }
+    return header.column.toggleSorting();
   };
 
   return header.isPlaceholder ? null : header.column.getCanSort() ? (
     <div
       className={cn(
         header.column.getCanSort() &&
-          "flex h-full cursor-pointer items-center justify-between gap-4 select-none",
+          "flex h-full cursor-pointer items-center gap-2 select-none",
       )}
       onClick={handleSort}
       onKeyDown={(e) => {
@@ -46,7 +44,7 @@ export const HeaderSorter = <TData, TValue>({
             solid
             aria-hidden="true"
             name="triangle-right"
-            className="size-3.5 shrink-0 text-mac-teal dark:text-cyan-300 -rotate-90"
+            className="size-3.5 shrink-0 text-teal-500 -rotate-90"
           />
         ),
         desc: (
@@ -54,7 +52,7 @@ export const HeaderSorter = <TData, TValue>({
             solid
             aria-hidden="true"
             name="triangle-right"
-            className="size-3.5 shrink-0 text-mac-orange dark:text-orange-300 rotate-90"
+            className="size-3.5 shrink-0 text-zinc-400 rotate-90"
           />
         ),
       }[header.column.getIsSorted() as string] ?? null}

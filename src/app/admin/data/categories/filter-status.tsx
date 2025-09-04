@@ -1,4 +1,3 @@
-import { HyperButton } from "@/components/hyper";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
@@ -6,12 +5,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { generateId } from "ai";
+import { Button } from "@/components/ui/button";
+import { useId } from "react";
+import { Icon } from "@/lib/icons";
+import { Badge } from "@/components/ui/badge";
 
 interface Props {
   selected: string[];
-  statusCount: Map<string, number>;
-  uniqueValues: string[];
+  statusCount: Map<string | boolean, number>;
+  uniqueValues: Array<string | boolean>;
   onStatusChange: (check: boolean) => (value: string) => void;
 }
 export const FilterStatus = ({
@@ -19,44 +21,67 @@ export const FilterStatus = ({
   statusCount,
   uniqueValues,
   onStatusChange,
-}: Props) => (
-  <Popover>
-    <PopoverTrigger>
-      <HyperButton solid asChild label="status" icon="circle-filled">
-        {selected.length > 0 && (
-          <span className="bg-background -me-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium">
-            {selected.length}
-          </span>
-        )}
-      </HyperButton>
-    </PopoverTrigger>
-    <PopoverContent className="w-auto min-w-36 p-3" align="start">
-      <div className="space-y-3">
-        <div className="text-muted-foreground text-xs font-medium">Filters</div>
-        <div className="space-y-3">
-          {uniqueValues.map((value, i) => {
-            const id = generateId();
-            return (
-              <div key={value} className="flex items-center gap-2">
-                <Checkbox
-                  id={`${id}-${i}`}
-                  checked={selected.includes(value)}
-                  onCheckedChange={onStatusChange}
-                />
-                <Label
-                  htmlFor={`${id}-${i}`}
-                  className="flex grow justify-between gap-2 font-normal"
+}: Props) => {
+  const baseId = useId();
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className="relative rounded-md bg-background/30"
+        >
+          <Icon name="add" />
+          <span className="capitalize">filter</span>
+          {selected.length > 0 && (
+            <Badge className="absolute rounded-full -top-2.5 left-full size-5 -translate-x-1/2 aspect-square px-1">
+              {selected.length > 99 ? "99+" : selected.length}
+            </Badge>
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto min-w-36 p-0" align="start">
+        <div className="">
+          <div className="h-9 flex items-center px-3 italic text-foreground/80 text-xs font-medium">
+            Filters
+          </div>
+          <div className="">
+            {uniqueValues.map((value, i) => {
+              const id = `v-${baseId}-${i}`;
+              const vStr = String(value);
+              const labelText =
+                vStr === "true"
+                  ? "Active"
+                  : vStr === "false"
+                    ? "Inactive"
+                    : vStr;
+              return (
+                <div
+                  key={id}
+                  className="flex px-3 py-2.5 last:pb-3 items-center gap-2 hover:bg-accent"
                 >
-                  {value}{" "}
-                  <span className="text-muted-foreground ms-2 text-xs">
-                    {statusCount.get(value)}
-                  </span>
-                </Label>
-              </div>
-            );
-          })}
+                  <Checkbox
+                    id={id}
+                    checked={selected.includes(vStr)}
+                    onCheckedChange={(checked) =>
+                      onStatusChange(Boolean(checked))(vStr)
+                    }
+                  />
+                  <Label
+                    htmlFor={id}
+                    className="flex grow justify-between gap-2 font-sans"
+                  >
+                    {labelText}{" "}
+                    <span className="text-muted-foreground ms-2 text-xs">
+                      {statusCount.get(value)}
+                    </span>
+                  </Label>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </PopoverContent>
-  </Popover>
-);
+      </PopoverContent>
+    </Popover>
+  );
+};

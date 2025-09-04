@@ -11,16 +11,15 @@ export const CreateCat = ({ toggleFn, show }: Props) => {
   return (
     <HyperCard
       className={cn(
-        "py-6 xl:min-h-[calc(88lvh)] bg-mask overflow-y-scroll ease-[cubic-bezier(0.34,1.56,0.64,1)] transition-[max-width] duration-500",
-        "max-w-[0px] w-0",
+        "py-6 bg-zinc-300 transition-[max-width,opacity] duration-500 ease-in-out overflow-hidden opacity-0 max-w-0 w-0 pointer-events-none",
         {
-          "max-w-[calc(42vw)] w-[42vw] px-4 flex-1 translate-x-0": show,
+          "opacity-100 xl:min-h-[calc(88vh)] px-4 max-w-[42vw] w-full flex-1 overflow-y-auto pointer-events-auto": show,
         },
       )}
     >
       <div className="flex items-center justify-between">
         <h2 className="text-2xl animate-in whitespace-nowrap dark:text-lime-100 fade-in-from-right-40 font-bold font-sans tracking-tight">
-          Add New Category
+          New Category
         </h2>
         <IconButton
           icon="circle"

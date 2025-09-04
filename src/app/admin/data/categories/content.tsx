@@ -45,7 +45,7 @@ export const Content = ({ preloaded }: ContentProps) => {
   const CatForm = useCallback(() => {
     const options = opts(
       <CreateCat show={showCreateForm} toggleFn={toogleForm} />,
-      null,
+      <div />,
     );
     return <>{options.get(showCreateForm)}</>;
   }, [showCreateForm, toogleForm]);
@@ -57,7 +57,7 @@ export const Content = ({ preloaded }: ContentProps) => {
         toggleFn={toggleEditForm}
         categoryData={editingCategory}
       />,
-      null,
+      <div />,
     );
     return <>{options.get(showEditForm)}</>;
   }, [showEditForm, toggleEditForm, editingCategory]);

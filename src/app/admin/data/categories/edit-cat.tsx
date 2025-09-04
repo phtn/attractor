@@ -16,9 +16,10 @@ export const EditCat = ({ toggleFn, show, categoryData }: Props) => {
   return (
     <HyperCard
       className={cn(
-        "py-6 w-full xl:min-h-[calc(88lvh)] bg-mask translate-x-40 overflow-y-scroll ease-[cubic-bezier(0.34,1.56,0.64,1)] transition-[max-width] duration-1000",
-        "max-w-[0px]",
-        { "max-w-[calc(40vw)] px-4 flex-1 translate-x-0 delay-500": show },
+        "py-6 bg-mask transition-[max-width,opacity] duration-500 ease-in-out overflow-hidden opacity-0 max-w-0 w-0 pointer-events-none",
+        {
+          "opacity-100 xl:min-h-[calc(88vh)] px-4 max-w-[40vw] w-full flex-1 overflow-y-auto pointer-events-auto": show,
+        },
       )}
     >
       <div className="flex items-center justify-between w-full ">

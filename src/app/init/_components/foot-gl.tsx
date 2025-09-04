@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 
 export const FootGL = () => {
   return (
-    <div className="md:absolute fixed bottom-0 flex h-[42lvh] lg:h-[100vh] flex-1 w-full z-0 flex-col items-start justify-start overflow-clip">
+    <div className="md:absolute fixed bottom-0 flex h-[100vh] flex-1 w-full z-0 flex-col items-start justify-start overflow-clip">
       <motion.div
         initial={{ x: -500, y: -180, scale: 1 }}
         animate={{ x: 0, y: 0, scale: 1 }}

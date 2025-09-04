@@ -173,7 +173,7 @@ const SectionContainer = ({ expanded, children }: ISectionBody) => (
   <div
     className={cn(
       "rounded-lg border border-slate-300 overflow-hidden",
-      "dark:bg-origin/30 dark:border-origin",
+      "dark:bg-origin/10 dark:border-origin",
       {
         "dark:bg-origin/80 hover:bg-mac-gray/20 bg-mac-gray/30": expanded,
       },

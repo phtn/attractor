@@ -40,13 +40,12 @@ export function RowActions({ row, onEditCategory }: RowActionsProps) {
             size="icon"
             variant="ghost"
             className="shadow-none w-9 rounded-lg cursor-pointer"
-            aria-label="Row actions"
+            aria-label="More"
           >
             <Icon
               solid
-              name="ellipsis-block"
-              className="size-6 text-muted-foreground"
-              aria-hidden="true"
+              name="more-vertical"
+              className="text-muted-foreground"
             />
           </Button>
         </div>

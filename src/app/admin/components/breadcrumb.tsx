@@ -12,7 +12,7 @@ export const Breadcrumb = ({ root }: Props) => {
   const pathSegments = pathname.split("/").filter((segment) => segment);
 
   return (
-    <nav className="flex items-center font-mono lowercase text-sm text-foreground">
+    <nav className="flex items-center font-sans lowercase text-sm text-foreground">
       <Link href="/" className="hover:text-mac-blue dark:hover:text-geist-teal">
         {root ?? "app"}
       </Link>

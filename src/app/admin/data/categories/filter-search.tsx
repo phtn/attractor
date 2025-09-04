@@ -14,31 +14,30 @@ export const FilterSearch = ({ col }: Props) => {
   return (
     <div className="relative">
       <Input
-        id={`${id}-input`}
+        id={`input-${id}`}
         ref={inputRef}
         className={cn(
-          "peer min-w-60 ps-10",
+          "peer min-w-60 ps-10 bg-zinc-100/80",
 
           Boolean(col?.getFilterValue()) && "pe-10",
         )}
         value={(col?.getFilterValue() ?? "") as string}
         onChange={(e) => col?.setFilterValue(e.target.value)}
-        placeholder="Filter"
+        placeholder="Search"
         type="text"
-        inputMode="email"
-        aria-label="Filter"
+        inputMode="text"
+        aria-label="Search"
       />
-      <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+      <div className="text-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
         <Icon
-          solid
-          name="filter"
+          name="search"
           aria-hidden="true"
-          className="size-4 text-mac-blue dark:text-cyan-200"
+          className="size-4 dark:text-chalk/20"
         />
       </div>
       {Boolean(col?.getFilterValue()) && (
         <button
-          className="text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+          className="hidden text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 _flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
           aria-label="Clear filter"
           onClick={() => {
             col?.setFilterValue("");

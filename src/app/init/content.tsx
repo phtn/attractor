@@ -12,7 +12,7 @@ import { type IconName } from "@/lib/icons";
 
 export const Content = () => {
   return (
-    <div className=" ">
+    <div>
       <Hero />
       <div className="w-full bg-green-300"></div>
     </div>
@@ -63,18 +63,18 @@ const Hero = () => (
 const Cta = () => {
   return (
     <section className="">
-      <div className="container px-4 md:px-4">
+      <div className="px-4 md:px-4">
         <div className="flex flex-col items-start gap-4">
           <h1 className="text-4xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-            Build with us
+            Build with us.
           </h1>
           <p className="text-xl tracking-tight">
-            Platform · Framework · Plugins · Components
+            Platform · Apps · SDK · UI Components
           </p>
           <div className="flex gap-4 mt-4">
             <Button size="lg" asChild>
               <Link
-                href="https://tiptap-shadcn.vercel.app/"
+                href="/init/devtools"
                 rel="noopener noreferrer"
                 className="tracking-tighter"
                 target="_blank"
