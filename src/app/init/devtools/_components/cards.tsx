@@ -33,10 +33,18 @@ import { QuickActions } from "./actions";
 import { IconifySvg } from "./iconify";
 import { Input } from "@/components/ui/input";
 
-const COLLAPSED_SIZE = Object.freeze({ width: 280, height: 0 });
-const EXPANDED_SIZE = Object.freeze({ width: 460, height: 400 });
+interface Props {
+  iconSetId: string;
+  className?: ClassName;
+}
 
-export const IconSetCard = memo(function ExpandableComponent() {
+const COLLAPSED_SIZE = Object.freeze({ width: 300, height: 0 });
+const EXPANDED_SIZE = Object.freeze({ width: 460, height: 540 });
+
+export const IconSetCard = memo(function ExpandableComponent({
+  iconSetId,
+  className,
+}: Props) {
   const handleExpandStart = useCallback(() => {
     console.log("Expanding meeting card...");
   }, []);
@@ -53,7 +61,7 @@ export const IconSetCard = memo(function ExpandableComponent() {
     loadingIcons,
     loadingMeta,
     scrollAreaRef,
-  } = useGetMeta();
+  } = useGetMeta(iconSetId);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -81,6 +89,7 @@ export const IconSetCard = memo(function ExpandableComponent() {
       initialDelay={0.2}
       onExpandStart={handleExpandStart}
       onExpandEnd={handleExpandEnd}
+      className={`${className}`}
     >
       {({ isExpanded }) => (
         <ExpandableTrigger>
@@ -96,7 +105,7 @@ export const IconSetCard = memo(function ExpandableComponent() {
               <div
                 className={cn(
                   "flex justify-between items-start w-full text-neutral-600",
-                  "mx-auto max-w-[190px] transition-transform duration-300",
+                  "mx-auto max-w-[220px] transition-[width] duration-300",
                   { " max-w-[540px]": isExpanded },
                 )}
               >
@@ -254,8 +263,8 @@ export const IconSetCard = memo(function ExpandableComponent() {
                             <QuickActions
                               title={icon.name}
                               icon={icon}
-                              iconSet={metadata?.id}
-                              iconSize={metadata?.height}
+                              iconSet={icon.sourceSetId}
+                              iconSize={icon.sourceHeight}
                             >
                               <IconifySvg icon={icon} />
                             </QuickActions>
@@ -275,11 +284,11 @@ export const IconSetCard = memo(function ExpandableComponent() {
             <ExpandableContent preset="slide-down" className="mb-2">
               <ExpandableCardFooter>
                 <div className="flex items-start justify-between w-full text-sm text-gray-500">
-                  <div className="flex items-center font-jet w-full">
+                  <div className="flex items-center py-0.5 font-jet w-full">
                     <ExpandableTrigger>
                       <Input
                         placeholder="search"
-                        className="dark:bg-slate-400/20 h-8 w-full"
+                        className="dark:bg-slate-400/20 h-7 w-full"
                         value={searchTerm}
                         onChange={onSearchInputChange}
                       />

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { IconSet, IconifyIconsResponse, IconifyIcon } from "./types";
 
-export type IconEntry = { name: string } & IconifyIcon;
+export type IconEntry = { name: string; sourceSetId: string; sourceHeight: number } & IconifyIcon;
 
 const CHUNK_SIZE = 40;
 
-export const useGetMeta = () => {
+// Simplified for single-set usage per IconSetCard to avoid effect loops on array identity
+export const useGetMeta = (iconSetId: string = "proicons") => {
   const [metadata, setMetadata] = useState<IconSet | null>(null);
   const [loadingMeta, setLoadingMeta] = useState<boolean>(false);
 
@@ -18,7 +19,7 @@ export const useGetMeta = () => {
   const iconsAbortRef = useRef<AbortController | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
-  // Fetch set metadata from our API
+  // Fetch set metadata for the given id (no array dependency => no re-run due to new array identity)
   useEffect(() => {
     const controller = new AbortController();
     metaAbortRef.current?.abort();
@@ -27,23 +28,21 @@ export const useGetMeta = () => {
     const fetchMetadata = async () => {
       try {
         setLoadingMeta(true);
+        // reset icons when switching set id
+        setIcons([]);
+        setNextIndex(0);
+
         const response = await fetch("/api/icones", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          body: JSON.stringify({ iconSet: "proicons" }),
+          body: JSON.stringify({ iconSet: iconSetId }),
           signal: controller.signal,
         });
 
-        console.log("[useGetMeta] /api/icones status:", response.status);
-
         const json = (await response.json()) as { data: IconSet };
-        console.log(
-          "[useGetMeta] /api/icones payload keys:",
-          json?.data ? Object.keys(json.data).length : 0,
-        );
 
         if (!controller.signal.aborted) {
           setMetadata(json.data);
@@ -59,23 +58,20 @@ export const useGetMeta = () => {
       }
     };
 
-    fetchMetadata().catch((e) =>
-      console.error("[useGetMeta] unhandled metadata:", e),
-    );
+    void fetchMetadata();
     return () => controller.abort();
-  }, []);
+  }, [iconSetId]);
 
   const doFetchIcons = useCallback(
     async (start: number) => {
       if (!metadata) return;
-      const id = (metadata.id || "proicons").trim();
+      const id = (metadata.id ?? iconSetId).trim();
       const list = metadata.icons.slice(start, start + CHUNK_SIZE);
       if (list.length === 0) return;
 
       // Encode as "alarm-clock%2C..." by encoding the comma-separated string with a trailing comma
       const encoded = encodeURIComponent(list.join(",") + ",");
       const url = `https://api.iconify.design/${id}.json?icons=${encoded}`;
-      console.log("[useGetMeta] iconify encoded param:", encoded);
 
       const controller = new AbortController();
       iconsAbortRef.current?.abort();
@@ -89,16 +85,14 @@ export const useGetMeta = () => {
           signal: controller.signal,
         });
 
-        console.log("[useGetMeta] iconify status:", res.status, "url:", url);
-
         const payload = (await res.json()) as IconifyIconsResponse;
-        const count = payload?.icons ? Object.keys(payload.icons).length : 0;
-        console.log("[useGetMeta] iconify icons count:", count);
 
         if (!controller.signal.aborted) {
           const entries: IconEntry[] = Object.entries(payload.icons ?? {}).map(
             ([name, icon]) => ({
               name,
+              sourceSetId: id,
+              sourceHeight: metadata.height,
               ...icon,
             }),
           );
@@ -115,7 +109,7 @@ export const useGetMeta = () => {
         setLoadingIcons(false);
       }
     },
-    [metadata],
+    [metadata, iconSetId],
   );
 
   // Automatically fetch the first chunk after metadata arrives
@@ -130,6 +124,7 @@ export const useGetMeta = () => {
     if (!metadata) return false;
     return nextIndex < metadata.icons.length;
   }, [metadata, nextIndex]);
+
   const loadMore = useCallback(() => {
     if (!metadata) return;
     if (loadingIcons) return;
@@ -167,7 +162,6 @@ export const useGetMeta = () => {
       setLoadingAll(false);
     }
   }, [metadata, loadingIcons, loadingAll, nextIndex, doFetchIcons]);
-
 
   return {
     metadata,

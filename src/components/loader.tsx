@@ -2,7 +2,7 @@
 
 import { Icon } from "@/lib/icons";
 import { cn } from "@/lib/utils";
-import { animate, stagger, svg } from "animejs";
+import { animate, stagger, svg, createScope } from "animejs";
 import { useEffect } from "react";
 
 export const Loader = () => (

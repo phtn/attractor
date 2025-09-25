@@ -8,22 +8,27 @@ import { IconSetCard } from "./_components/cards";
 import { useMemo, memo } from "react";
 
 export const Content = () => {
+  const iconSetIds = useMemo(
+    () => ["proicons", "svg-spinners", "pixelarticons", "stash"],
+    [],
+  );
+
   const tabs = useMemo(
     () =>
       [
         {
           id: 0,
           label: "ICONS",
-          content: () => <RenderIcons />,
+          content: () => <IconSets iconSetIds={iconSetIds} />,
         },
 
         {
           id: 1,
           label: "HOOKS",
-          content: () => <RenderIcons />,
+          content: () => <div />,
         },
       ] as ITab[],
-    [],
+    [iconSetIds],
   );
 
   return (
@@ -31,11 +36,11 @@ export const Content = () => {
       <div className="absolute top-0 left-0 w-full bg-zinc-100/15 border-b flex items-center h-12 pl-2 pr-4">
         <Icon
           name="power-tool"
-          className="size-8 text-zinc-800 -rotate-12 shrink-0"
+          className="size-12 text-zinc-600 -rotate-12 shrink-0"
         />{" "}
-        <h1 className="text-xl font-light font-space">
-          <span className="tracking-tighter">dev</span>
-          <span className="font-extrabold">tools</span>
+        <h1 className="text-xl font-light font-space tracking-tighter text-white">
+          {/*<span className="tracking-tighter">dev</span>*/}
+          <span className="font-extrabold">devtools</span>
         </h1>
       </div>
       <DirectionAwareTabs tabs={tabs} />
@@ -43,10 +48,17 @@ export const Content = () => {
   );
 };
 
-const RenderIcons = memo(function RenderIcons() {
+interface IconSetsProps {
+  iconSetIds: string[];
+}
+const IconSets = memo(function Comp({ iconSetIds }: IconSetsProps) {
   return (
-    <div className="bg-neutral-500/20 w-full h-[calc(70lvh)] flex flex-col justify-start items-start py-4 rounded-xs m-[0.33px]">
-      <IconSetCard />
+    <div className="_h-[calc(64lvh)] flex flex-wrap p-4 rounded-xs m-[0.33px]">
+      {iconSetIds.map((id) => (
+        <div key={id} className="border-0 border-black col-span-4 ">
+          <IconSetCard iconSetId={id} className="" />
+        </div>
+      ))}
     </div>
   );
 });

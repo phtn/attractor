@@ -42,6 +42,7 @@ const jet = Fira_Mono({
   weight: ["400"],
   subsets: ["latin"],
 });
+
 const tek = Tektur({
   variable: "--font-tek",
   weight: ["400"],
@@ -53,11 +54,13 @@ const space = Space_Grotesk({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
+
 const ox = Oxanium({
   variable: "--font-ox",
   weight: ["400", "600", "700", "800"],
   subsets: ["latin"],
 });
+
 export const metadata: Metadata = {
   title: "re-up.ph",
   description: "Secure Cloud Systems",
