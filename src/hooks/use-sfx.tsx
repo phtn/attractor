@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import useSound from "use-sound";
+import useSound from 'use-sound'
 
 export type HookOptions<T = unknown> = T & {
   id?: string;
@@ -10,7 +10,7 @@ export type HookOptions<T = unknown> = T & {
   soundEnabled?: boolean;
   sprite?: number[];
   onload?: VoidFunction;
-};
+}
 /**
  * @name useSFX
  * @returns PlayFunction
@@ -40,28 +40,28 @@ export const useSFX = ({
     interrupt: interrupt ?? true,
     playbackRate: playbackRate ?? 0.5,
     soundEnabled: soundEnabled ?? true,
-  };
+  }
 
-  const [sfxPopOn] = useSound("/sfx/pop-up-on.mp3", opts);
-  const [sfxPopOff] = useSound("/sfx/pop-up-off.mp3", opts);
-  const [sfxPopDown] = useSound("/sfx/pop-down.mp3", opts);
-  const [sfxToggle] = useSound("/sfx/toggle.mp3", opts);
-  const [sfxTick] = useSound("/sfx/tick.mp3", opts);
-  const [sfxStep] = useSound("/sfx/step.mp3", opts);
-  const [sfxTech] = useSound("/sfx/tech.wav", opts);
-  const [sfxDisable] = useSound("/sfx/disable.mp3", {
+  const [sfxPopOn] = useSound('/sfx/pop-up-on.mp3', opts)
+  const [sfxPopOff] = useSound('/sfx/pop-up-off.mp3', opts)
+  const [sfxPopDown] = useSound('/sfx/pop-down.mp3', opts)
+  const [sfxToggle] = useSound('/sfx/toggle.mp3', opts)
+  const [sfxTick] = useSound('/sfx/tick.mp3', opts)
+  const [sfxStep] = useSound('/sfx/step.mp3', opts)
+  const [sfxTech] = useSound('/sfx/tech.wav', opts)
+  const [sfxDisable] = useSound('/sfx/disable.mp3', {
     sprite: { dis: [0, 200] },
     playbackRate: 0.3,
-  });
-  const [sfxEnable] = useSound("/sfx/enable.mp3", opts);
-  const [sfxDiamond] = useSound("/sfx/diamond.mp3", opts);
-  const [sfxNumbers] = useSound("/sfx/numbers.mp3", {
+  })
+  const [sfxEnable] = useSound('/sfx/enable.mp3', opts)
+  const [sfxDiamond] = useSound('/sfx/diamond.mp3', opts)
+  const [sfxNumbers] = useSound('/sfx/numbers.mp3', {
     sprite: { dis: [0, 120] },
     volume: 0.2,
     playbackRate: 0.8,
-  });
+  })
 
-  const [sfxDarbuka] = useSound("/sfx/darbuka.wav", opts);
+  const [sfxDarbuka] = useSound('/sfx/darbuka.wav', opts)
 
   return {
     sfxStep,
@@ -76,5 +76,5 @@ export const useSFX = ({
     sfxDisable,
     sfxPopDown,
     sfxDarbuka,
-  };
-};
+  }
+}

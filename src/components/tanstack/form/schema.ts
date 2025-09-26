@@ -1,6 +1,6 @@
-import { IconName } from "@/lib/icons";
-import { Cat } from "vx/cats/d";
-import { z } from "zod";
+import { IconName } from '@/lib/icons'
+import { Cat } from 'vx/cats/d'
+import { z } from 'zod'
 
 export const CatZodSchema = z.object({
   cid: z.optional(z.string()),
@@ -18,31 +18,31 @@ export const CatZodSchema = z.object({
   updated_at: z.optional(z.number()),
   created_at: z.optional(z.number()),
   created_by: z.optional(z.string()),
-});
-export type CatZod = z.infer<typeof CatZodSchema>;
+})
+export type CatZod = z.infer<typeof CatZodSchema>
 
-export type UserFieldName = "name" | "tel" | "email" | "inquiry";
+export type UserFieldName = 'name' | 'tel' | 'email' | 'inquiry'
 
 export type FieldName = (
-  | "name"
-  | "phone"
-  | "email"
-  | "created_by"
-  | "created_at"
-  | "updated_at"
-  | "active"
-  | "tags"
-  | "uid"
-  | "style"
-  | "grp"
-  | "col"
+  | 'name'
+  | 'phone'
+  | 'email'
+  | 'created_by'
+  | 'created_at'
+  | 'updated_at'
+  | 'active'
+  | 'tags'
+  | 'uid'
+  | 'style'
+  | 'grp'
+  | 'col'
 ) &
-  keyof Cat;
+  keyof Cat
 
 // Complete form values type
 export type FormValues = {
   cat: Cat;
-};
+}
 
 // Define option type for selects and checkbox groups
 type FieldOption = {
@@ -50,10 +50,10 @@ type FieldOption = {
   label: string;
   icon: IconName;
   description: string;
-};
+}
 
 // Type for field validators
-type FieldValidator = (value: string | number) => true | string;
+type FieldValidator = (value: string | number) => true | string
 
 // Define base field properties
 export interface BaseFieldConfig {
@@ -69,19 +69,19 @@ export interface BaseFieldConfig {
 
 // Text field config
 export interface TextFieldConfig extends BaseFieldConfig {
-  type: "text" | "email" | "number" | "password" | "tel";
+  type: 'text' | 'email' | 'number' | 'password' | 'tel';
 }
 
 // Select field config
 export interface SelectFieldConfig extends BaseFieldConfig {
-  type: "select";
+  type: 'select';
   options: FieldOption[];
   // onValueChange: (value: string) => void;
 }
 
 // CheckboxGroup field config
 interface CheckboxGroupFieldConfig extends BaseFieldConfig {
-  type: "checkbox-group";
+  type: 'checkbox-group';
   options: FieldOption[];
 }
 
@@ -89,7 +89,7 @@ interface CheckboxGroupFieldConfig extends BaseFieldConfig {
 export type FieldConfig =
   | TextFieldConfig
   | SelectFieldConfig
-  | CheckboxGroupFieldConfig;
+  | CheckboxGroupFieldConfig
 
 // Type for field groups
 export interface FieldGroup {

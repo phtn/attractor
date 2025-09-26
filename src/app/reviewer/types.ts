@@ -1,4 +1,4 @@
-import { type IconName } from "@/lib/icons";
+import { type IconName } from '@/lib/icons'
 
 export interface IQuickAction {
   icon: IconName;
@@ -15,5 +15,5 @@ export interface TableOfContentsItem {
 export interface HighlightItem {
   id: string;
   text: string;
-  type: "concept" | "code" | "reference" | "math";
+  type: 'concept' | 'code' | 'reference' | 'math';
 }

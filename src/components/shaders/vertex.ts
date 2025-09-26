@@ -12,7 +12,7 @@ export const marsVS = `
             let pos = positions[vertexIndex];
             return vec4(pos, 0.0, 1.0);
         }
-      `;
+      `
 
 export const traverseVS = `
   @vertex
@@ -21,4 +21,4 @@ export const traverseVS = `
       let x = f32(i32(vertexIndex) - 1);
       let y = f32(i32(vertexIndex & 1u) * 2 - 1);
       return vec4<f32>(x, y, 0.0, 1.0);
-  }  `;
+  }  `

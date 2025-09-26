@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { getCookie, setCookie } from "@/app/actions";
-import { handleAsync } from "@/utils/async-handler";
+import { getCookie, setCookie } from '@/app/actions'
+import { handleAsync } from '@/utils/async-handler'
 import {
   createContext,
   useMemo,
@@ -10,7 +10,7 @@ import {
   useState,
   useCallback,
   useEffect,
-} from "react";
+} from 'react'
 
 interface SFXCtxProviderProps {
   children: ReactNode;
@@ -22,24 +22,24 @@ interface SFXCtxValues {
   getSfxState: () => Promise<void>;
 }
 
-const SFXCtx = createContext<SFXCtxValues | null>(null);
+const SFXCtx = createContext<SFXCtxValues | null>(null)
 
 const SFXCtxProvider = ({ children }: SFXCtxProviderProps) => {
-  const [soundEnabled, setSoundEnabled] = useState<boolean>();
+  const [soundEnabled, setSoundEnabled] = useState<boolean>()
   const getSfxState = useCallback(async () => {
-    await handleAsync(getCookie)("soundEnabled")
+    await handleAsync(getCookie)('soundEnabled')
       .then(({ data }) => setSoundEnabled(data ?? false))
-      .catch(console.error);
-  }, []);
+      .catch(console.error)
+  }, [])
 
   const setSfxState = useCallback(async () => {
-    await handleAsync(setCookie)("soundEnabled", !soundEnabled);
-    setSoundEnabled((prev) => !prev);
-  }, [soundEnabled]);
+    await handleAsync(setCookie)('soundEnabled', !soundEnabled)
+    setSoundEnabled((prev) => !prev)
+  }, [soundEnabled])
 
   useEffect(() => {
-    if (!soundEnabled) getSfxState().catch(console.error);
-  }, [getSfxState, soundEnabled]);
+    if (!soundEnabled) getSfxState().catch(console.error)
+  }, [getSfxState, soundEnabled])
 
   const value = useMemo(
     () => ({
@@ -47,15 +47,15 @@ const SFXCtxProvider = ({ children }: SFXCtxProviderProps) => {
       setSfxState,
       getSfxState,
     }),
-    [soundEnabled, setSfxState, getSfxState],
-  );
-  return <SFXCtx value={value}>{children}</SFXCtx>;
-};
+    [soundEnabled, setSfxState, getSfxState]
+  )
+  return <SFXCtx value={value}>{children}</SFXCtx>
+}
 
 const useSFXCtx = () => {
-  const ctx = useContext(SFXCtx);
-  if (!ctx) throw new Error("SFXCtxProvider is missing");
-  return ctx;
-};
+  const ctx = useContext(SFXCtx)
+  if (!ctx) throw new Error('SFXCtxProvider is missing')
+  return ctx
+}
 
-export { SFXCtxProvider, useSFXCtx };
+export { SFXCtxProvider, useSFXCtx }

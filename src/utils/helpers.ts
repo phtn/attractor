@@ -1,70 +1,70 @@
-import { onError, onSuccess, onWarn } from "@/ctx/toast-ctx";
-import crypto from "crypto";
-import { ReactElement } from "react";
-export function generateUID(): string {
-  const uuid: string = crypto.randomUUID(); // e.g., "9e107d9d-372b-4f99-a567-16e0c3b8a8d3"
-  const hex: string = uuid.replace(/-/g, ""); // dash delete
+import { onError, onSuccess, onWarn } from '@/ctx/toast-ctx'
+import crypto from 'crypto'
+import { ReactElement } from 'react'
+export function generateUID (): string {
+  const uuid: string = crypto.randomUUID() // e.g., "9e107d9d-372b-4f99-a567-16e0c3b8a8d3"
+  const hex: string = uuid.replace(/-/g, '') // dash delete
 
-  const bytes: number[] = [];
-  const re = /[a-fA-F0-9]{2}/g;
-  let match;
+  const bytes: number[] = []
+  const re = /[a-fA-F0-9]{2}/g
+  let match
   while ((match = re.exec(hex)) !== null) {
-    bytes.push(parseInt(match[0], 16));
+    bytes.push(parseInt(match[0], 16))
   }
 
-  let base64: string = btoa(String.fromCharCode(...bytes));
-  base64 = base64.replace(/[+/=]/g, "");
+  let base64: string = btoa(String.fromCharCode(...bytes))
+  base64 = base64.replace(/[+/=]/g, '')
 
-  return base64.slice(0, 20);
+  return base64.slice(0, 20)
 }
 // Webhook verification (recommended for security)
-export function verifyWebhookSignature(
+export function verifyWebhookSignature (
   payload: string,
   signature: string,
-  secret: string,
+  secret: string
 ): boolean {
-  const hmac = crypto.createHmac("sha256", secret);
-  hmac.update(payload);
-  const digest = `sha256=${hmac.digest("hex")}`;
-  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest));
+  const hmac = crypto.createHmac('sha256', secret)
+  hmac.update(payload)
+  const digest = `sha256=${hmac.digest('hex')}`
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))
 }
 
 export const opts = (...args: (ReactElement | null)[]) => {
   return new Map([
     [true, args[0]],
     [false, args[1]],
-  ]);
-};
+  ])
+}
 
 export type CopyFnParams = {
   name: string;
   text: string;
   limit?: number;
-};
-type CopyFn = (params: CopyFnParams) => Promise<boolean>; // Return success
+}
+type CopyFn = (params: CopyFnParams) => Promise<boolean> // Return success
 
 export const charLimit = (
   text: string | undefined,
-  chars?: number,
+  chars?: number
 ): string | undefined => {
-  if (!text) return;
-  return text.substring(0, chars ?? 35);
-};
+  if (!text) return
+  return text.substring(0, chars ?? 35)
+}
 export const copyFn: CopyFn = async ({ name, text }) => {
   if (!navigator?.clipboard) {
-    onWarn("Clipboard not supported");
-    return false;
+    onWarn('Clipboard not supported')
+    return false
   }
-  if (!text) return false;
+  if (!text) return false
 
   return await navigator.clipboard
     .writeText(text)
     .then(() => {
-      onSuccess(`${name ? "Copied: " + name : "Copied."}`);
-      return true;
+      onSuccess(`${name ? 'Copied: ' + name : 'Copied.'}`)
+      return true
     })
     .catch((e) => {
-      onError(`Copy failed. ${e}`);
-      return false;
-    });
-};
+      onError(`Copy failed. ${e}`)
+      return false
+    })
+}

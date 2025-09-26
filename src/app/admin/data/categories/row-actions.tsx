@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,49 +11,49 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Icon } from "@/lib/icons";
-import { Row } from "@tanstack/react-table";
-import { useCallback } from "react";
-import { Cat } from "vx/cats/d";
+} from '@/components/ui/dropdown-menu'
+import { Icon } from '@/lib/icons'
+import { Row } from '@tanstack/react-table'
+import { useCallback } from 'react'
+import { Cat } from 'vx/cats/d'
 
 interface RowActionsProps {
   row: Row<Cat>;
   onEditCategory: (category: Cat) => void;
 }
 
-export function RowActions({ row, onEditCategory }: RowActionsProps) {
+export function RowActions ({ row, onEditCategory }: RowActionsProps) {
   const handleEdit = useCallback(() => {
-    onEditCategory(row.original);
-  }, [row.original, onEditCategory]);
+    onEditCategory(row.original)
+  }, [row.original, onEditCategory])
 
   const handleDelete = useCallback(() => {
     // TODO: Implement delete functionality
-    console.log("Delete category:", row.original);
-  }, [row.original]);
+    console.log('Delete category:', row.original)
+  }, [row.original])
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex justify-center">
+        <div className='flex justify-center'>
           <Button
-            size="icon"
-            variant="ghost"
-            className="shadow-none w-9 rounded-lg cursor-pointer"
-            aria-label="More"
+            size='icon'
+            variant='ghost'
+            className='shadow-none w-9 rounded-lg cursor-pointer'
+            aria-label='More'
           >
             <Icon
               solid
-              name="more-vertical"
-              className="text-muted-foreground"
+              name='more-vertical'
+              className='text-muted-foreground'
             />
           </Button>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align='end'>
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={handleEdit}>
-            <Icon name="px-pen" className="size-4 mr-2" />
+            <Icon name='px-pen' className='size-4 mr-2' />
             <span>Edit</span>
             <DropdownMenuShortcut>⌘E</DropdownMenuShortcut>
           </DropdownMenuItem>
@@ -61,11 +61,11 @@ export function RowActions({ row, onEditCategory }: RowActionsProps) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <Icon name="px-pen" className="size-4 mr-2" />
+            <Icon name='px-pen' className='size-4 mr-2' />
             <span>View</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Icon name="px-pen" className="size-4 mr-2" />
+            <Icon name='px-pen' className='size-4 mr-2' />
             <span>Duplicate</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
@@ -73,22 +73,22 @@ export function RowActions({ row, onEditCategory }: RowActionsProps) {
         <DropdownMenuGroup>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
-              <Icon name="px-pen" className="size-4 mr-2" />
+              <Icon name='px-pen' className='size-4 mr-2' />
               More
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
                 <DropdownMenuItem>
-                  <Icon name="px-pen" className="size-4 mr-2" />
+                  <Icon name='px-pen' className='size-4 mr-2' />
                   Print
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Icon name="px-pen" className="size-4 mr-2" />
+                  <Icon name='px-pen' className='size-4 mr-2' />
                   Email
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Icon name="px-pen" className="size-4 mr-2" />
+                  <Icon name='px-pen' className='size-4 mr-2' />
                   Advanced
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
@@ -97,14 +97,14 @@ export function RowActions({ row, onEditCategory }: RowActionsProps) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="text-destructive focus:text-destructive"
+          className='text-destructive focus:text-destructive'
           onClick={handleDelete}
         >
-          <Icon name="px-pen" className="size-4 mr-2" />
+          <Icon name='px-pen' className='size-4 mr-2' />
           <span>Delete</span>
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

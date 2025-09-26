@@ -509,4 +509,4 @@ $$\\text{BatchedUpdates} = \\sum_{i=1}^{n} \\text{Update}_i$$
 
 React Hooks provide a more direct API to the React concepts you already know. They offer a powerful way to compose behavior and share logic between components.
 
-**Remember**: Hooks are backwards-compatible and you can start using them gradually in your existing projects.`;
+**Remember**: Hooks are backwards-compatible and you can start using them gradually in your existing projects.`

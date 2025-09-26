@@ -1,12 +1,12 @@
-import { useGLTF } from "@react-three/drei";
-import type { Mesh, Material } from "three";
-import type { Euler, Vector3 } from "@react-three/fiber";
-import { forwardRef, memo, type ComponentProps } from "react";
-import { Group } from "three";
+import { useGLTF } from '@react-three/drei'
+import type { Mesh, Material } from 'three'
+import type { Euler, Vector3 } from '@react-three/fiber'
+import { forwardRef, memo, type ComponentProps } from 'react'
+import { Group } from 'three'
 
-const shuttle = "/3d/scene.glb";
+const shuttle = '/3d/scene.glb'
 
-interface ModelProps extends ComponentProps<"group"> {
+interface ModelProps extends ComponentProps<'group'> {
   position?: Vector3 | [number, number, number];
   rotation?: Euler | [number, number, number];
   scale?: Vector3 | [number, number, number];
@@ -17,7 +17,7 @@ const ModelComponent = forwardRef<Group, ModelProps>(
     const { nodes, materials } = useGLTF(shuttle) as unknown as {
       nodes: Record<string, Mesh>;
       materials: Record<string, Material>;
-    };
+    }
 
     return (
       <group
@@ -37,13 +37,13 @@ const ModelComponent = forwardRef<Group, ModelProps>(
               geometry={node.geometry}
               material={materials[key] ?? node.material}
             />
-          ) : null,
+          ) : null
         )}
       </group>
-    );
-  },
-);
-ModelComponent.displayName = "ModelComponent";
+    )
+  }
+)
+ModelComponent.displayName = 'ModelComponent'
 
-export const Model = memo(ModelComponent);
-useGLTF.preload(shuttle);
+export const Model = memo(ModelComponent)
+useGLTF.preload(shuttle)

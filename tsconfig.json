@@ -14,18 +14,27 @@
     "types": ["@webgpu/types", "bun-types"],
     "jsx": "preserve",
     "incremental": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
       "vx/*": ["./convex/*"],
       "@@/*": ["./convex/_generated/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "trash"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts", 
+    "**/*.tsx", 
+    ".next/types/**/*.ts",
+    "src/**/*",
+    "convex/**/*"
+  ],
+  "exclude": ["node_modules", "trash", ".next"]
 }

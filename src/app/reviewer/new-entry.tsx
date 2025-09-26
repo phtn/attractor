@@ -1,17 +1,17 @@
-import "katex/dist/katex.min.css";
-import { type FC, useMemo, type ComponentProps, type ReactNode } from "react";
-import ReactMarkdown, { Components } from "react-markdown";
+import 'katex/dist/katex.min.css'
+import { type FC, useMemo, type ComponentProps, type ReactNode } from 'react'
+import ReactMarkdown, { Components } from 'react-markdown'
 // import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeExternalLinks from "rehype-external-links";
-import rehypeKatex from "rehype-katex";
-import rehypeRaw from "rehype-raw";
-import rehypeSlug from "rehype-slug";
-import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
-import { CodeBlock } from "./codeblock";
-import { Icon } from "@/lib/icons";
-import { ClassName } from "../types";
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeExternalLinks from 'rehype-external-links'
+import rehypeKatex from 'rehype-katex'
+import rehypeRaw from 'rehype-raw'
+import rehypeSlug from 'rehype-slug'
+import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import { CodeBlock } from './codeblock'
+import { Icon } from '@/lib/icons'
+import { ClassName } from '../types'
 
 interface MarkdownParserProps {
   content: string;
@@ -24,74 +24,74 @@ const LinkRenderer: FC<{ href?: string; children: ReactNode }> = ({
   children,
 }) => {
   const isExternal =
-    href && (href.startsWith("http") || href.startsWith("https"));
+    href && (href.startsWith('http') || href.startsWith('https'))
 
   return (
     <a
       href={href}
-      className="text-blue-900 dark:text-creamy dark:hover:decoration-white dark:hover:text-creamy decoration-underline underline-offset-4 hover:decoration-blue-600 dark:decoration-zinc-600/60 transition-colors duration-200"
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noopener noreferrer" : undefined}
+      className='text-blue-900 dark:text-creamy dark:hover:decoration-white dark:hover:text-creamy decoration-underline underline-offset-4 hover:decoration-blue-600 dark:decoration-zinc-600/60 transition-colors duration-200'
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
     >
       {children}
       {isExternal && (
         <Icon
-          name="px-check"
-          className="inline ml-1 mb-1 size-4"
-          aria-label="External link"
+          name='px-check'
+          className='inline ml-1 mb-1 size-4'
+          aria-label='External link'
         />
       )}
     </a>
-  );
-};
+  )
+}
 
 const TableRenderer: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => (
-  <div className="overflow-x-auto my-4">
-    <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-700">
+  <div className='overflow-x-auto my-4'>
+    <table className='min-w-full border-collapse border border-gray-300 dark:border-gray-700'>
       {children}
     </table>
   </div>
-);
+)
 
 const TableHeadRenderer: React.FC<{ children: React.ReactNode }> = ({
   children,
-}) => <thead className="bg-gray-50 dark:bg-gray-800">{children}</thead>;
+}) => <thead className='bg-gray-50 dark:bg-gray-800'>{children}</thead>
 
 const TableRowRenderer: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => (
-  <tr className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150">
+  <tr className='border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150'>
     {children}
   </tr>
-);
+)
 
 const TableCellRenderer: React.FC<{
   children: React.ReactNode;
   isHeader?: boolean;
 }> = ({ children, isHeader = false }) => {
-  const Tag = isHeader ? "th" : "td";
+  const Tag = isHeader ? 'th' : 'td'
   return (
     <Tag
       className={`px-4 py-2 text-left border-r border-gray-200 dark:border-gray-700 last:border-r-0 ${
         isHeader
-          ? "font-semibold text-gray-900 dark:text-gray-100"
-          : "text-gray-700 dark:text-gray-300"
+          ? 'font-semibold text-gray-900 dark:text-gray-100'
+          : 'text-gray-700 dark:text-gray-300'
       }`}
     >
       {children}
     </Tag>
-  );
-};
+  )
+}
 
 const BlockquoteRenderer: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => (
-  <blockquote className="border-l-4 border-blue-500 pl-4 py-2 my-4 bg-blue-50 dark:bg-blue-900/20 italic text-gray-700 dark:text-gray-300">
+  <blockquote className='border-l-4 border-blue-500 pl-4 py-2 my-4 bg-blue-50 dark:bg-blue-900/20 italic text-gray-700 dark:text-gray-300'>
     {children}
   </blockquote>
-);
+)
 
 interface HeadingProps {
   children: ReactNode;
@@ -101,15 +101,15 @@ interface HeadingProps {
 const HeadingRenderer = (level: number) => {
   const HeadingComponent = ({ children, id }: HeadingProps) => {
     const sizes = {
-      1: "text-3xl font-bold mt-8 mb-4",
-      2: "text-2xl font-semibold mt-6 mb-3",
-      3: "text-xl font-semibold mt-5 mb-2",
-      4: "text-lg font-medium mt-4 mb-2",
-      5: "text-base font-medium mt-3 mb-2",
-      6: "text-sm font-medium mt-2 mb-1",
-    };
+      1: 'text-3xl font-bold mt-8 mb-4',
+      2: 'text-2xl font-semibold mt-6 mb-3',
+      3: 'text-xl font-semibold mt-5 mb-2',
+      4: 'text-lg font-medium mt-4 mb-2',
+      5: 'text-base font-medium mt-3 mb-2',
+      6: 'text-sm font-medium mt-2 mb-1',
+    }
 
-    const className = `${sizes[level as keyof typeof sizes]} text-gray-900 dark:text-gray-100 group font-space tracking-tighter`;
+    const className = `${sizes[level as keyof typeof sizes]} text-gray-900 dark:text-gray-100 group font-space tracking-tighter`
 
     switch (level) {
       case 1:
@@ -117,49 +117,49 @@ const HeadingRenderer = (level: number) => {
           <h1 id={id} className={className}>
             {children}
           </h1>
-        );
+        )
       case 2:
         return (
           <h2 id={id} className={className}>
             {children}
           </h2>
-        );
+        )
       case 3:
         return (
           <h3 id={id} className={className}>
             {children}
           </h3>
-        );
+        )
       case 4:
         return (
           <h4 id={id} className={className}>
             {children}
           </h4>
-        );
+        )
       case 5:
         return (
           <h5 id={id} className={className}>
             {children}
           </h5>
-        );
+        )
       case 6:
         return (
           <h6 id={id} className={className}>
             {children}
           </h6>
-        );
+        )
       default:
         return (
           <h1 id={id} className={className}>
             {children}
           </h1>
-        );
+        )
     }
-  };
+  }
 
-  HeadingComponent.displayName = `Heading${level}`;
-  return HeadingComponent;
-};
+  HeadingComponent.displayName = `Heading${level}`
+  return HeadingComponent
+}
 
 interface ICode {
   children: string;
@@ -169,31 +169,31 @@ interface ICode {
 
 const MarkdownParser: FC<MarkdownParserProps> = ({
   content,
-  className = "",
+  className = '',
   allowDangerousHtml = false,
-  maxWidth = "none",
+  maxWidth = 'none',
 }) => {
   const components = useMemo(
     () =>
       ({
         code: ({ className, children, ...props }: ICode) => {
-          const match = /language-(\w+)/.exec(className || "");
-          const language = match ? match[1] : "text";
+          const match = /language-(\w+)/.exec(className || '')
+          const language = match ? match[1] : 'text'
 
           // If it's a code block (has className with language-), use CodeBlock
-          if (match && typeof children === "string") {
-            return <CodeBlock language={language}>{children}</CodeBlock>;
+          if (match && typeof children === 'string') {
+            return <CodeBlock language={language}>{children}</CodeBlock>
           }
 
           // Otherwise, it's inline code
           return (
             <code
-              className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono"
+              className='bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm font-mono'
               {...props}
             >
               {children}
             </code>
-          );
+          )
         },
         a: LinkRenderer,
         table: TableRenderer,
@@ -203,7 +203,7 @@ const MarkdownParser: FC<MarkdownParserProps> = ({
           <TableCellRenderer {...props} isHeader={false} />
         ),
         th: (props: ComponentProps<typeof TableCellRenderer>) => (
-          <TableCellRenderer {...props} isHeader={true} />
+          <TableCellRenderer {...props} isHeader />
         ),
         blockquote: BlockquoteRenderer,
         h1: HeadingRenderer(1),
@@ -213,41 +213,41 @@ const MarkdownParser: FC<MarkdownParserProps> = ({
         h5: HeadingRenderer(5),
         h6: HeadingRenderer(6),
         p: ({ children }: { children: React.ReactNode }) => (
-          <p className="mb-4 text-gray-700 dark:text-gray-300 leading-7">
+          <p className='mb-4 text-gray-700 dark:text-gray-300 leading-7'>
             {children}
           </p>
         ),
         ul: ({ children }: { children: React.ReactNode }) => (
-          <ul className="list-disc pl-6 mb-4 space-y-1 text-gray-700 dark:text-gray-300">
+          <ul className='list-disc pl-6 mb-4 space-y-1 text-gray-700 dark:text-gray-300'>
             {children}
           </ul>
         ),
         ol: ({ children }: { children: React.ReactNode }) => (
-          <ol className="list-decimal pl-6 mb-4 space-y-1 text-gray-700 dark:text-gray-300">
+          <ol className='list-decimal pl-6 mb-4 space-y-1 text-gray-700 dark:text-gray-300'>
             {children}
           </ol>
         ),
         li: ({ children }: { children: React.ReactNode }) => (
-          <li className="leading-6">{children}</li>
+          <li className='leading-6'>{children}</li>
         ),
         hr: () => (
-          <hr className="my-8 border-t border-gray-300 dark:border-gray-700" />
+          <hr className='my-8 border-t border-gray-300 dark:border-gray-700' />
         ),
         strong: ({ children }: { children: React.ReactNode }) => (
-          <strong className="font-semibold text-gray-900 dark:text-gray-100">
+          <strong className='font-semibold text-gray-900 dark:text-gray-100'>
             {children}
           </strong>
         ),
         em: ({ children }: { children: React.ReactNode }) => (
-          <em className="italic text-gray-800 dark:text-gray-200">
+          <em className='italic text-gray-800 dark:text-gray-200'>
             {children}
           </em>
         ),
       }) as unknown as Components,
-    [],
-  );
+    []
+  )
 
-  const remarkPlugins = useMemo(() => [remarkGfm, remarkMath], []);
+  const remarkPlugins = useMemo(() => [remarkGfm, remarkMath], [])
 
   const rehypePlugins = useMemo(
     () =>
@@ -256,25 +256,25 @@ const MarkdownParser: FC<MarkdownParserProps> = ({
         [
           rehypeExternalLinks,
           {
-            target: "_blank",
-            rel: ["noopener", "noreferrer"],
-            content: { type: "text", value: " ↗" },
+            target: '_blank',
+            rel: ['noopener', 'noreferrer'],
+            content: { type: 'text', value: ' ↗' },
           },
         ],
         rehypeSlug,
         [
           rehypeAutolinkHeadings,
           {
-            behavior: "wrap",
+            behavior: 'wrap',
             properties: {
-              className: "heading-link",
+              className: 'heading-link',
             },
           },
         ],
         ...(allowDangerousHtml ? [rehypeRaw] : []),
       ] as unknown as [],
-    [allowDangerousHtml],
-  );
+    [allowDangerousHtml]
+  )
 
   return (
     <div
@@ -290,14 +290,14 @@ const MarkdownParser: FC<MarkdownParserProps> = ({
         {content}
       </ReactMarkdown>
     </div>
-  );
-};
+  )
+}
 
 export const MultiParser: FC<{ markdown: string }> = ({ markdown }) => (
-  <div className="w-full p-8 ">
-    <MarkdownParser content={markdown} maxWidth="100%" />
+  <div className='w-full p-8 '>
+    <MarkdownParser content={markdown} maxWidth='100%' />
   </div>
-);
+)
 
 // Demo component
 export const MultiParserDemo: React.FC = () => {
@@ -353,11 +353,11 @@ Check out [React Markdown](https://github.com/remarkjs/react-markdown) for more 
 
 ### Inline Code
 Use \`const result: string = "Hello World";\` for inline code snippets.
-`;
+`
 
   return (
-    <div className="w-full p-8 ">
-      <MarkdownParser content={sampleMarkdown} maxWidth="100%" />
+    <div className='w-full p-8 '>
+      <MarkdownParser content={sampleMarkdown} maxWidth='100%' />
     </div>
-  );
-};
+  )
+}

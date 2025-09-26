@@ -32,7 +32,7 @@ export const msVS = `
 
       return output;
   }
-`;
+`
 
 export const msFS = `
   struct VertexOutput {
@@ -83,4 +83,4 @@ export const msFS = `
 
       return vec4<f32>(color * 1.025 * vec3<f32>(1.0, 0.5, 0.25), 1.0);
   }
-`;
+`

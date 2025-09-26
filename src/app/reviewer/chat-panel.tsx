@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { UIMessage } from "@ai-sdk/react";
+import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { UIMessage } from '@ai-sdk/react'
 import {
   ChangeEvent,
   Dispatch,
@@ -10,9 +10,9 @@ import {
   useCallback,
   useEffect,
   useRef,
-} from "react";
-import { Icon } from "@/lib/icons";
-import { IQuickAction } from "./types";
+} from 'react'
+import { Icon } from '@/lib/icons'
+import { IQuickAction } from './types'
 
 interface ChatPanelProps {
   input: string;
@@ -34,61 +34,61 @@ export const ChatPanel = ({
   setSelectedModel,
   selectedModel,
 }: ChatPanelProps) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   const selectModel = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => setSelectedModel(e.target.value),
-    [setSelectedModel],
-  );
+    [setSelectedModel]
+  )
 
   return (
-    <div className={`h-[calc(94lvh)] flex flex-col overflow-hidden`}>
-      <div className="flex-1 bg-origin/35 justify-start backdrop-blur-3xl flex flex-col">
-        <div className="flex items-center justify-between border-b-[0.33px]">
-          <div className="flex w-full p-2.5 bg-creamy rounded-xs items-center justify-between px-3">
-            <Icon name="px-chat" size={12} className="text-origin" />
+    <div className='h-[calc(94lvh)] flex flex-col overflow-hidden'>
+      <div className='flex-1 bg-origin/35 justify-start backdrop-blur-3xl flex flex-col'>
+        <div className='flex items-center justify-between border-b-[0.33px]'>
+          <div className='flex w-full p-2.5 bg-zinc-300 dark:bg-creamy rounded-xs items-center justify-between px-3'>
+            <Icon name='px-chat' size={12} className='text-origin' />
             <h2
-              className={`text-xs text-origin font-normal uppercase font-sans tracking-[0.20em]`}
+              className='text-xs text-origin font-normal uppercase font-sans tracking-[0.20em]'
             >
               Assistant
             </h2>
-            <Icon name="px-clock" size={12} className="text-origin" />
+            <Icon name='px-clock' size={12} className='text-origin' />
           </div>
         </div>
-        <ScrollArea className="flex-1 p-4">
-          <div className="space-y-4">
+        <ScrollArea className='flex-1 p-4'>
+          <div className='space-y-4'>
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
                   className={`max-w-[80%] rounded-lg p-3 ${
-                    message.role === "user"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-100 text-gray-900"
+                    message.role === 'user'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-100 text-gray-900'
                   }`}
                 >
-                  <div className="text-sm font-medium mb-1">
-                    {message.role === "user" ? "You" : "Assistant"}
+                  <div className='text-sm font-medium mb-1'>
+                    {message.role === 'user' ? 'You' : 'Assistant'}
                   </div>
-                  <div className="text-sm whitespace-pre-wrap">
+                  <div className='text-sm whitespace-pre-wrap'>
                     {messages.map((m) => (
-                      <div key={m.id} className="whitespace-pre-wrap">
-                        {m.role === "user" ? "You: " : "Assistant: "}
+                      <div key={m.id} className='whitespace-pre-wrap'>
+                        {m.role === 'user' ? 'You: ' : 'Assistant: '}
                         {m.parts.map((part, index) => {
-                          if (part.type === "text") {
+                          if (part.type === 'text') {
                             return (
                               <span key={`${m.id}-text-${index}`}>
                                 {part.text}
                               </span>
-                            );
+                            )
                           }
-                          return null;
+                          return null
                         })}
                       </div>
                     ))}
@@ -98,36 +98,36 @@ export const ChatPanel = ({
             ))}
             {messages.length === 0 && (
               <>
-                <div className="flex justify-end">
-                  <div className="min-w-[95%] rounded-lg rounded-br-sm p-3 bg-gradient-to-r from-teal-300 via-teal-300 to-teal-300/80  text-gray-900">
-                    <div className="text-sm font-semibold mb-1">You</div>
-                    <div className="text-sm font-space font-light">
+                <div className='flex justify-end'>
+                  <div className='min-w-[95%] rounded-lg rounded-br-sm p-3 bg-gradient-to-r from-teal-300 via-teal-300 to-teal-300/80  text-gray-900'>
+                    <div className='text-sm font-semibold mb-1'>You</div>
+                    <div className='text-sm font-space font-light'>
                       Can you explain how React hooks work?
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-start">
-                  <div className="min-w-[95%] rounded-lg rounded-bl-sm dark:inset-shadow-[0_1px_rgb(255_255_255/0.20)] p-3 bg-axion text-white">
-                    <div className="text-sm font-semibold mb-1">Assistant</div>
-                    <div className="text-sm font-space font-light">
+                <div className='flex justify-start'>
+                  <div className='min-w-[95%] rounded-lg rounded-bl-sm dark:inset-shadow-[0_1px_rgb(255_255_255/0.20)] p-3 bg-axion text-white'>
+                    <div className='text-sm font-semibold mb-1'>Assistant</div>
+                    <div className='text-sm font-space font-light'>
                       Response rendered in center panel →
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-end ">
-                  <div className="min-w-[95%] rounded-lg rounded-br-sm p-3 bg-gradient-to-r from-teal-200 via-teal-200/90 to-teal-300/70  text-gray-900">
-                    <div className="text-sm font-semibold mb-1">You</div>
-                    <div className="text-sm font-space font-light">
+                <div className='flex justify-end '>
+                  <div className='min-w-[95%] rounded-lg rounded-br-sm p-3 bg-gradient-to-r from-teal-200 via-teal-200/90 to-teal-300/70  text-gray-900'>
+                    <div className='text-sm font-semibold mb-1'>You</div>
+                    <div className='text-sm font-space font-light'>
                       Whats the difference between useState and useEffect?
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-start">
-                  <div className="min-w-[95%] rounded-lg rounded-bl-sm dark:inset-shadow-[0_1px_rgb(255_255_255/0.20)] p-3 bg-axion text-white">
-                    <div className="text-sm font-semibold font-space mb-1">
+                <div className='flex justify-start'>
+                  <div className='min-w-[95%] rounded-lg rounded-bl-sm dark:inset-shadow-[0_1px_rgb(255_255_255/0.20)] p-3 bg-axion text-white'>
+                    <div className='text-sm font-semibold font-space mb-1'>
                       Assistant
                     </div>
-                    <div className="text-sm font-space font-light">
+                    <div className='text-sm font-space font-light'>
                       Response rendered in center panel →
                     </div>
                   </div>
@@ -135,10 +135,10 @@ export const ChatPanel = ({
               </>
             )}
             {loading && (
-              <div className="flex justify-start">
-                <div className="rounded-lg p-3">
-                  <div className="text-sm font-medium mb-1">Assistant</div>
-                  <div className="text-sm text-gray-500">Thinking...</div>
+              <div className='flex justify-start'>
+                <div className='rounded-lg p-3'>
+                  <div className='text-sm font-medium mb-1'>Assistant</div>
+                  <div className='text-sm text-gray-500'>Thinking...</div>
                 </div>
               </div>
             )}
@@ -148,17 +148,17 @@ export const ChatPanel = ({
 
         {/* Quick Actions - Only show when no messages exist */}
         {messages.length === 0 && (
-          <div className="hidden px-4 py-2 border-t">
-            <div className="text-xs text-gray-500 mb-2">Quick actions</div>
-            <div className="grid grid-cols-2 gap-2">
+          <div className='hidden px-4 py-2 border-t'>
+            <div className='text-xs text-gray-500 mb-2'>Quick actions</div>
+            <div className='grid grid-cols-2 gap-2'>
               {quickActions.map((action, index) => (
                 <Button
                   key={index}
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 justify-start text-xs rounded-sm border border-gray-200 hover:border-gray-400"
+                  variant='ghost'
+                  size='sm'
+                  className='h-8 justify-start text-xs rounded-sm border border-gray-200 hover:border-gray-400'
                 >
-                  <Icon name={action.icon} className="h-3 w-3 mr-1" />
+                  <Icon name={action.icon} className='h-3 w-3 mr-1' />
                   {action.text}
                 </Button>
               ))}
@@ -167,39 +167,39 @@ export const ChatPanel = ({
         )}
 
         {/* Input Panel */}
-        <div className="p-4 pt-0 flex-shrink-0">
-          <form onSubmit={submitAction} className="space-y-3">
-            <div className="flex gap-2">
-              <div className="flex-1 relative">
+        <div className='p-4 pt-0 flex-shrink-0'>
+          <form onSubmit={submitAction} className='space-y-3'>
+            <div className='flex gap-2'>
+              <div className='flex-1 relative'>
                 <textarea
                   value={input}
                   onChange={onChange}
-                  placeholder="Ask about programming concepts, languages, or frameworks..."
-                  className="w-full p-3 pr-12 bg-origin/50 border border-gray-400/60 dark:border-gray-500/60 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pb-4 h-24"
+                  placeholder='Ask about programming concepts, languages, or frameworks...'
+                  className='w-full p-3 pr-12 bg-origin/50 border border-gray-400/60 dark:border-gray-500/60 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pb-4 h-24'
                   disabled={loading}
                   onKeyDown={onKeyPress}
                 />
                 <Button
-                  type="submit"
-                  size="sm"
-                  className="absolute right-2 bottom-2 h-8 w-8 p-0 rounded-md"
+                  type='submit'
+                  size='sm'
+                  className='absolute right-2 bottom-2 h-8 w-8 p-0 rounded-md'
                   disabled={loading || !input?.trim()}
                 >
-                  <Icon name="px-arrow-up" className="h-4 w-4" />
+                  <Icon name='px-arrow-up' className='h-4 w-4' />
                 </Button>
               </div>
             </div>
-            <div className="flex items-center justify-between">
+            <div className='flex items-center justify-between'>
               <SelectModel
                 selectModel={selectModel}
                 selectedModel={selectedModel}
               />
               <Button
-                size="sm"
-                variant="ghost"
-                className="h-8 px-2 text-sm bg-zinc-700"
+                size='sm'
+                variant='ghost'
+                className='h-8 px-2 text-sm bg-zinc-700'
               >
-                <Icon solid name="px-chevrons-vertical" className="size-4" />
+                <Icon solid name='px-chevrons-vertical' className='size-4' />
                 New
               </Button>
             </div>
@@ -207,17 +207,17 @@ export const ChatPanel = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 interface SelectModelProps {
   selectedModel: string;
   selectModel: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 const SelectModel = ({ selectedModel, selectModel }: SelectModelProps) => (
-  <div className="flex items-center gap-2">
+  <div className='flex items-center gap-2'>
     <select
-      className="text-xs text-axion border border-gray-300 bg-creamy rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      className='text-xs text-axion border border-gray-300 bg-creamy rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
       value={selectedModel}
       onChange={selectModel}
     >
@@ -228,27 +228,27 @@ const SelectModel = ({ selectedModel, selectModel }: SelectModelProps) => (
       ))}
     </select>
   </div>
-);
+)
 
 const quickActions = [
-  { icon: "px-code", text: "Explain a concept", prompt: "Explain how " },
+  { icon: 'px-code', text: 'Explain a concept', prompt: 'Explain how ' },
   {
-    icon: "px-chat",
-    text: "Code example",
-    prompt: "Show me a code example of ",
+    icon: 'px-chat',
+    text: 'Code example',
+    prompt: 'Show me a code example of ',
   },
   {
-    icon: "px-chat",
-    text: "Best practices",
-    prompt: "What are the best practices for ",
+    icon: 'px-chat',
+    text: 'Best practices',
+    prompt: 'What are the best practices for ',
   },
-  { icon: "px-file", text: "Compare frameworks", prompt: "Compare " },
-] as IQuickAction[];
+  { icon: 'px-file', text: 'Compare frameworks', prompt: 'Compare ' },
+] as IQuickAction[]
 
 // Available models
 const availableModels = [
-  { id: "gemini-1.5-pro", name: "Gemini 1.5 Pro", provider: "Google" },
-  { id: "gemini-1.5-flash", name: "Gemini 1.5 Flash", provider: "Google" },
-  { id: "command-r-plus", name: "Command R+", provider: "Cohere" },
-  { id: "command-r", name: "Command R", provider: "Cohere" },
-];
+  { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro', provider: 'Google' },
+  { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', provider: 'Google' },
+  { id: 'command-r-plus', name: 'Command R+', provider: 'Cohere' },
+  { id: 'command-r', name: 'Command R', provider: 'Cohere' },
+]

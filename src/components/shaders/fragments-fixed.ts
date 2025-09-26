@@ -79,4 +79,4 @@ export const traverseFS = `
       col = col / (1.0 + col);
       return vec4(col, 1.0);
   }
-  `;
+  `

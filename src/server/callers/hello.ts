@@ -1,7 +1,7 @@
-"use server";
+'use server'
 
-import { HelloParams } from "@/server/routers/greet";
-import { trpc } from "@/trpc/server";
+import { HelloParams } from '@/server/routers/greet'
+import { trpc } from '@/trpc/server'
 
 export const greetHello = async (params: HelloParams) =>
-  await trpc.hello(params);
+  await trpc.hello(params)

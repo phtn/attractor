@@ -1,16 +1,16 @@
-import createGlobe from "cobe";
-import { useEffect, useRef } from "react";
+import createGlobe from 'cobe'
+import { useEffect, useRef } from 'react'
 
-export function Shuding() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
+export function Shuding () {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
   useEffect(() => {
-    let width = 0;
+    let width = 0
     const onResize = () =>
-      canvasRef.current && (width = canvasRef.current.offsetWidth);
-    window.addEventListener("resize", onResize);
-    if (!canvasRef.current) return;
+      canvasRef.current && (width = canvasRef.current.offsetWidth)
+    window.addEventListener('resize', onResize)
+    if (!canvasRef.current) return
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 1,
       width: width * 3,
@@ -28,44 +28,44 @@ export function Shuding() {
       scale: 2.5,
       offset: [0, width * 2 * 0.4 * 0.6],
       onRender: (state) => {
-        state.width = width * 2;
-        state.height = width * 2 * 0.4;
+        state.width = width * 2
+        state.height = width * 2 * 0.4
       },
-    });
+    })
 
-    if (!canvasRef.current) return;
-    
+    if (!canvasRef.current) return
+
     // Store timeout reference for cleanup
     timeoutRef.current = setTimeout(() => {
       if (canvasRef.current) {
-        canvasRef.current.style.opacity = "1";
+        canvasRef.current.style.opacity = '1'
       }
-      timeoutRef.current = null;
-    }, 300);
-    
-    onResize();
+      timeoutRef.current = null
+    }, 300)
+
+    onResize()
 
     return () => {
-      globe.destroy();
-      window.removeEventListener("resize", onResize);
+      globe.destroy()
+      window.removeEventListener('resize', onResize)
       // Cleanup timeout on unmount
       if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+        clearTimeout(timeoutRef.current)
       }
-    };
-  }, []);
+    }
+  }, [])
   return (
-    <div className="w-full h-[100lvh] aspect-[1 / 0.4] m-auto relative">
+    <div className='w-full h-[100lvh] aspect-[1 / 0.4] m-auto relative'>
       <canvas
         ref={canvasRef}
         style={{
-          width: "100%",
-          height: "100%",
-          contain: "layout paint size",
+          width: '100%',
+          height: '100%',
+          contain: 'layout paint size',
           opacity: 1,
-          transition: "opacity 1s ease",
+          transition: 'opacity 1s ease',
         }}
       />
     </div>
-  );
+  )
 }

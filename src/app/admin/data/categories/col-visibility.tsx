@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Icon } from "@/lib/icons";
-import { Column } from "@tanstack/react-table";
-import { Cat } from "vx/cats/d";
+} from '@/components/ui/dropdown-menu'
+import { Icon } from '@/lib/icons'
+import { Column } from '@tanstack/react-table'
+import { Cat } from 'vx/cats/d'
 
 interface Props {
   cols: Column<string, keyof Cat>[];
@@ -17,28 +17,27 @@ export const ColumnVisibility = ({ cols }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="bg-background/30 select-none">
-          <Icon name="eye" />
+        <Button variant='outline' className='bg-background/30 select-none'>
+          <Icon name='eye' />
           <span>View</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start">
+      <DropdownMenuContent align='start'>
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         {cols.map((column) => {
           return (
             <DropdownMenuCheckboxItem
               key={column.id}
-              className="uppercase text-xs"
-              checkStyles="dark:text-cyan-200"
+              className='uppercase text-xs dark:text-cyan-200'
               checked={column.getIsVisible()}
               onCheckedChange={(value) => column.toggleVisibility(!!value)}
               onSelect={(event) => event.preventDefault()}
             >
               {column.id}
             </DropdownMenuCheckboxItem>
-          );
+          )
         })}
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-};
+  )
+}

@@ -86,4 +86,4 @@ export const traverseFS = `
       col = tanh(col * col);
       return vec4(col, 1.0);
   }
-  `;
+  `

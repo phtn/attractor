@@ -1,154 +1,154 @@
-"use client";
+'use client'
 
-import type { WebhookEvent } from "@/app/types";
-import { HyperList } from "@/components/hyper";
-import { useEventsCtx } from "@/ctx/events-ctx";
-import { Icon } from "@/lib/icons";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { type JSX } from "react";
+import type { WebhookEvent } from '@/app/types/index'
+import { HyperList } from '@/components/hyper'
+import { useEventsCtx } from '@/ctx/events-ctx'
+import { Icon } from '@/lib/icons'
+import { cn } from '@/lib/utils'
+import Link from 'next/link'
+import { type JSX } from 'react'
 
 export const Events = (): JSX.Element => {
-  const { events, connectionStatus } = useEventsCtx();
+  const { events, connectionStatus } = useEventsCtx()
 
   return (
-    <div className="w-full">
-      <div className="flex border-origin border w-full h-10 bg-creamy items-center justify-between px-3">
-        <Icon name="github" className="text-origin size-6" />
-        <h2
-          className={`text-sm text-axion font-normal ml-2 capitalize font-space tracking-tight`}
-        >
+    <div className='w-full'>
+      <div className='flex w-full h-10 dark:bg-creamy bg-zinc-300 items-center justify-between px-3'>
+        <Icon name='github' className='text-origin size-6' />
+        <h2 className='text-sm text-axion font-normal ml-2 capitalize font-space tracking-tight'>
           Events
         </h2>
         <Icon
           solid
           name={
-            connectionStatus === "connected"
-              ? "circle-filled"
-              : connectionStatus === "connecting"
-                ? "log-unverified"
-                : "unsupported"
+            connectionStatus === 'connected'
+              ? 'circle-filled'
+              : connectionStatus === 'connecting'
+                ? 'log-unverified'
+                : 'unsupported'
           }
-          className={cn("size-5 aspect-square text-macd-red", {
-            "text-geist-teal": connectionStatus === "connected",
-            "text-macd-orange animate-pulse": connectionStatus === "connecting",
+          className={cn('size-5 aspect-square text-macd-red', {
+            'text-geist-teal': connectionStatus === 'connected',
+            'text-macd-orange animate-pulse': connectionStatus === 'connecting',
           })}
         />
       </div>
 
-      <div className="">
-        {events.length === 0 ? (
-          <div className="text-center py-12">
-            No webhook events received yet.
-          </div>
-        ) : (
-          <HyperList
-            data={events}
-            component={EventItem}
-            container="space-y-px h-[calc(100vh-300px)]"
-          />
-        )}
+      <div className=''>
+        {events.length === 0
+          ? (
+            <div className='text-center py-12'>
+              No webhook events received yet.
+            </div>
+            )
+          : (
+            <HyperList
+              data={events}
+              component={EventItem}
+              container='space-y-px h-[calc(100vh-300px)]'
+            />
+            )}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const EventItem = (event: WebhookEvent) => (
   <div
     key={event.id}
     className={cn(
-      "border-[0.33px] p-4 border-red-400 bg-red-50",
-      "dark:bg-axion/75 dark:border-xy",
+      'border-[0.33px] p-4 border-red-400 bg-red-50',
+      'dark:bg-axion/75 dark:border-xy',
       {
-        "border-xy bg-card dark:border-zed": event.isValid,
-        "border-xy bg-card dark:border-transparent dark:bg-card":
-          event.isValid && event.eventType === "push",
+        'border-xy bg-card dark:border-zed': event.isValid,
+        'border-xy bg-card dark:border-transparent dark:bg-card':
+          event.isValid && event.eventType === 'push',
       },
-      "bg-card text-card-foreground flex flex-col rounded-xs py-5 shadow-md dark:inset-shadow-[0_0.5px_rgb(255_255_255/0.20)] gap-4",
+      'bg-card text-card-foreground flex flex-col rounded-xs py-5 shadow-md dark:inset-shadow-[0_0.5px_rgb(255_255_255/0.20)] gap-4'
     )}
   >
-    <div className="flex items-start space-y-2 justify-between mb-3">
-      <div className="flex items-center gap-2">
+    <div className='flex items-start space-y-2 justify-between mb-3'>
+      <div className='flex items-center gap-2'>
         <Icon
           solid
           size={event.isValid ? 16 : 16}
           name={
             event.isValid
-              ? event.eventType === "push"
-                ? "git-commit"
-                : "pull-request"
-              : "warning"
+              ? event.eventType === 'push'
+                ? 'git-commit'
+                : 'pull-request'
+              : 'warning'
           }
-          className={cn("p-[2px] shrink-0 bg-mac-red/10 text-red-400", {
-            "dark:text-teal-500 text-teal-600 bg-mac-teal/10 dark:bg-teal-200/5":
+          className={cn('p-[2px] shrink-0 bg-mac-red/10 text-red-400', {
+            'dark:text-teal-500 text-teal-600 bg-mac-teal/10 dark:bg-teal-200/5':
               event.isValid,
-            "dark:text-blue-500 text-blue-500 bg-blue-50":
-              event.eventType === "push" && event.isValid,
+            'dark:text-blue-500 text-blue-500 bg-blue-50':
+              event.eventType === 'push' && event.isValid,
           })}
         />
         <span
           className={cn(
-            "font-semibold font-sans uppercase text-red-400 dark:text-red-300/80",
+            'font-semibold font-sans uppercase text-red-400 dark:text-red-300/80',
             {
-              "text-blue-400 dark:text-blue-400": event.isValid,
-              "text-teal-500 dark:text-teal-300":
-                event.isValid && event.eventType === "pull_request",
-            },
+              'text-blue-400 dark:text-blue-400': event.isValid,
+              'text-teal-500 dark:text-teal-300':
+                event.isValid && event.eventType === 'pull_request',
+            }
           )}
         >
-          {event.eventType.split("_").flat().join(" ")}
+          {event.eventType.split('_').flat().join(' ')}
         </span>
-        <span className="text-muted-foreground">•</span>
-        <span className="font-medium font-jet text-muted-foreground">
-          {event.repository?.split("/").pop()?.trim()}
+        <span className='text-muted-foreground'>•</span>
+        <span className='font-medium font-jet text-muted-foreground'>
+          {event.repository?.split('/').pop()?.trim()}
         </span>
       </div>
-      <div className="flex items-end flex-col">
-        <span className="text-[8px] text-creamy/60 font-jet">
-          {formatTimestamp(event.timestamp).split(",").shift()?.trim()}
+      <div className='flex items-end flex-col'>
+        <span className='text-[8px] text-creamy/60 font-jet'>
+          {formatTimestamp(event.timestamp).split(',').shift()?.trim()}
         </span>
-        <span className="text-xs ml-2 hidden text-creamy/60 2xl:flex font-jet tracking-tighter">
-          {formatTimestamp(event.timestamp).split(",").pop()?.trim()}
+        <span className='text-xs ml-2 hidden text-creamy/60 2xl:flex font-jet tracking-tighter'>
+          {formatTimestamp(event.timestamp).split(',').pop()?.trim()}
         </span>
       </div>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-9 gap-y-2 gap-x-0 text-sm">
-      <div className="flex col-span-6 items-center space-x-4 ">
-        <FieldName name="sender" />
-        <span className="font-jet tracking-tight">{event.sender}</span>
+    <div className='grid grid-cols-1 md:grid-cols-9 gap-y-2 gap-x-0 text-sm'>
+      <div className='flex col-span-6 items-center space-x-4 '>
+        <FieldName name='sender' />
+        <span className='font-jet tracking-tight'>{event.sender}</span>
       </div>
 
       {event.data.action && (
-        <div className="flex cols-span-3 items-center space-x-2 w-fit">
-          <FieldName name="action" />
-          <span className="font-jet tracking-tight">{event.data.action}</span>
+        <div className='flex cols-span-3 items-center space-x-2 w-fit'>
+          <FieldName name='action' />
+          <span className='font-jet tracking-tight'>{event.data.action}</span>
         </div>
       )}
 
       {event.data.ref && (
-        <div className="flex border-t-[0.33px] border-xy border-dotted pt-2 col-span-6 items-center space-x-4">
-          <FieldName name="Branch" />
-          <span className="font-jet">{event.data.ref?.split("/").pop()}</span>
+        <div className='flex border-t-[0.33px] border-xy border-dotted pt-2 col-span-6 items-center space-x-4'>
+          <FieldName name='Branch' />
+          <span className='font-jet'>{event.data.ref?.split('/').pop()}</span>
         </div>
       )}
 
       {event.data.commitCount !== undefined && (
-        <div className="flex border-t-[0.33px] border-xy border-dotted pt-2 col-span-3 items-center space-x-3">
-          <FieldName name="commits" />
-          <span className="text-blue-400">{event.data.commitCount}</span>
+        <div className='flex border-t-[0.33px] border-xy border-dotted pt-2 col-span-3 items-center space-x-3'>
+          <FieldName name='commits' />
+          <span className='text-blue-400'>{event.data.commitCount}</span>
           {event.data.url && (
             <Link href={event.data.url}>
-              <Icon name="sync" size={10} className="" />
+              <Icon name='sync' size={10} className='' />
             </Link>
           )}
         </div>
       )}
 
       {event.data.pullRequestNumber && (
-        <div className="flex border-t-[0.33px] border-xy border-dotted pt-2 col-span-9 items-center space-x-4">
-          <FieldName name="pr" />
-          <span className="">
+        <div className='flex border-t-[0.33px] border-xy border-dotted pt-2 col-span-9 items-center space-x-4'>
+          <FieldName name='pr' />
+          <span className=''>
             #{event.data.pullRequestNumber} - {event.data.pullRequestTitle}
           </span>
         </div>
@@ -156,21 +156,21 @@ const EventItem = (event: WebhookEvent) => (
     </div>
 
     {event.error && (
-      <div className="mt-3 p-3 bg-red-300/20 border border-red-300/0 rounded-sm text-sm">
+      <div className='mt-3 p-3 bg-red-300/20 border border-red-300/0 rounded-sm text-sm'>
         <strong>Error:</strong> {event.error}
       </div>
     )}
   </div>
-);
+)
 
 interface FieldNameProps {
   name: string;
 }
 const FieldName = ({ name }: FieldNameProps) => (
-  <p className="text-creamy/60 uppercase text-xs font-mono tracking-widest">
+  <p className='text-creamy/60 uppercase text-xs font-mono tracking-widest'>
     {name}
   </p>
-);
+)
 const formatTimestamp = (timestamp: string): string => {
-  return new Date(timestamp).toLocaleString();
-};
+  return new Date(timestamp).toLocaleString()
+}

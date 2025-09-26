@@ -1,6 +1,6 @@
 type AsyncFn<TArgs extends unknown[], TResult> = (
   ...args: TArgs
-) => Promise<TResult>;
+) => Promise<TResult>
 
 interface AsyncHandlerResponseOptions<TArgs extends unknown[]> {
   retries?: number;
@@ -41,75 +41,75 @@ interface AsyncHandlerResponseOptions<TArgs extends unknown[]> {
  *
  * @see {@link https://www.typescriptlang.org/docs/handbook/2/functions.html#function-types Function Types - TS Docs}
  */
-export function handleAsync<TArgs extends unknown[], TResult>(
+export function handleAsync<TArgs extends unknown[], TResult> (
   fn: AsyncFn<TArgs, TResult>,
-  options: AsyncHandlerResponseOptions<TArgs> = {},
+  options: AsyncHandlerResponseOptions<TArgs> = {}
 ): (...args: TArgs) => Promise<{ data?: TResult; error?: unknown }> {
   const {
     retries = 0,
     onError,
     rethrowInDev = false,
     logger = (msg, meta) => console.error(msg, meta),
-  } = options;
+  } = options
 
   return async (
     ...args: TArgs
   ): Promise<{ data?: TResult; error?: unknown }> => {
-    let attempt = 0;
+    let attempt = 0
 
     while (attempt <= retries) {
       try {
-        const data = await fn(...args);
-        return { data };
+        const data = await fn(...args)
+        return { data }
       } catch (error: unknown) {
-        attempt++;
+        attempt++
 
-        const context = { args };
+        const context = { args }
 
         // Logging
         logger(
-          `Error in ${fn.name || "anonymous function"} [Attempt ${attempt}/${retries}]`,
+          `Error in ${fn.name || 'anonymous function'} [Attempt ${attempt}/${retries}]`,
           {
             error: formatError(error),
             args,
-          },
-        );
+          }
+        )
 
         // Custom handler
         if (onError) {
           try {
-            onError(error, context);
+            onError(error, context)
           } catch (e) {
-            logger("Error in custom onError handler", {
+            logger('Error in custom onError handler', {
               error: formatError(e),
-            });
+            })
           }
         }
 
-        const isLastAttempt = attempt > retries;
+        const isLastAttempt = attempt > retries
 
         if (isLastAttempt) {
-          if (rethrowInDev && process.env.NODE_ENV !== "production") {
-            throw error;
+          if (rethrowInDev && process.env.NODE_ENV !== 'production') {
+            throw error
           }
 
-          return { error: formatError(error) };
+          return { error: formatError(error) }
         }
       }
     }
 
-    return { error: "Unknown failure" }; // Should never reach here
-  };
+    return { error: 'Unknown failure' } // Should never reach here
+  }
 }
 
-function formatError(error: unknown) {
-  if (typeof error === "string") return { message: error };
+function formatError (error: unknown) {
+  if (typeof error === 'string') return { message: error }
   if (error instanceof Error) {
     return {
       name: error.name,
       message: error.message,
       stack: error.stack,
-    };
+    }
   }
-  return { message: "Unknown error", raw: error };
+  return { message: 'Unknown error', raw: error }
 }

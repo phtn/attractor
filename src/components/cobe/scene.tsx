@@ -1,33 +1,33 @@
-"use client";
+'use client'
 
-import createGlobe from "cobe";
-import { type ReactNode, useEffect, useRef } from "react";
-import { BeamEffect } from "@/components/beam";
-import { cn } from "@/lib/utils";
-import type { ClassName } from "@/app/types";
+import createGlobe from 'cobe'
+import { type ReactNode, useEffect, useRef } from 'react'
+import { BeamEffect } from '@/components/beam'
+import { cn } from '@/lib/utils'
+import type { ClassName } from '@/app/types'
 
 export const Globe = () => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const divRef1 = useRef<HTMLDivElement | null>(null);
-  const divRef2 = useRef<HTMLDivElement | null>(null);
-  const divRef3 = useRef<HTMLDivElement | null>(null);
-  const divRef4 = useRef<HTMLDivElement | null>(null);
-  const stopColor = "#6ee7b7";
-  const startColor = "#E8EBED";
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const divRef1 = useRef<HTMLDivElement | null>(null)
+  const divRef2 = useRef<HTMLDivElement | null>(null)
+  const divRef3 = useRef<HTMLDivElement | null>(null)
+  const divRef4 = useRef<HTMLDivElement | null>(null)
+  const stopColor = '#6ee7b7'
+  const startColor = '#E8EBED'
   return (
     <div
       ref={containerRef}
-      className="md:shadow-macd-void/25 relative overflow-clip md:rounded-[2rem] md:shadow-xl portrait:h-[calc(45vh)]"
+      className='md:shadow-macd-void/25 relative overflow-clip md:rounded-[2rem] md:shadow-xl portrait:h-[calc(45vh)]'
     >
-      <Node className="">
-        <div ref={divRef1} className="size-5"></div>
+      <Node className=''>
+        <div ref={divRef1} className='size-5' />
       </Node>
-      <div ref={divRef2} className="absolute bottom-10 right-0 size-5"></div>
-      <div ref={divRef3} className="absolute bottom-36 right-0 size-5"></div>
-      <div ref={divRef4} className="absolute bottom-56 right-0 size-5"></div>
-      <div className="relative z-20 flex h-full w-full items-center justify-start">
-        <div className="flex h-full w-1/5 items-center justify-start" />
-        <div className="h-[calc(50vh)] w-4/5 overflow-hidden">
+      <div ref={divRef2} className='absolute bottom-10 right-0 size-5' />
+      <div ref={divRef3} className='absolute bottom-36 right-0 size-5' />
+      <div ref={divRef4} className='absolute bottom-56 right-0 size-5' />
+      <div className='relative z-20 flex h-full w-full items-center justify-start'>
+        <div className='flex h-full w-1/5 items-center justify-start' />
+        <div className='h-[calc(50vh)] w-4/5 overflow-hidden'>
           <Cobe />
         </div>
       </div>
@@ -86,15 +86,15 @@ export const Globe = () => {
         gradientStopColor={stopColor}
       />
     </div>
-  );
-};
+  )
+}
 
-function Cobe() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+function Cobe () {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    let phi = 0;
-    if (!canvasRef.current) return;
+    let phi = 0
+    if (!canvasRef.current) return
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 2,
       width: 800 * 2,
@@ -112,9 +112,9 @@ function Cobe() {
       markers: [
         // longitude latitude -33.8882660526033, 151.186737977912
         // -37.83804545665295, 145.04187781033474
-        //-26.20445829243173, 28.04954057960671
-        //-16.7798330729519, -64.31743542675979
-        //28.023919273564022, -81.24930689818535
+        // -26.20445829243173, 28.04954057960671
+        // -16.7798330729519, -64.31743542675979
+        // 28.023919273564022, -81.24930689818535
 
         { location: [-21.0132, 45.9549], size: 0.1 }, // Sydney
         { location: [47.1029, -121.8688], size: 0.15 }, // Sydney
@@ -128,25 +128,25 @@ function Cobe() {
       onRender: (state) => {
         // Called on every animation frame.
         // `state` will be an empty object, return updated params.
-        state.phi = phi;
-        phi += 0.0005;
+        state.phi = phi
+        phi += 0.0005
       },
-    });
+    })
 
     return () => {
-      globe.destroy();
-    };
-  }, []);
+      globe.destroy()
+    }
+  }, [])
 
   return (
-    <div className="h-screen absolute bottom-0 pb-80 left-0 w-screen aspect-square rotate-180">
+    <div className='h-screen absolute bottom-0 pb-80 left-0 w-screen aspect-square rotate-180'>
       <canvas
         ref={canvasRef}
-        style={{ height: "30%", width: "100%" }}
-        className="aspect-square pb-20"
+        style={{ height: '30%', width: '100%' }}
+        className='aspect-square pb-20'
       />
     </div>
-  );
+  )
 }
 
 // const Hero = (props: { divRef1: RefObject<HTMLDivElement> }) => (
@@ -196,13 +196,13 @@ interface NodeProps {
 const Node = ({ children, className }: NodeProps) => (
   <div
     className={cn(
-      "absolute flex flex-col text-xl",
-      "h-64 w-full",
-      "left-10 space-x-8 p-8",
-      "portrait:left-4 portrait:top-6 portrait:p-4",
-      className,
+      'absolute flex flex-col text-xl',
+      'h-64 w-full',
+      'left-10 space-x-8 p-8',
+      'portrait:left-4 portrait:top-6 portrait:p-4',
+      className
     )}
   >
     {children}
   </div>
-);
+)

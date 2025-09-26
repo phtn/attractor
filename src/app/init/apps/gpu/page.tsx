@@ -1,3 +1,3 @@
-import { Content } from "./content";
-const Page = async () => <Content />;
-export default Page;
+import { Content } from './content'
+const Page = async () => <Content />
+export default Page
